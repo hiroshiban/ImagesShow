@@ -5,8 +5,9 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 % This MATLAB function is a fully updated version of ImagesShow that was originally written in C++
 % with VTK (Visualization Toolkit, Kitware,Inc.) in 2009 by Hiroshi Ban, Kyoto University, Japan.
-% (Note: the ImagesShow was based on a script written in Tcl/Tk with VTK by Hiroki Yamamoto in 2002).
-% The Psychtoolbox with MATLAB/Octave is required to use this function for your fMRI, TMS, or EEG experiments.
+% (Note: the original ImagesShow (termed "PresentImage" at that time) was based on a script written
+% in Tcl/Tk with VTK by Hiroki Yamamoto in 2002). The Psychtoolbox with MATLAB/Octave is required
+% to use this function for your fMRI, TMS, or EEG experiments.
 %
 % This function presents sequences of monocular/binocular images for your block & event-related paradigm
 % fMRI experiments. The images to be presented, image presentation protocols, display options, and more

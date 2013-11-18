@@ -1,14 +1,14 @@
-function protocols=readExpProtocols(protocolfile,blockrand,fps,ifi)
+function protocols=readExpProtocols(protocolfile,blockrand,fps,ifi,init_rand_flg)
 
-% function protocols=readExpProtocols(protocolfile,:blockrand,:fps,:ifi)
+% function protocols=readExpProtocols(protocolfile,:blockrand,:fps,:ifi,:init_rand_flg)
 % (: is optional)
 %
 % This function reads an input protocol file and set experimental conditions.
 %
 % !!!IMPORTANT!!!
-% The seed of random sequence is not initialized in this function.
-% If you shuffle the seed and initialize random array, please run InitializeRandomSeed()
-% in advance of running this function. Please be carefu.
+% The seed of random sequence is not initialized in this function by default setting.
+% If you shuffle the seed and initialize random array, please set init_rand_flg=1.
+% Or please run InitializeRandomSeed() in advance of running this function. Please be careful.
 %
 % [input]
 % protocolfile : experiment protocol file (a matlab script file). Should be set with a relative path format.
@@ -89,6 +89,10 @@ if nargin<4 || isempty(ifi)
     ifi=16.666667;
   end
 end
+if nargin<4 || isempty(init_rand_flg), init_rand_flg=0; end
+
+% initialize the seed of random array
+if init_rand_flg, InitializeRandomSeed(); end
 
 % check protocol file
 run_protocolfile=protocolfile;
