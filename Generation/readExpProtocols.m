@@ -5,6 +5,11 @@ function protocols=readExpProtocols(protocolfile,blockrand,fps,ifi)
 %
 % This function reads an input protocol file and set experimental conditions.
 %
+% !!!IMPORTANT!!!
+% The seed of random sequence is not initialized in this function.
+% If you shuffle the seed and initialize random array, please run InitializeRandomSeed()
+% in advance of running this function. Please be carefu.
+%
 % [input]
 % protocolfile : experiment protocol file (a matlab script file). Should be set with a relative path format.
 %                The origin is the directory where this function is called.
