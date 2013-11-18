@@ -154,7 +154,8 @@ methods
     disp(['Total Responses : ',num2str(numResponses)]);
     disp(['Hit Rate        : ',num2str((numHits/numTasks)*100),'%']);
     disp(['False alarms    : ',num2str(numResponses-numHits)]);
-    disp(['Median RT (Hit) : ',num2str(nanmedian(RT)*1000),' ms']);
+    % not use nanmedian() as it never compute median value when the number of NaN exceeds the half of the elemnts of the array.
+    disp(['Median RT (Hit) : ',num2str(median(RT(~isnan(RT)))*1000),' ms']);
     disp('******************************');
   end
 
@@ -205,7 +206,9 @@ methods
     disp(['Total Responses : ',num2str(sum(numResponses))]);
     disp(['Hit Rate        : ',num2str(sum(numHits)/sum(numTasks)*100),'%']);
     %disp(['False alarms    : ',num2str(numResponses-sum(numHits))]);
-    disp(['Median RT (Hit) : ',num2str(nanmedian(cell2mat(RT))*1000),' ms']);
+    RTs=cell2mat(RT);
+    % not use nanmedian() as it never compute median value when the number of NaN exceeds the half of the elemnts of the array.
+    disp(['Median RT (Hit) : ',num2str(median(RTs(~isnan(RTs)))*1000),' ms']);
     disp('******************************');
     
     % plotting the results

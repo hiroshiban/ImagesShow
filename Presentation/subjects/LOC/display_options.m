@@ -28,7 +28,7 @@ options.window_size=[1200,1920];
 
 % fixation parameter, {fixation type(0: non, 1: circle, 2: cross),size,color}
 %options.fixation={2,24,[255,255,255]};
-options.fixation={1,6,[255,255,255]};
+options.fixation={1,6,[255,0,0]};
 
 % background parameter, {background_RGB,patch1_RGB,patch2_RGB,patch_num(row,col),patch_size(row,col),(optional)aperture_size(row,col)}
 options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
@@ -48,10 +48,13 @@ options.use_frame=0;
 options.use_original_imgsize=0;
 
 % whether reading images one by one in creating PTB textures
-% 0: load image to the memory one by one when creating the target texture.
-% 1: load all the images at once before presentation.
+% 1: load images to the memory one by one when creating the target texture.
+% 2: load all the images at once before the actual presentation, but make texture when requested.
+% 3: load all the images at once and make all the textures before the actual presentation
 % By setting this to 1, you can save memory, but it requires additional computation time in presentation (~30ms with Core2Duo CPU) on Windows.
-options.load_img_one_by_one=0;
+% When you set this to 2 or 3, you can save computational time, but requires more memory on your computer.
+% I recommend to test options.img_loading_mode=2 first.
+options.img_loading_mode=3;
 
 % image offset, [row,col]. when set [0,0], images will be presented at the center of the screen
 options.center=[0,0];
@@ -67,9 +70,9 @@ options.img_flip=0;
 % !!!NOTEICE!!! Even you do not need to interpose task (options.task(1)=0), please set the other 2 variables.
 % when you use task in your experiment, please fix the unit of the durations in protocolfile as 'msec' or 'frame'. please do not mix.
 %options.task=[0,3,250];
-%options.task=[1,3,250];
+options.task=[1,3,250];
 %options.task=[2,4,250];
-options.task=[3,2,250];
+%options.task=[3,2,250];
 
 % whether randomize the order of the 'blocks' in protocol file.
 % 0:OFF, 1:ALL, 2:Even seq. only, 3:Odd seq. only, 4:first half seq. only, 5:last half seq. only

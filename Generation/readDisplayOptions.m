@@ -6,7 +6,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2013-11-15 14:50:21 ban"
+% Last Update: "2013-11-18 17:40:19 ban"
 %
 %
 % [input]
@@ -56,10 +56,13 @@ function options=readDisplayOptions(optionfile)
 %              options.use_original_imgsize=0;
 %
 %              % whether reading images one by one in creating PTB textures
-%              % 0: load image to the memory one by one when creating the target texture.
-%              % 1: load all the images at once before presentation.
+%              % 1: load images to the memory one by one when creating the target texture.
+%              % 2: load all the images at once before the actual presentation, but make texture when requested.
+%              % 3: load all the images at once and make all the textures before the actual presentation
 %              % By setting this to 1, you can save memory, but it requires additional computation time in presentation (~30ms with Core2Duo CPU) on Windows.
-%              options.load_img_one_by_one=0;
+%              % When you set this to 2 or 3, you can save computational time, but requires more memory on your computer.
+%              % I recommend to test options.img_loading_mode=2 first.
+%              options.img_loading_mode=2;
 %
 %              % image offset, [row,col]. when set [0,0], images will be presented at the center of the screen
 %              options.center=[0,0];
@@ -93,22 +96,22 @@ function options=readDisplayOptions(optionfile)
 %
 % [output]
 % options    : display options to be used in ImagesShow presentation protocol, a structure
-%              with members listed below.
-%              .start_method
-%              .custom_trigger
-%              .exp_mode
-%              .keys
-%              .window_size
-%              .fixation
-%              .background
-%              .auto_background
-%              .use_fullscr
-%              .use_frame
-%              .center
-%              .img_flip
-%              .task
-%              .block_rand
-%              .onset_punch
+%              with members listed below. Values in () are the default ones.
+%              .start_method (0)
+%              .custom_trigger ('s')
+%              .exp_mode ('mono')
+%              .keys ([37,39])
+%              .window_size (768,1024)
+%              .fixation ({2,24,[255,255,255]})
+%              .background ({[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]})
+%              .auto_background (0)
+%              .use_fullscr (0)
+%              .use_frame (0)
+%              .center ([0,0])
+%              .img_flip (0)
+%              .task ([0,1,250])
+%              .block_rand (0)
+%              .onset_punch ([0,50])
 
 % check input variable
 if nargin<1 || isempty(optionfile), help(mfilename()); options=[]; return; end
@@ -130,7 +133,7 @@ if ~exist('options','var'), options=setdefaultoptions(); end
 if ~isstructmember(options,'start_method'), options.start_method=0; end
 if ~isstructmember(options,'custom_trigger'), options.custom_trigger='s'; end
 if ~isstructmember(options,'exp_mode'), options.exp_mode='mono'; end
-if ~isstructmember(options,'keys'), options.keys=[37,38]; end
+if ~isstructmember(options,'keys'), options.keys=[37,39]; end
 if ~isstructmember(options,'window_size'), options.window_size=[768,1024]; end
 if ~isstructmember(options,'fixation'), options.fixation={2,24,[255,255,255]}; end
 if ~isstructmember(options,'background'), options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]}; end
@@ -138,10 +141,10 @@ if ~isstructmember(options,'auto_background'), options.auto_background=0; end
 if ~isstructmember(options,'use_fullscr'), options.use_fullscr=0; end
 if ~isstructmember(options,'use_frame'), options.use_frame=0; end
 if ~isstructmember(options,'use_original_imgsize'), options.use_original_imgsize=0; end
-if ~isstructmember(options,'load_img_one_by_one'), options.load_img_one_by_one=0; end
+if ~isstructmember(options,'img_loading_mode'), options.img_loading_mode=2; end
 if ~isstructmember(options,'center'), options.center=[0,0]; end
 if ~isstructmember(options,'img_flip'), options.img_flip=0; end
-if ~isstructmember(options,'task'), options.task=[0,3,250]; end
+if ~isstructmember(options,'task'), options.task=[0,1,250]; end
 if ~isstructmember(options,'block_rand'), options.block_rand=0; end
 if ~isstructmember(options,'onset_punch'), options.onset_punch=[0,50]; end
 
@@ -167,7 +170,7 @@ function options=setdefaultoptions()
   options.start_method=0;
   options.custom_trigger='s';
   options.exp_mode='mono';
-  options.keys=[37,38];
+  options.keys=[37,39];
   options.window_size=[768,1024];
   options.fixation={2,24,[255,255,255]};
   options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
@@ -175,10 +178,10 @@ function options=setdefaultoptions()
   options.use_fullscr=0;
   options.use_frame=0;
   options.use_original_imgsize=0;
-  options.load_img_one_by_one=0;
+  options.img_loading_mode=2;
   options.center=[0,0];
   options.img_flip=0;
-  options.task=[0,3,250];
+  options.task=[0,1,250];
   options.block_rand=0;
   options.onset_punch=[0,50];
 

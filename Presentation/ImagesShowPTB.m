@@ -16,7 +16,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-18 16:28:10 ban"
+% Last Update: "2013-11-18 17:40:29 ban"
 %
 %
 % [input]
@@ -249,7 +249,7 @@ clear fprotocolfile;
 
 % load image database
 fimgdbfile=fullfile('subjects',subj,imgdbfile);
-imgs=readImageDatabase(fimgdbfile,~dparam.load_img_one_by_one);
+imgs=readImageDatabase(fimgdbfile,dparam.img_loading_mode);
 clear fimgdbfile;
 
 % set RGB gain
@@ -276,26 +276,22 @@ centeroffset=[fliplr(dparam.center),fliplr(dparam.center)];
 % set background color automatically by matching it with the upper-left (1,1) pixel of the first image
 if dparam.auto_background
   if size(imgs.img,2)==1 % monocular stimuli
-    if dparam.load_img_one_by_one
+    if dparam.img_loading_mode==1 % read image one-by-one
       tmp=imread(imgs.img{1});
     else
       tmp=imgs.img{1};
     end
-    bgcolor=double(tmp(1,1,:));
-    if numel(bgcolor)==1, bgcolor=repmat(bgcolor,[1,3]); end
-    dparam.background{1}=bgcolor;
-    clear tmp bgcolor;
   else % binocular stimuli
-    if dparam.load_img_one_by_one
+    if dparam.img_loading_mode==1 % read image one-by-one
       tmp=imread(imgs.img{1,1});
     else
       tmp=imgs.img{1,1};
     end
-    bgcolor=double(tmp(1,1,:));
-    if numel(bgcolor)==1, bgcolor=repmat(bgcolor,[1,3]); end
-    dparam.background{1}=bgcolor;
-    clear tmp bgcolor;
   end
+  bgcolor=double(tmp(1,1,:));
+  if numel(bgcolor)==1, bgcolor=repmat(bgcolor,[1,3]); end
+  dparam.background{1}=bgcolor;
+  clear tmp bgcolor;
 end
 
 
@@ -486,7 +482,7 @@ else
 end
 
 imgSize=zeros(2,size(imgs.img,1),2); % left/right, img_num, x_size/y_size
-if dparam.use_original_imgsize && ~dparam.load_img_one_by_one
+if dparam.use_original_imgsize && dparam.img_loading_mode~=1
   if size(imgs.img,2)==1 % monocular stimuli
     imgSize(1,:,:)=imgs.img_size.*repmat([ratio_wid,ratio_hei],[size(imgs.img_size,1),1]);
     imgSize(2,:,:)=imgs.img_size.*repmat([ratio_wid,ratio_hei],[size(imgs.img_size,1),1]);
@@ -543,7 +539,7 @@ p_width=round((dparam.window_size(2)-edgeX)/patch_num(2)); % width in pix of pat
 if length(dparam.background)==6
   aperture_size=dparam.background{6};
 else
-  if ~dparam.use_original_imgsize || ~dparam.load_img_one_by_one
+  if ~dparam.use_original_imgsize || dparam.img_loading_mode~=1
     aperture_size(1)=2*( p_height*ceil(imgs.presentation_size(1)/2/p_height) );
     aperture_size(2)=2*( p_width*ceil(imgs.presentation_size(2)/2/p_width) );
   else
@@ -796,18 +792,10 @@ disp('done.');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Preparing the first texture image(s)
+%%%% Preparing the first (or all) texture image(s)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if ~dparam.load_img_one_by_one
-  if size(imgs.img,2)==1 % monocular stimuli
-    timg_L=Screen('MakeTexture',winPtr,imgs.img{1});
-    timg_R=Screen('MakeTexture',winPtr,imgs.img{1});
-  else % if size(imgs.img,2)==2 % binocular stimuli
-    timg_L=Screen('MakeTexture',winPtr,imgs.img{1,1});
-    timg_R=screen('MakeTexture',winPtr,imgs.img{1,2});
-  end
-else
+if dparam.img_loading_mode==1 % read image one-by-one
   if size(imgs.img,2)==1 % monocular stimuli
     cimg=imread(imgs.img{1});
     if dparam.use_original_imgsize % need to update imgRect
@@ -830,6 +818,30 @@ else
     timg_L=Screen('MakeTexture',winPtr,cimg1);
     timg_R=screen('MakeTexture',winPtr,cimg2);
     clear cimg1 cimg2;
+  end
+elseif dparam.img_loading_mode==2 % images are already loaded as MATLAB matrix, imgs.img
+  if size(imgs.img,2)==1 % monocular stimuli
+    timg_L=Screen('MakeTexture',winPtr,imgs.img{1});
+    timg_R=Screen('MakeTexture',winPtr,imgs.img{1});
+  else % if size(imgs.img,2)==2 % binocular stimuli
+    timg_L=Screen('MakeTexture',winPtr,imgs.img{1,1});
+    timg_R=screen('MakeTexture',winPtr,imgs.img{1,2});
+  end
+elseif dparam.img_loading_mode==3 % generate all the textures at once
+  if size(imgs.img,2)==1 % monocular stimuli
+    timg_L=zeros(size(imgs.img,1),1); timg_R=zeros(size(imgs.img,1),1);
+    for ii=1:1:size(imgs.img,1)
+      timg_L(ii)=Screen('MakeTexture',winPtr,imgs.img{ii});
+      timg_R(ii)=Screen('MakeTexture',winPtr,imgs.img{ii});
+      imgs.img{ii}=[];
+    end
+  else % if size(imgs.img,2)==2 % binocular stimuli
+    timg_L=zeros(size(imgs.img,1),1); timg_R=zeros(size(imgs.img,1),1);
+    for ii=1:1:size(imgs.img,1)
+      timg_L(ii)=Screen('MakeTexture',winPtr,imgs.img{ii,1});
+      timg_R(ii)=screen('MakeTexture',winPtr,imgs.img{ii,2});
+      imgs.img{ii,1}=[]; imgs.img{ii,2}=[];
+    end
   end
 end
 
@@ -944,7 +956,7 @@ for ii=1:1:length(prt) % blocks
         elseif dparam.task(1)==2 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % vernier left/right
           event=event.add_event('Vernier Task',task.vernierpos(taskcounter));
         elseif dparam.task(1)==3 && task.texttype(taskcounter)==1 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % vernier left/right
-          event=event.add_event('Character Task',task.texttype(taskcounter));
+          event=event.add_event('Character Task',task.chars{1});
         elseif (dparam.task(1)==4 || dparam.task(1)==5) && task.arrays(taskcounter) % 1-back
           event=event.add_event('1Back Task',1);
         end
@@ -957,15 +969,7 @@ for ii=1:1:length(prt) % blocks
           if nextstimidx>numel(prt{ii}.sequence), nextblockidx=ii+1; nextstimidx=1; end
           if nextblockidx<=length(prt)
             Screen('Close',timg_L); Screen('Close',timg_R);
-            if ~dparam.load_img_one_by_one
-              if size(imgs.img,2)==1 % monocular stimuli
-                timg_L=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx)});
-                timg_R=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx)});
-              else % if size(imgs.img,2)==2 % binocular stimuli
-                timg_L=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx),1});
-                timg_R=screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx),2});
-              end
-            else
+            if dparam.img_loading_mode==1 % load image one-by-one
               if size(imgs.img,2)==1 % monocular stimuli
                 cimg=imread(imgs.img{prt{nextblockidx}.sequence(nextstimidx)});
                 if dparam.use_original_imgsize
@@ -989,6 +993,14 @@ for ii=1:1:length(prt) % blocks
                 timg_R=screen('MakeTexture',winPtr,cimg2);
                 clear cimg1 cimg2;
               end
+            elseif dparam.img_loading_mode==2 % make PTB texture one-by-one
+              if size(imgs.img,2)==1 % monocular stimuli
+                timg_L=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx)});
+                timg_R=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx)});
+              else % if size(imgs.img,2)==2 % binocular stimuli
+                timg_L=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx),1});
+                timg_R=screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx),2});
+              end
             end
           else
             nextblockidx=ii; nextstimidx=jj;
@@ -1006,7 +1018,13 @@ for ii=1:1:length(prt) % blocks
 
           % background & target stimulus
           Screen('DrawTexture',winPtr,background_L,[],CenterRect(bgRect,winRect)+centeroffset);
-          Screen('DrawTexture',winPtr,timg_L,[],CenterRect(squeeze(imgRect(1,prt{nextblockidx}.sequence(nextstimidx),:))',winRect)+centeroffset);
+
+          % target image
+          if dparam.img_loading_mode~=3
+            Screen('DrawTexture',winPtr,timg_L,[],CenterRect(squeeze(imgRect(1,prt{nextblockidx}.sequence(nextstimidx),:))',winRect)+centeroffset);
+          else
+            Screen('DrawTexture',winPtr,timg_L(prt{nextblockidx}.sequence(nextstimidx)),[],CenterRect(squeeze(imgRect(1,prt{nextblockidx}.sequence(nextstimidx),:))',winRect)+centeroffset);
+          end
 
           % fixation
           if dparam.fixation{1} && ~(dparam.task(1)==3 && task.arrays(taskcounter)), Screen('DrawTexture',winPtr,fcross_L,[],CenterRect(fixRect,winRect)+centeroffset); end
@@ -1033,7 +1051,13 @@ for ii=1:1:length(prt) % blocks
 
           % background & target stimulus
           Screen('DrawTexture',winPtr,background_R,[],CenterRect(bgRect,winRect)+centeroffset);
-          Screen('DrawTexture',winPtr,timg_R,[],CenterRect(squeeze(imgRect(2,prt{nextblockidx}.sequence(nextstimidx),:))',winRect)+centeroffset);
+
+          % target image
+          if dparam.img_loading_mode~=3
+            Screen('DrawTexture',winPtr,timg_R,[],CenterRect(squeeze(imgRect(2,prt{nextblockidx}.sequence(nextstimidx),:))',winRect)+centeroffset);
+          else
+            Screen('DrawTexture',winPtr,timg_R(prt{nextblockidx}.sequence(nextstimidx)),[],CenterRect(squeeze(imgRect(2,prt{nextblockidx}.sequence(nextstimidx),:))',winRect)+centeroffset);
+          end
 
           % fixation
           if dparam.fixation{1} && ~(dparam.task(1)==3 && task.arrays(taskcounter)), Screen('DrawTexture',winPtr,fcross_R,[],CenterRect(fixRect,winRect)+centeroffset); end
@@ -1084,7 +1108,13 @@ for ii=1:1:length(prt) % blocks
 
         % background & target stimulus
         Screen('DrawTexture',winPtr,background_L,[],CenterRect(bgRect,winRect)+centeroffset);
-        Screen('DrawTexture',winPtr,timg_L,[],CenterRect(squeeze(imgRect(1,prt{ii}.sequence(jj),:))',winRect)+centeroffset);
+
+        % target image
+        if dparam.img_loading_mode~=3
+          Screen('DrawTexture',winPtr,timg_L,[],CenterRect(squeeze(imgRect(1,prt{ii}.sequence(jj),:))',winRect)+centeroffset);
+        else
+          Screen('DrawTexture',winPtr,timg_L(prt{ii}.sequence(jj)),[],CenterRect(squeeze(imgRect(1,prt{ii}.sequence(jj),:))',winRect)+centeroffset);
+        end
 
         % fixation
         if dparam.fixation{1} && ~(dparam.task(1)==3 && task.arrays(taskcounter)), Screen('DrawTexture',winPtr,fcross_L,[],CenterRect(fixRect,winRect)+centeroffset); end
@@ -1113,7 +1143,13 @@ for ii=1:1:length(prt) % blocks
 
         % background & target stimulus
         Screen('DrawTexture',winPtr,background_R,[],CenterRect(bgRect,winRect)+centeroffset);
-        Screen('DrawTexture',winPtr,timg_R,[],CenterRect(squeeze(imgRect(2,prt{ii}.sequence(jj),:))',winRect)+centeroffset);
+
+        % target image
+        if dparam.img_loading_mode~=3
+          Screen('DrawTexture',winPtr,timg_R,[],CenterRect(squeeze(imgRect(2,prt{ii}.sequence(jj),:))',winRect)+centeroffset);
+        else
+          Screen('DrawTexture',winPtr,timg_R(prt{ii}.sequence(jj)),[],CenterRect(squeeze(imgRect(2,prt{ii}.sequence(jj),:))',winRect)+centeroffset);
+        end
 
         % fixation
         if dparam.fixation{1} && ~(dparam.task(1)==3 && task.arrays(taskcounter)), Screen('DrawTexture',winPtr,fcross_R,[],CenterRect(fixRect,winRect)+centeroffset); end
@@ -1150,26 +1186,18 @@ for ii=1:1:length(prt) % blocks
         elseif dparam.task(1)==2 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % vernier left/right
           event=event.add_event('Vernier Task',task.vernierpos(taskcounter));
         elseif dparam.task(1)==3 && task.texttype(taskcounter)==1 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % vernier left/right
-          event=event.add_event('Character Task',task.texttype(taskcounter));
+          event=event.add_event('Character Task',task.chars{1});
         elseif (dparam.task(1)==4 || dparam.task(1)==5) && task.arrays(taskcounter) % 1-back
           event=event.add_event('1Back Task',1);
         end
 
         % generate the next image after cleaning up the current texture (to save memory)
         if mm==numel(prt{ii}.subduration{jj})
-          Screen('Close',timg_L); Screen('Close',timg_R);
+          if dparam.img_loading_mode~=3, Screen('Close',timg_L); Screen('Close',timg_R); end
           nextblockidx=ii; nextstimidx=jj+1;
           if nextstimidx>numel(prt{ii}.sequence), nextblockidx=ii+1; nextstimidx=1; end
           if nextblockidx<=length(prt)
-            if ~dparam.load_img_one_by_one
-              if size(imgs.img,2)==1 % monocular stimuli
-                timg_L=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx)});
-                timg_R=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx)});
-              else % if size(imgs.img,2)==2 % binocular stimuli
-                timg_L=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx),1});
-                timg_R=screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx),2});
-              end % if size(imgs.img,2)==1 % monocular stimuli
-            else
+            if dparam.img_loading_mode==1 % load image one-by-one
               if size(imgs.img,2)==1 % monocular stimuli
                 cimg=imread(imgs.img{prt{nextblockidx}.sequence(nextstimidx)});
                 if dparam.use_original_imgsize
@@ -1192,6 +1220,14 @@ for ii=1:1:length(prt) % blocks
                 timg_L=Screen('MakeTexture',winPtr,cimg1);
                 timg_R=screen('MakeTexture',winPtr,cimg2);
                 clear cimg1 cimg2;
+              end % if size(imgs.img,2)==1 % monocular stimuli
+            elseif dparam.img_loading_mode==2 % make PTB texture one-by-one
+              if size(imgs.img,2)==1 % monocular stimuli
+                timg_L=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx)});
+                timg_R=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx)});
+              else % if size(imgs.img,2)==2 % binocular stimuli
+                timg_L=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx),1});
+                timg_R=screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(nextstimidx),2});
               end % if size(imgs.img,2)==1 % monocular stimuli
             end
           end % if nextblockidx<=length(prt)
@@ -1224,7 +1260,7 @@ end
 
 % clean up
 for ii=1:1:length(prt), prt{ii}=rmfield(prt{ii},{'subcumduration','subduration'}); end
-if ~dparam.load_img_one_by_one, imgs=rmfield(imgs,'img'); end %#ok % clean up raw image data if they are stored
+if dparam.img_loading_mode~=1, imgs=rmfield(imgs,'img'); end %#ok % clean up raw image data if they are stored
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1247,7 +1283,7 @@ elseif dparam.task(1)==2 % vernier line detection task
   [task.numTasks,task.numHits,task.numErrors,task.numResponses,task.RT]=event.calc_accuracies(correct_event);
 end
 event=event.get_event(); % convert an event logger object to a cell data structure
-eval(sprintf('save -append %s event;',savefname)); % save the updated task structure
+eval(sprintf('save -append %s task event;',savefname)); % save the updated task structure
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1277,7 +1313,7 @@ catch lasterror
   Priority(0);
   GammaResetPTB(1.0);
   tmp=lasterror; %#ok
-  event=event.get_event(); %#ok % just for debugging
+  if exist('event','var'), event=event.get_event(); end %#ok % just for debugging
   diary off;
   keyboard;
   rmpath(fullfile(rootDir,'..','Common'));

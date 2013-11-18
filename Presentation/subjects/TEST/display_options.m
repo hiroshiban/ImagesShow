@@ -47,10 +47,13 @@ options.use_frame=0;
 options.use_original_imgsize=0;
 
 % whether reading images one by one in creating PTB textures
-% 0: load image to the memory one by one when creating the target texture.
-% 1: load all the images at once before presentation.
+% 1: load images to the memory one by one when creating the target texture.
+% 2: load all the images at once before the actual presentation, but make texture when requested.
+% 3: load all the images at once and make all the textures before the actual presentation
 % By setting this to 1, you can save memory, but it requires additional computation time in presentation (~30ms with Core2Duo CPU) on Windows.
-options.load_img_one_by_one=0;
+% When you set this to 2 or 3, you can save computational time, but requires more memory on your computer.
+% I recommend to test options.img_loading_mode=2 first.
+options.img_loading_mode=2;
 
 % image offset, [row,col]. when set [0,0], images will be presented at the center of the screen
 options.center=[0,0];

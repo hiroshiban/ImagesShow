@@ -1,6 +1,6 @@
-function imgs=readImageDatabase(imgdbfile,load_img_flg)
+function imgs=readImageDatabase(imgdbfile,img_loading_mode)
 
-% function imgs=readImageDatabase(imgdbfile,:load_img_flg)
+% function imgs=readImageDatabase(imgdbfile,:img_loading_mode)
 % (: is optional)
 %
 % This function reads image database file and loads all the
@@ -48,8 +48,14 @@ function imgs=readImageDatabase(imgdbfile,load_img_flg)
 %             imgdb.img{1}={'images1.mat'}; % {'matlab_file_name'}
 %
 %             In this case, the matlab image in a matrix format is loaded and stored into an output variable.
-% load_img_flg : if 1, loading images on memory as MATLAB matrix. if 0, only the paths to image files are stored.
-%                1 by default. This variable will have no effect when you set imgdb.type='matlab'.
+% img_loading_mode : how to load images and to make PTB textures.
+%                    1: load images to the memory one by one when creating the target texture.
+%                    2: load all the images at once before the actual presentation, but make texture when requested.
+%                    3: load all the images at once and make all the textures before the actual presentation
+%                    By setting this to 1, you can save memory, but it requires additional computation time in
+%                    presentation (~30ms with Core2Duo CPU) on Windows. When you set this to 2 or 3, you can save
+%                    computational time, but requires more memory on your computer.
+%                    2 by default.
 %
 % [output]
 % imgs      : output image database, a structure
@@ -63,11 +69,13 @@ function imgs=readImageDatabase(imgdbfile,load_img_flg)
 %
 %
 % Created:   : "2013-11-08 15:32:41 ban"
-% Last Update: "2013-11-15 14:50:33 ban"
+% Last Update: "2013-11-18 17:40:15 ban"
 
 % check input variable
 if nargin<1 || isempty(imgdbfile), help(mfilename()); imgs=[]; return; end
-if nargin<2 || isempty(load_img_flg), load_img_flg=1; end
+if nargin<2 || isempty(img_loading_mode), img_loading_mode=2; end
+
+if ~ismember(img_loading_mode,[1,2,3]), error('img_loading_mode should be one of 1-3. check input variable.'); end
 
 % check image database file
 run_imgdbfile=imgdbfile;
@@ -100,7 +108,7 @@ if strcmpi(imgdb.type,'monocular')
 
   imgs.img_size=zeros(imgdb.num,2);
   for ii=1:1:imgdb.num
-    if load_img_flg
+    if ismember(img_loading_mode,[2,3])
       imgs.img{ii}=imread(fullfile(imgs.directory,imgdb.img{ii}{1}));
       sz=size(imgs.img{ii}); if numel(sz)==3, sz=sz(1:2); end
       imgs.img_size(ii,:)=fliplr(sz);
@@ -117,7 +125,7 @@ elseif strcmpi(imgdb.type,'binocular')
   imgs.img=cell(imgdb.num,2); % update initialized variable
   imgs.img_size=zeros(2,imgdb.num,2);
   for ii=1:1:imgdb.num
-    if load_img_flg
+    if ismember(img_loading_mode,[2,3])
       imgs.img{ii,1}=imread(fullfile(imgs.directory,imgdb.img{ii}{1}));
       imgs.img{ii,2}=imread(fullfile(imgs.directory,imgdb.img{ii}{2}));
       sz=size(imgs.img{ii,1}); if numel(sz)==3, sz=sz(1:2); end
