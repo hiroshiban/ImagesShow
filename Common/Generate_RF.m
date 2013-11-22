@@ -1,8 +1,9 @@
 function resp=generate_RF(x,mu,sigma,amp1,amp2)
 
+% Generates 1D/2D 2-diff of gaussian response pulse.
 % function generate_RF(x,mu,sigma,amp1,amp2)
 %
-% Generate 1D/2D 2-diff of gaussian response pulse
+% This function generates 1D/2D 2-diff of gaussian response pulse
 %
 % [input]
 % x     : input response field,
@@ -17,7 +18,7 @@ function resp=generate_RF(x,mu,sigma,amp1,amp2)
 %
 %
 % Created    : "2011-07-14 13:22:03 banh"
-% Last Update: "2011-07-14 14:39:20 banh"
+% Last Update: "2013-11-22 18:49:21 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(x), x=-5:5; end

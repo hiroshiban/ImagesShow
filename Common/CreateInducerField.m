@@ -1,5 +1,6 @@
 function [field,mask]=CreateInducerField(fieldSize,theta_deg,orient_deg,inducer_pos,inducer_height,inducer_width,pix_per_deg)
 
+% Creates an oriented circular slant that can be used as an inducer of depth percepts.
 % function [field,mask]=CreateInducerField(fieldSize,theta_deg,orient_deg,...
 %                                          inducer_pos,inducer_height,inducer_width,pix_per_deg)
 %
@@ -20,7 +21,7 @@ function [field,mask]=CreateInducerField(fieldSize,theta_deg,orient_deg,inducer_
 % mask        : mask field, [row,col]
 %
 % Created    : "2012-03-14 11:10:03 ban"
-% Last Update: "2012-03-14 12:02:12 ban"
+% Last Update: "2013-11-22 18:42:14 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

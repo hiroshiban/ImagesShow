@@ -1,7 +1,7 @@
-% Rounds a scalar, matrix or vector to a specified number of decimal places
-% Format is roundoff(number,decimal_places)
-
 function y = roundoff(number,decimal_places)
+
+% Rounds a scalar, matrix or vector to a specified number of decimal places.
+% function y = roundoff(number,decimal_places)
 
 [INeg,JNeg] = find( number<0 ); % Negative numbers
 

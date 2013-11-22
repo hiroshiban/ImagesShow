@@ -1,9 +1,10 @@
 function pstart=WaitingStimulusPresentation(mode,tgt_key)
 
+% Waits for the start of stimulus presentation.
 % function pstart=WaitingStimulusPresentation(mode,:tgt_key)
 % (: is optional)
 %
-% wait for stimulus presentation.
+% This function waits for stimulus presentation.
 %
 % [input]
 % mode    : method to start the stimulus presentation
@@ -20,7 +21,7 @@ function pstart=WaitingStimulusPresentation(mode,tgt_key)
 %
 %
 % Created    : "2013-11-08 09:25:02 ban"
-% Last Update: "2013-11-08 09:25:13 ban"
+% Last Update: "2013-11-22 23:50:33 ban (ban.hiroshi@gmail.com)"
 
 % check input variable
 if nargin<1 || isempty(mode), mode=0; end

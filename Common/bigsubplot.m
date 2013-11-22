@@ -1,4 +1,6 @@
 function bigsubplot(rows,cols,rr,cc,hgap,vgap)
+
+% Sub-plots data with bigger sub-windows.
 % bigsubplot(rows,cols,rr,cc,[hgap],[vgap])
 % 
 % create subplots bigger than standard

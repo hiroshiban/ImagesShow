@@ -1,5 +1,6 @@
 function DisplayTargetInSpecDir(target_dir,fformat,prefix)
 
+% Displays target files in a specific directory.
 % function DisplayTargetInSpecDir(target_dir,fformat,prefix)
 % 
 % [about]
@@ -19,7 +20,7 @@ function DisplayTargetInSpecDir(target_dir,fformat,prefix)
 % [output]
 % no output variable
 %
-% Last Update: "2010-06-07 15:55:34 ban"
+% Last Update: "2013-11-22 22:51:42 ban (ban.hiroshi@gmail.com)"
 
 % get target fileames from target_dir
 tfiles=GetFiles(fullfile(pwd,target_dir),ffromat,prefix);

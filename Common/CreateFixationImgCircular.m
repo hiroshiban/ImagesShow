@@ -1,5 +1,6 @@
 function fix=CreateFixationImgCircular(fixsize,fixcolor,bgcolor,circlesize,show_flag,save_flag)
 
+% Creates a circular fixation image for a monocular display setting.
 % function fiximg=CreateFixationImgCircular(fixsize,fixcolor,bgcolor,circlesize,show_flag,save_flag)
 %
 % Create fixation-cross images for left/right eyes
@@ -17,7 +18,7 @@ function fix=CreateFixationImgCircular(fixsize,fixcolor,bgcolor,circlesize,show_
 % imgR     : fixation image for right eye
 %
 % Created    : "2012-08-05 23:47:20 ban"
-% Last Update: "2012-08-06 06:43:18 ban"
+% Last Update: "2013-11-22 18:44:19 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin < 1, fixsize=32; end

@@ -1,5 +1,6 @@
 function zarray=Pad2Array(array,pad,mode)
 
+% Pads a specific number between elements of the input array.
 % function zarray=Pad2Array(array,:pad,:mode)
 % (: is optional)
 %
@@ -18,7 +19,7 @@ function zarray=Pad2Array(array,pad,mode)
 %
 %
 % Created    : "2013-11-22 15:46:14 ban (ban.hiroshi@gmail.com)"
-% Last Update: "2013-11-22 15:57:25 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-22 23:35:01 ban (ban.hiroshi@gmail.com)"
 
 % check input variable
 if nargin<1 help(mfilename()); return; end

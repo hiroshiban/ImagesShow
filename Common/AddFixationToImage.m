@@ -1,8 +1,9 @@
 function img=AddFixationToImage(img,fixwidthpix,fixcolor)
 
+% Adds a circular fixation point on the center of input image.
 % function img=AddFixationToImage(img,fixwidthpix,fixcolor)
 % 
-% Add a circular fixation point on the center of input image
+% This function adds a circular fixation point on the center of input image
 % 
 % <input>
 % img         : input image to be added the fixation [row,col,1|3(grayscale|RGB)]

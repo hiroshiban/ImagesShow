@@ -1,8 +1,9 @@
 function field=CreateSpiralField(fieldSize,spf,amp,meanval,start_angle,spiralratio,pix_per_deg,flip)
 
+% Creates a spiral grating field image.
 % function field=CreateSpiralField(fieldSize,spf,amp,meanval,start_angle,spiralratio,pix_per_deg,flip)
 %
-% Generate Spiral field with values varying between -amp and amp
+% This function generates a spiral field with values varying between -amp and amp
 %
 % [input]
 % fieldSize   : the size of the graing in degrees, [row,col]
@@ -18,7 +19,7 @@ function field=CreateSpiralField(fieldSize,spf,amp,meanval,start_angle,spiralrat
 % field       : radial image, double format, [row,col]
 %
 % Created    : "2013-08-29 11:48:56 ban"
-% Last Update: "2013-08-29 13:48:21 ban"
+% Last Update: "2013-11-22 23:02:32 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

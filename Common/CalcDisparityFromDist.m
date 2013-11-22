@@ -1,5 +1,6 @@
 function disparity = CalcDisparityFromDist(ipd,zdist,viewdist)
 
+% Calculates binocular disparity (arcmin) from physical distances.
 % function disparity = CalcDisparityFromDist(ipd,zdist,viewdist)
 % 
 % [INPUT]

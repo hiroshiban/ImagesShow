@@ -1,5 +1,6 @@
 function filenames=RemovePrefixFromFilename(target_dir,extension,prefix_tgt,prefix_remove)
 
+% Removes a specific prefix from the target file names.
 % function filenames=RemovePrefixFromFilename(target_dir,extension,prefix_tgt,prefix_remove)
 %
 % [example]
@@ -35,7 +36,7 @@ function filenames=RemovePrefixFromFilename(target_dir,extension,prefix_tgt,pref
 %
 %
 % Created    : "2010-06-09 11:32:50 ban"
-% Last Update: "2010-06-09 16:59:09 ban"
+% Last Update: "2013-11-22 23:56:17 ban (ban.hiroshi@gmail.com)"
 
 % check the input variables
 if nargin < 2, help RemovePrefixFromFilename; return; end

@@ -1,8 +1,9 @@
 function size_one2one(im_h)
 
+% Displays an image in true size without any scaling
 % function size_one2one(im_h)
-% 
-% display image in true size without any scaling
+%
+% This fucntion displays an image in true size without any scaling
 %
 % [input]
 % im_h : handle of the image you want to visualize
@@ -12,7 +13,7 @@ function size_one2one(im_h)
 % no output, the image attached im_h will be displayed
 %
 % Created: "2010-04-03 14:48:48 ban"
-% Last Update: "2010-06-23 11:17:38 ban"
+% Last Update: "2013-11-22 23:52:52 ban (ban.hiroshi@gmail.com)"
 
 ax_h = gca;
 fig_h = gcf;

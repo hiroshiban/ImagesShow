@@ -1,8 +1,9 @@
 function [is_exist, message] = IsExistYouWant(file_or_dir_path, ftype)
 
+% Checks whether the file you want exist or not.
 % function [is_exist, message] = IsExistYouWant(file_or_dir_path, ftype)
 %
-% check wether the file or directory you want exists in the path
+% This function checks wether the file or directory you want exists in the path
 %
 % [input]
 % file_or_dir_path : path to the file you want to check
@@ -13,7 +14,7 @@ function [is_exist, message] = IsExistYouWant(file_or_dir_path, ftype)
 % message          : text message, can be used for displaying warning etc.
 %
 % Created    : "2010-01-29 13:41:41 ban"
-% Last Update: "2010-01-29 13:58:52 ban"
+% Last Update: "2013-11-22 23:34:39 ban (ban.hiroshi@gmail.com)"
 
 if nargin < 1
   help(mfilename); return;

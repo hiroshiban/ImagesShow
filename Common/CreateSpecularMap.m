@@ -1,10 +1,11 @@
 function pmap=CreateSpecularMap(heightfield,model_id,vv,lvs,shininess,diffuse,...
                                 ambient,pix_per_cm,display_flag,save_flag)
 
+% Generates a specular map from the input height field (using Blinn's Phong shading method).
 % function smap=CreateSpecularMap(heightfield,model_id,vv,lvs,shininess,diffuse,...
 %                                 ambient,pix_per_cm,display_flag,save_flag)
 %
-% Generate Blinn's Phong Shading map from heightfield input
+% This function generates Blinn's Phong Shading map from heightfield input
 %
 % [input]
 % heightfield : height field to generate Blinn's phong-map, [row,col]
@@ -74,7 +75,7 @@ function pmap=CreateSpecularMap(heightfield,model_id,vv,lvs,shininess,diffuse,..
 %
 %
 % Created    : "2010-06-29 11:42:29 ban"
-% Last Update: "2010-06-30 14:41:25 ban"
+% Last Update: "2013-11-22 23:03:52 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1, help CreateSpecularMap; return; end

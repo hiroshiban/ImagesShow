@@ -1,12 +1,13 @@
 function options=readDisplayOptions(optionfile)
 
+% reads and set options of your experimental procedures for ImagesShowPTB function.
 % function options=readDisplayOptions(optionfile)
 %
 % This function reads option parameters from an input file
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2013-11-18 17:40:19 ban"
+% Last Update: "2013-11-22 18:14:01 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]

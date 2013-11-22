@@ -1,7 +1,10 @@
 function mask=CreateWedgeMask(sz,sz_min,sz_max,pix_per_deg)
 
-% Creates a wedge-shaped (Baumkuchen!) mask with 0 & 1 values
-% mask is for the first quadrant image (upper right)
+% Creates a wedge-shaped mask field whose pixel holds 0/1 value to be used as a mask.
+% function mask=CreateWedgeMask(sz,sz_min,sz_max,pix_per_deg)
+%
+% This function creates a wedge-shaped (Baumkuchen!) mask with 0 & 1 values.
+% Mask is located in the first quadrant of the generated image (upper right).
 % 
 % [input]
 % meanval     : baseline magnitude of gratings

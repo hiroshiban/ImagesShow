@@ -38,7 +38,7 @@ classdef eventlogger
 %
 %
 % Created    : "2013-11-17 21:42:27 ban"
-% Last Update: "2013-11-17 21:42:34 ban"
+% Last Update: "2013-11-22 18:53:00 ban (ban.hiroshi@gmail.com)"
 
 properties (Hidden) %(SetAccess = protected)
   eventcounter=1; % a counter for event logging
@@ -66,7 +66,7 @@ methods
   
   % get reference time point for the event log
   function [reference_time,obj]=get_reference_time(obj)
-    reference_time=obj.reference_time;
+    reference_time=obj.ref_time;
   end
 
   % set the current event ID (1,2,3,...)
@@ -76,7 +76,7 @@ methods
   end
 
   % get the current event ID (1,2,3,...)
-  function [eventcounter,obj]=get_eventcounter()
+  function [eventcounter,obj]=get_eventcounter(obj)
     eventcounter=obj.eventcounter;
   end
 
@@ -113,9 +113,9 @@ methods
       for jj=1:1:length(names_parameters)
         if strfind(obj.event{ii,2},names_parameters{jj}) || strfind(obj.event{ii,3},names_parameters{jj})
           counter=counter+1;
-          event{counter,1}=obj.event{jj,1};
-          event{counter,2}=obj.event{jj,2};
-          event{counter,3}=obj.event{jj,3};
+          event{counter,1}=obj.event{jj,1}; %#ok
+          event{counter,2}=obj.event{jj,2}; %#ok
+          event{counter,3}=obj.event{jj,3}; %#ok
         end
       end
     end

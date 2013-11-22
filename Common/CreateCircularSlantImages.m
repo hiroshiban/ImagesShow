@@ -2,6 +2,7 @@ function [imgL,imgR]=CreateCircularSlantImages(fieldSize,theta_deg,orient_deg,..
                                                aperture_deg,tgt_val,outer_val,...
                                                pix_per_deg,fine_coefficient,ipd,vdist)
 
+% Creates an image(s) on whose 2D plane a ciruclar slant surface is projected.
 % function [imgL,imgR]=CreateCircularSlantImages(fieldSize,theta_deg,orient_deg,...
 %                                                aperture_deg,tgt_val,outer_val,...
 %                                                pix_per_deg,fine_coefficient,ipd,vdist)
@@ -30,7 +31,7 @@ function [imgL,imgR]=CreateCircularSlantImages(fieldSize,theta_deg,orient_deg,..
 % field       : grating image, double format, [row,col]
 % 
 % Created    : "2010-06-11 12:32:41 ban"
-% Last Update: "2010-12-15 15:27:01 ban"
+% Last Update: "2013-11-22 18:34:27 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

@@ -1,5 +1,6 @@
 function imgs=readImageDatabase(imgdbfile,img_loading_mode)
 
+% reads and interprets image database file for ImagesShowPTB.m function.
 % function imgs=readImageDatabase(imgdbfile,:img_loading_mode)
 % (: is optional)
 %
@@ -64,7 +65,7 @@ function imgs=readImageDatabase(imgdbfile,img_loading_mode)
 %
 %
 % Created:   : "2013-11-08 15:32:41 ban"
-% Last Update: "2013-11-22 11:36:21 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-22 18:13:21 ban (ban.hiroshi@gmail.com)"
 
 % check input variable
 if nargin<1 || isempty(imgdbfile), help(mfilename()); imgs=[]; return; end

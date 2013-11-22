@@ -1,5 +1,6 @@
 function field=CreateCylinderField(fieldSize,cylinder_rad,cylinder_height,pix_per_deg,fine_coefficient)
 
+% Creats a cylindrical height field image.
 % function CreateCylinderField(fieldSize,cylinder_radius_deg,..
 %                              cylinder_height_deg,pix_per_deg,fine_coefficient)
 %
@@ -21,7 +22,7 @@ function field=CreateCylinderField(fieldSize,cylinder_rad,cylinder_height,pix_pe
 % field       : cylinder image, double format, [row,col]
 % 
 % Created    : "2010-06-14 12:20:56 ban"
-% Last Update: "2010-06-21 16:38:14 ban"
+% Last Update: "2013-11-22 18:45:59 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

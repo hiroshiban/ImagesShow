@@ -1,5 +1,6 @@
 function ms=mseq(baseVal,powerVal,shift,whichSeq,balance_flag,user_taps)
 
+% Generates maximum-length sequence(s).
 % function ms=mseq(baseVal,powerVal,shift,whichSeq,balance_flag,user_taps)
 %
 % Maximum length sequence assuming 2,3,4,5,7,8,9,11,13 distinct values
@@ -55,7 +56,7 @@ function ms=mseq(baseVal,powerVal,shift,whichSeq,balance_flag,user_taps)
 %                Comp., June 1967.
 %
 % Created    : "2010-03-02 15:15:01 Hiroshi Ban"
-% Last Update: "2010-03-03 11:54:41 ban"
+% Last Update: "2013-11-22 23:35:44 ban (ban.hiroshi@gmail.com)"
 
 
 %% check input variables

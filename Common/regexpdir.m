@@ -1,4 +1,5 @@
 function dirlist = regexpdir(rootdir, expstr, recursive)
+
 % REGEXPDIR Gives a directory listing based on a regular expression
 %    REGEXPDIR(ROOTDIR, REGEXP) gives a directory listing of the directory
 %    ROOTDIR based on the pattern specified by the regular expression

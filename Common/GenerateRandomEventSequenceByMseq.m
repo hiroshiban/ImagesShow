@@ -1,10 +1,11 @@
 function [design,p_val]=GenerateRandomEventSequenceByMseq(num_conds,num_repeat,num_check_history,rand_init_flag,efficiency_flag)
 
+% [UNDER PROGRAMMING] Generates a pseudo-randomo event array using the Maximum Length Sequence method.
 % function [design,p_val]=GenerateRandomDesignSequence(num_conds,num_repeat,
 %                        :num_check_history,:rand_init_flag,:efficiency_flag)
 %                                             (: is optional input variables)
 %
-% Generate pseudo random sequence for Block-design fMRI experiment.
+% This function generates a pseudo random sequence for Block-design fMRI experiment.
 % The preceding history of to-be-presented stimulus order is taken into
 % account to prevent from the successive presentation of the same condition.
 %
@@ -42,7 +43,7 @@ function [design,p_val]=GenerateRandomEventSequenceByMseq(num_conds,num_repeat,n
 % For event-related fMRI design, use M-sequnce generator instead.
 %
 % Created: Feb 24 2010 Hiroshi Ban
-% Last Update: "2010-03-01 14:18:59 ban"
+% Last Update: "2013-11-22 23:10:31 ban (ban.hiroshi@gmail.com)"
 
 
 %%% check input variables

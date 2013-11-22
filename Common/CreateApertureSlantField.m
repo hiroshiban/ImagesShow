@@ -1,5 +1,6 @@
 function field=CreateApertureSlantField(fieldSize,theta_deg,orient_deg,aperture_deg,outer_val,pix_per_deg,fine_coefficient)
 
+% Creates a slant field that is cut by a circular aperture.
 % function field=CreateApertureSlantField(fieldSize,theta_deg,orient_deg,aperture_deg,outer_val,pix_per_deg,fine_coefficient)
 %
 % Creates oriented slant with ciruclar aperture
@@ -21,7 +22,7 @@ function field=CreateApertureSlantField(fieldSize,theta_deg,orient_deg,aperture_
 % field       : grating image, double format, [row,col]
 % 
 % Created    : "2010-06-11 12:32:41 ban"
-% Last Update: "2010-11-29 19:03:43 ban"
+% Last Update: "2013-11-22 18:37:03 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

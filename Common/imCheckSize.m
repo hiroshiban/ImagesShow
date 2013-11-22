@@ -1,9 +1,11 @@
 function sizes=imCheckSize(tgt_dir,img_ext,img_inc_prefix,img_exc_prefix)
 
-% function sizes=imRGB2Gray(tgt_dir,:img_ext,:img_inc_prefix,:img_exc_prefix)
+% Returns the image XY resolutions and sizes of the input images.
+% function sizes=imCheckSize(tgt_dir,:img_ext,:img_inc_prefix,:img_exc_prefix)
 % (: is optional)
 %
-% This function reads images and returns their row&col length and sizes.
+% This function reads images and returns their row&col pixel length together
+% with their file sizes.
 %
 % [input]
 % tgt_dir        : target directory that includes images you want to process.
@@ -20,7 +22,7 @@ function sizes=imCheckSize(tgt_dir,img_ext,img_inc_prefix,img_exc_prefix)
 %
 %
 % Created    : "2013-11-14 16:57:41 ban"
-% Last Update: "2013-11-14 16:57:47 ban"
+% Last Update: "2013-11-22 23:27:23 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(tgt_dir), help(mfilename()); return; end

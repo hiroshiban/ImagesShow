@@ -1,8 +1,9 @@
 function img=GenerateImageMixture(img1,img2,img1_ratio,display_flg,save_flg)
 
+% Combines two input images to a mixtured image.
 % function img=GenerateImageMixture(img1,img2,img1_ratio,display_flg,save_flg)
 %
-% This function generates mixtured image of two image inputs.
+% This function generates a mixtured image from two image inputs.
 % mixtured ratio is controlled by img1_ratio (0.0-1.0) parameter.
 % e.g. img(x,y) = img1(x,y)*img1_ratio + img2(x,y)*(1-img1_ratio)
 %
@@ -20,7 +21,7 @@ function img=GenerateImageMixture(img1,img2,img1_ratio,display_flg,save_flg)
 %
 %
 % Created    : "2013-08-29 11:47:43 ban"
-% Last Update: "2013-08-29 11:47:52 ban"
+% Last Update: "2013-11-22 23:12:26 ban (ban.hiroshi@gmail.com)"
 
 % check input variable
 if nargin<2, help(mfilename()); return; end

@@ -1,5 +1,6 @@
 function [checkerboard,mask,checkerID]=CreateCheckerBoard(rmin,rmax,width,startangle,pix_per_deg,nwedges,nrings,colors,phase)
 
+% Creates checkerboards with compensating colors.
 % function [checkerboard,mask,checkerID]=...
 %    CreateCheckerBoard(rmin,rmax,width,startangle,pix_per_deg,nwedges,nrings,colors,phase)
 %
@@ -36,7 +37,7 @@ function [checkerboard,mask,checkerID]=CreateCheckerBoard(rmin,rmax,width,starta
 %
 %
 % Created    : "2011-04-14 23:51:29 ban"
-% Last Update: "2011-04-15 11:59:58 ban"
+% Last Update: "2013-11-22 18:36:03 ban (ban.hiroshi@gmail.com)"
 
 
 %% check input variables

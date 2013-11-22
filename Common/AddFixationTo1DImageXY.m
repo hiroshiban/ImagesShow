@@ -1,8 +1,9 @@
 function img=AddFixationTo1DImageXY(img,fixwidthpix,fixcolor,position)
 
+% Adds a circular fixation point at any position of the inupt image (grayscale).
 % function img=AddFixationToImage(img,fixwidthpix,fixcolor,position)
 % 
-% Add a circular fixation point on the center of input image
+% This function adds a circular fixation point on the center of input image
 % 
 % <input>
 % img         : input image to be added the fixation [row,col,1|3(grayscale|RGB)]

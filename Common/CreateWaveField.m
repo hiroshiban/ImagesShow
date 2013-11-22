@@ -1,8 +1,9 @@
 function field=CreateWaveField(fieldSize,spf,amp,Afrq,nfrq,meanval,orient_deg,pix_per_deg,flip)
 
+% Creates a wavy grating field image.
 % function field=CreateWaveField(fieldSize,spf,amp,Afrq,nfrq,meanval,orient_deg,pix_per_deg,flip)
 %
-% Creates oriented wavy gratings with values varying between -amp and amp
+% This function creates oriented wavy gratings with values varying between -amp and amp
 %
 % [input]
 % fieldSize   : the size of the graing in degrees, [deg]
@@ -20,7 +21,7 @@ function field=CreateWaveField(fieldSize,spf,amp,Afrq,nfrq,meanval,orient_deg,pi
 % field       : wave grating image, double format, [row,col]
 %
 % Created: "2010-04-03 16:26:51 ban"
-% Last Update: "2013-08-29 13:49:29 ban"
+% Last Update: "2013-11-22 23:01:15 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

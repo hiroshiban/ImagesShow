@@ -1,5 +1,6 @@
 function [imgL,imgR]=RDSfastest_with_acor_noise_MEX(posL,posR,wdot,bdot,dotalpha,dotDens,noise_psc,bgcolor)
 
+% Generates left/right Random-Dot-AntiCorrelated-Stereogram images with noise (MEX-based).
 % function [imgL,imgR]=RDSfastest_with_acor_noise(posL,posR,wdot,bdot,dotalpha,dotDens,noise_psc,bgcolor)
 %
 % Generate left/right Random Dot Stereogram (RDS) Image (fastest version without any duplicated processing)
@@ -28,7 +29,7 @@ function [imgL,imgR]=RDSfastest_with_acor_noise_MEX(posL,posR,wdot,bdot,dotalpha
 % Please be careful.
 %
 % Created:     "2010-10-27 13:28:28 ban"
-% Last Update: "2011-05-18 10:53:43 ban"
+% Last Update: "2013-11-23 00:00:33 ban (ban.hiroshi@gmail.com)"
 
 % create initial random dot image
 randXY=randi(round(100/dotDens),size(posL));

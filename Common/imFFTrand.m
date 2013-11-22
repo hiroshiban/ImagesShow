@@ -1,5 +1,6 @@
 function [img,fnames]=imFFTrand(tgt_dir,amp_shuffle_ratio,phase_shuffle_ratio,img_ext,img_inc_prefix,img_exc_prefix,display_flg,save_flg,randseed_flg)
 
+% Randomizes FFT amplitudes/phases of the input images.
 % function [img,fnames]=imFFTrand(tgt_dir,amp_shuffle_ratio,phase_shuffle_ratio,...
 %                                 :img_ext,:img_inc_prefix,:img_exc_prefix,:display_flg,:save_flg,:randseed_flg)
 % (: is optional)
@@ -26,7 +27,7 @@ function [img,fnames]=imFFTrand(tgt_dir,amp_shuffle_ratio,phase_shuffle_ratio,im
 %
 %
 % Created    : "2013-11-13 15:36:11 ban"
-% Last Update: "2013-11-14 17:01:45 ban"
+% Last Update: "2013-11-22 23:25:22 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(tgt_dir), help(mfilename()); return; end

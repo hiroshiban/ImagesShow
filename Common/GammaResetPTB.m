@@ -1,9 +1,10 @@
 function GammaResetPTB(luminance_ratio)
 
+% Resets display gamma with PTB Screen() function.
 % function GammaResetPTB(:luminance_ratio)
 % (: is optional)
 %
-% Resets gamma tables to a default (linear, no gamma applied) setting using PTB function.
+% Resets gamma tables to a default (linear, no gamma applied) setting using PTB Screen() function.
 %
 % [input]
 % luminance_ratio : gain(s) of the luminance, 0.0-1.0. a scalar or 1x3 vector (RGB). 1.0 by default.
@@ -23,7 +24,7 @@ function GammaResetPTB(luminance_ratio)
 %
 %
 % Created    : "2011-09-06 17:44:10 banh"
-% Last Update: "2011-09-06 17:51:24 banh"
+% Last Update: "2013-11-22 18:51:04 ban (ban.hiroshi@gmail.com)"
 
 % check input variable
 if nargin<1, luminance_ratio=1.0; end

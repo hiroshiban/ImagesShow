@@ -40,7 +40,7 @@ function [filenames,dirnames]=AddPrefix2Filename(target_dir,extension,prefix_tgt
 %
 %
 % Created    : "2010-06-09 11:32:50 ban"
-% Last Update: "2013-02-11 12:49:48 banh"
+% Last Update: "2013-11-22 18:30:43 ban (ban.hiroshi@gmail.com)"
 
 % check the input variables
 if nargin < 2, help(mfilename()); return; end

@@ -1,9 +1,10 @@
 function x_pixels = RayTrace_ScreenPos_X(zdist_fromScreen, ipd, viewdist, eye, pix_per_cm, xpos_world)
 
+% Calculates the horizontal screen position (in pixels) of a point distance from the visual midline and z-distance.
 % function x_pixels = RayTrace_ScreenPos_X(zdist_fromScreen, ipd, viewdist, eye, pix_per_cm, xpos_world)
 % 
-% Calculate the horizontal screen position (in pixels) of a point distance xpos_world from the visual midline
-% and zdist_fromScreen in infront (-ve) or behind (+ve) the screen
+% This function calculates the horizontal screen position (in pixels) of a point distance xpos_world
+% from the visual midline and zdist_fromScreen in infront (-ve) or behind (+ve) the screen
 % Equation 2 from Howard and Rogers volume 2, p.541
 % 
 % [INPUT]

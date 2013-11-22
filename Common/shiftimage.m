@@ -1,40 +1,37 @@
-%
-%  img_shifted = ShiftImage(img, frac_deltax, frac_deltay)
-%
-%  Shifts the image IMG using the Fourier shift theorem by the 
-%  Field-of-view (FOV) fractions FRAC_DELTAX and FRAC_DELTAY. 
-%  The fraction is relative to the size of the image such that 
-%  a value of 1.0 shifts the image back to where it started. 
-%  Shifts outside this range will wrap around to the 
-%  corresponding shift within the range.
-%
-%  The shift is performed using Fourier sinc interpolation, i.e. 
-%  the Fourier shift theorem, via simple phase adjustments in 
-%  the frequency domain.  This may lead to Gibbs phenomena.
-%
-%  Dimensions need not be powers of 2 and will not necessarily 
-%  be padded to a power of 2.  The Matlab FFT functions are 
-%  capable of non-power of 2 transforms.
-%
-%   Example:
-%       load mri;
-%       img = double(squeeze(D(:,:,1,13)));
-%       figure;
-%       dx = [.1 .5 .8 1.2];
-%       dy = [.2 .7 1.0 2.5];
-%       for n=1:4,
-%           subplot(2,2,n);
-%           imagesc( ShiftImage(img,dx(n),dy(n)) );
-%           axis image; colormap(gray);
-%       end
-%
-%
+function[Image] = shiftimage(Image, deltax, deltay)
 
+% Shifts the image IMG using the Fourier shift theorem.
+% img_shifted = ShiftImage(img, frac_deltax, frac_deltay)
+%
+% Shifts the image IMG using the Fourier shift theorem by the 
+% Field-of-view (FOV) fractions FRAC_DELTAX and FRAC_DELTAY. 
+% The fraction is relative to the size of the image such that 
+% a value of 1.0 shifts the image back to where it started. 
+% Shifts outside this range will wrap around to the 
+% corresponding shift within the range.
+%
+% The shift is performed using Fourier sinc interpolation, i.e. 
+% the Fourier shift theorem, via simple phase adjustments in 
+% the frequency domain.  This may lead to Gibbs phenomena.
+%
+% Dimensions need not be powers of 2 and will not necessarily 
+% be padded to a power of 2.  The Matlab FFT functions are 
+% capable of non-power of 2 transforms.
+%
+%  Example:
+%      load mri;
+%      img = double(squeeze(D(:,:,1,13)));
+%      figure;
+%      dx = [.1 .5 .8 1.2];
+%      dy = [.2 .7 1.0 2.5];
+%      for n=1:4,
+%          subplot(2,2,n);
+%          imagesc( ShiftImage(img,dx(n),dy(n)) );
+%          axis image; colormap(gray);
+%      end
 %
 % 01/25/99  Implemented by Edward Brian Welch, edwardbrianwelch@yahoo.com
 %
-function[Image] = shiftimage(Image, deltax, deltay)
-
 % NOTE:
 % This function is partially vectorized (only single loops, 
 % no double loops) to gain some benefit in speed.  The tradeoff 

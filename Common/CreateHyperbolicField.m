@@ -1,5 +1,6 @@
 function field=CreateHyperbolicField(fieldSize,spf,amp,meanval,start_angle,pix_per_deg,flip)
 
+% Creates a hyperbolic grating image.
 % function field=CreateHyperbolicField(fieldSize,spf,amp,meanval,start_angle,pix_per_deg,flip)
 %
 % Generate hyperbolic field with values varying between -amp and amp
@@ -18,7 +19,7 @@ function field=CreateHyperbolicField(fieldSize,spf,amp,meanval,start_angle,pix_p
 % field       : hyperbolic image, double format, [row,col]
 %
 % Created    : "2013-08-29 11:48:56 ban"
-% Last Update: "2013-08-29 13:48:21 ban"
+% Last Update: "2013-11-22 18:42:38 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

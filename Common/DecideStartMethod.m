@@ -1,5 +1,6 @@
 function [fMRItriggerStartON, StartWithButtonPressOn] = DecideStartMethod()
 
+% Waits until a participant presses a Y/N key (Y:OK, N:NO).
 % function [fMRItriggerStartON, StartWithButtonPressOn] = DecideStartMethod()
 %
 % Wait for User input to decide how to start the stimulus Presentation
@@ -16,7 +17,7 @@ function [fMRItriggerStartON, StartWithButtonPressOn] = DecideStartMethod()
 %                          by pressing ENTER or SPACE key. [0/1]
 %
 % Created : Feb 04 2010 Hiroshi Ban
-% Last Update: "2010-02-04 10:56:15 ban"
+% Last Update: "2013-11-22 22:56:22 ban (ban.hiroshi@gmail.com)"
 
 %Check to see if we will send parallel port trigger
 fMRItriggerStartON = 0; StartWithButtonPressOn = 0;

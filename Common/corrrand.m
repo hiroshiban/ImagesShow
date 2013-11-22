@@ -1,5 +1,6 @@
 function rc=corrrand(nvals,C)
 
+% Generates normally distributed random numbers for N variables with the C correlation matrix.
 % function rc=corrrand(nvals,C)
 %
 % This function generates normally distributed random numbers for N variables
@@ -29,7 +30,7 @@ function rc=corrrand(nvals,C)
 %
 %
 % Created    : "2013-08-31 16:19:16 ban"
-% Last Update: "2013-08-31 16:21:20 ban"
+% Last Update: "2013-11-22 18:37:49 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<2, help(mfilename()); return; end

@@ -1,5 +1,6 @@
 function [design,p_val]=GenerateBlockDesignSequence(num_conds,num_repeat,num_check_history,rand_init_flag,efficiency_flag)
 
+% Generates a pseudo-random sequence for Block-design fMRI experiment.
 % function [design,p_val]=GenerateBlockDesignSequence(num_conds,num_repeat,
 %                        :num_check_history,:rand_init_flag,:efficiency_flag)
 %                                             (: is optional input variables)
@@ -42,7 +43,7 @@ function [design,p_val]=GenerateBlockDesignSequence(num_conds,num_repeat,num_che
 % For event-related fMRI design, use M-sequence generator instead.
 %
 % Created: Feb 23 2010 Hiroshi Ban
-% Last Update: "2012-12-12 06:59:55 ban"
+% Last Update: "2013-11-22 23:10:22 ban (ban.hiroshi@gmail.com)"
 
 
 %%% check input variables

@@ -1,8 +1,9 @@
 function [PTB_OK,vertxt] = CheckPTBversion(num_mainver_youwant)
 
+% Checks the version of the currently running Psychtoolbox.
 % function [PTB_OK,vertxt] = CheckPTBversion(num_mainver_youwant)
 %
-% check wether the PTB version you want to use is valid or not
+% This function checks wether the PTB version you want to use is valid or not
 %
 % [input]
 % num_mainver_youwant : version num you want, [val]
@@ -12,7 +13,7 @@ function [PTB_OK,vertxt] = CheckPTBversion(num_mainver_youwant)
 % vertxt   : text message from PTB
 %
 % Created    : "2010-01-29 13:41:41 ban"
-% Last Update: "2010-09-25 15:10:47 ban"
+% Last Update: "2013-11-22 18:29:12 ban (ban.hiroshi@gmail.com)"
 
 if nargin < 1
   wantver = num2str(3);

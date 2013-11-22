@@ -1,5 +1,6 @@
 function field=CreateRadialField(fieldSize,spf,amp,meanval,start_angle,pix_per_deg,flip)
 
+% Creates a radial grating field.
 % function field=CreateRadialField(fieldSize,spf,amp,meanval,start_angle,pix_per_deg,flip)
 %
 % Generate Radial field with values varying between -amp and amp
@@ -17,7 +18,7 @@ function field=CreateRadialField(fieldSize,spf,amp,meanval,start_angle,pix_per_d
 % field       : radial image, double format, [row,col]
 %
 % Created    : "2013-08-29 11:48:56 ban"
-% Last Update: "2013-08-29 13:48:21 ban"
+% Last Update: "2013-11-22 18:39:31 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

@@ -22,7 +22,7 @@ function CreateHardLinkDir(target_dir,output_dir)
 % 2. shell command, ln
 %
 % Created    : "2010-06-07 14:45:07 ban"
-% Last Update: "2013-02-11 15:23:40 banh"
+% Last Update: "2013-11-22 18:42:48 ban (ban.hiroshi@gmail.com)"
 
 % check the input variables
 if nargin < 2, help(mfilename()); return; end

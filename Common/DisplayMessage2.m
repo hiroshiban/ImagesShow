@@ -1,5 +1,6 @@
 function DisplayMessage2(message,bgcolor,winPtr,numScreens,drawing_font,drawing_size)
 
+% Displays message on the center of each of multiple PTB windows.
 % function DisplayMessage2(message,bgcolor,winPtr,numScreens,drawing_font,drawing_size)
 %
 % Display message on the center of the left/right (if available)
@@ -20,7 +21,7 @@ function DisplayMessage2(message,bgcolor,winPtr,numScreens,drawing_font,drawing_
 % no output variable
 %
 % Created: Feb 04 2010 Hiroshi Ban
-% Last Update: "2011-04-01 17:39:11 ban"
+% Last Update: "2013-11-22 22:53:07 ban (ban.hiroshi@gmail.com)"
 
 % input variable check
 if nargin < 3, help(mfilename()); end

@@ -1,9 +1,10 @@
 function [dp,beta]=dprime(phit,pfa)
 
+% Returns the d-prime for a given point p (eg 80%) on the psychometric function.
 % function [dp,:beta]=dprime(phit,:pfa)
 % (: is optional)
 %
-% Returns the d-prime for a given point p (eg 80%) on the psychometric function
+% This function returns the d-prime for a given point p (eg 80%) on the psychometric function
 %
 % [NOTE]
 % if only phit is given, dprime function will calculate d-prime based on the fomula below
@@ -29,7 +30,7 @@ function [dp,beta]=dprime(phit,pfa)
 %
 %
 % Created    : "2012-03-09 16:06:52 banh"
-% Last Update: "2012-03-09 16:48:37 banh"
+% Last Update: "2013-11-22 18:54:20 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1, help dprime; return; end

@@ -1,5 +1,6 @@
 function [img,point_idx]=GenerateGridDotImage(fieldSize,ranges,dense,jitterratio,mode,nimages,pix_per_deg,display_flg,save_flg)
 
+% Generates a random-jittered grid-dot image.
 % function [img,point_idx]=GenerateGridDotImage(fieldSize,ranges,dense,jitterratio,mode,pix_per_deg,display_flg,save_flg)
 %
 % This function generates a random-jittered grid-dot image in cartesian or polar coordinate space.
@@ -26,7 +27,7 @@ function [img,point_idx]=GenerateGridDotImage(fieldSize,ranges,dense,jitterratio
 %
 %
 % Created    : "2013-08-29 11:48:39 ban"
-% Last Update: "2013-08-29 11:48:47 ban"
+% Last Update: "2013-11-22 23:13:26 ban (ban.hiroshi@gmail.com)"
 
 % check input variable
 if nargin<2, help(mfilename()); return; end

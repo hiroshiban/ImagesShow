@@ -1,8 +1,9 @@
 function amount = CalcSpecular(nv,lv,vv,shininess,model_id)
 
+% Calculates a specular value at a point on the surface using Blinn's phong method.
 % function amount = CalcSpecular(nv,lv,vv,shininess,model_id)
 %
-% Calculate specular value at a point on the surface using Blinn's phong
+% Calculate a specular value at a point on the surface using Blinn's phong
 % shading method etc.
 %
 % [input]
@@ -63,7 +64,7 @@ function amount = CalcSpecular(nv,lv,vv,shininess,model_id)
 %
 %
 % Created    : "2010-06-29 13:15:25 ban" 
-% Last Update: "2010-06-30 14:30:53 ban"
+% Last Update: "2013-11-22 18:18:19 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1, help CalcSpecular; return; end

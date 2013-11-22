@@ -1,5 +1,6 @@
 function field=CreateExpField(fieldSize,spf,amp,meanval,pix_per_deg,flip)
 
+% Creates an exponential grating field image.
 % function field=CreateExpField(fieldSize,spf,amp,meanval,pix_per_deg,flip)
 %
 % Generate Exponential field with values varying between -amp and amp
@@ -16,7 +17,7 @@ function field=CreateExpField(fieldSize,spf,amp,meanval,pix_per_deg,flip)
 % field       : exponential image, double format, [row,col]
 %
 % Created: "2010-04-03 15:03:25 ban"
-% Last Update: "2013-08-29 13:49:14 ban"
+% Last Update: "2013-11-22 18:44:55 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

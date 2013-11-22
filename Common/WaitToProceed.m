@@ -1,8 +1,9 @@
 function user_answer=WaitToProceed(my_message)
 
+% Waits until a participant responds to the question by Y/N.
 % function user_answer=WaitToProceed(my_message)
 %
-% wait until the user responds to the question by 'y' (yes) or 'n' (no)
+% This function waits for the next step until an user responds to the question by 'y' (yes) or 'n' (no)
 %
 % [input]
 % my_message : message you want to display on MATLAB window for user.
@@ -10,7 +11,7 @@ function user_answer=WaitToProceed(my_message)
 %
 %
 % Created    : "2013-11-07 16:14:38 ban"
-% Last Update: "2013-11-07 16:17:00 ban"
+% Last Update: "2013-11-22 23:49:42 ban (ban.hiroshi@gmail.com)"
 
 if nargin<1 || isempty(my_message), my_message='Are you ready to proceed? (y/n) : '; end
 

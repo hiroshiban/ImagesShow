@@ -1,5 +1,6 @@
 function vangle=CalcVisualAngleFromPIX(vdist,stim_size_in_pix,cm_per_pix)
 
+% Calculates the corresponding visual angle (deg) from display pixels.
 % function vangle=CalcVisualAngleFromPIX(vdist,stim_size_in_pix,cm_per_pix)
 %
 % [INPUT]
@@ -11,7 +12,7 @@ function vangle=CalcVisualAngleFromPIX(vdist,stim_size_in_pix,cm_per_pix)
 % vangle     : visual angle in deg
 %
 % Created    : "2010-06-23 14:56:49 ban" 
-% Last Update: "2010-06-23 15:02:13 ban"
+% Last Update: "2013-11-22 18:29:42 ban (ban.hiroshi@gmail.com)"
 
 vangle= atan( stim_size_in_pix*cm_per_pix / vdist) * 180 / pi;
 

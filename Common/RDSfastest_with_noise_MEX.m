@@ -1,8 +1,9 @@
 function [imgL,imgR]=RDSfastest_with_noise_MEX(posL,posR,wdot,bdot,dotalpha,dotDens,noise_psc,bgcolor)
 
+% Generates left/right Random-Dot-Stereogram images with noise (MEX-based).
 % function [imgL,imgR]=RDSfastest_with_noise(posL,posR,wdot,bdot,dotalpha,dotDens,noise_psc,bgcolor)
 %
-% Generate left/right Random Dot Stereogram (RDS) Image (fastest version without any duplicated processing)
+% This function generates left/right Random Dot Stereogram (RDS) Image (fastest version without any duplicated processing)
 % The generated image are the same size with heightfield image.
 %
 % -- modified from RDSbyOval for speeding up and for matching the purpose of the
@@ -28,7 +29,7 @@ function [imgL,imgR]=RDSfastest_with_noise_MEX(posL,posR,wdot,bdot,dotalpha,dotD
 % Please be careful.
 %
 % Created:     "2010-10-27 13:28:28 ban"
-% Last Update: "2011-05-18 10:55:56 ban"
+% Last Update: "2013-11-23 00:00:03 ban (ban.hiroshi@gmail.com)"
 
 % create initial random dot image
 randXY=randi(round(100/dotDens),size(posL));

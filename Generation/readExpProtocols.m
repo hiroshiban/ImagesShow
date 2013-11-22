@@ -1,5 +1,6 @@
 function protocols=readExpProtocols(protocolfile,blockrand,fps,ifi,init_rand_flg)
 
+% reads and interprets experiment protocol file for ImagesShowPTB function.
 % function protocols=readExpProtocols(protocolfile,:blockrand,:fps,:ifi,:init_rand_flg)
 % (: is optional)
 %
@@ -96,7 +97,7 @@ function protocols=readExpProtocols(protocolfile,blockrand,fps,ifi,init_rand_flg
 %
 %
 % Created    : "2013-11-08 15:30:07 ban"
-% Last Update: "2013-11-22 10:49:22 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-22 18:13:15 ban (ban.hiroshi@gmail.com)"
 
 % check input variable
 if nargin<1 || isempty(protocolfile), help(mfilename()); protocols=[]; return; end

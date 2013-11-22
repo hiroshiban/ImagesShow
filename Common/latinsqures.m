@@ -1,4 +1,7 @@
 function s = latinsq(n)
+
+% Returns a latin sequare sequence.
+% function s = latinsq(n)
 % s will be a random latin square of size n, of the numerals 1..n
 
 s = zeros(n);

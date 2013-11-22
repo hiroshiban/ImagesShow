@@ -1,5 +1,6 @@
 function [img,fnames]=imAddNoise(tgt_dir,noiseparams,img_ext,img_inc_prefix,img_exc_prefix,display_flg,save_flg,randseed_flg)
 
+% Adds noises to the input images.
 % function [img,fnames]=imAddNoise(tgt_dir,:noiseparams,:img_ext,...
 %                                :img_inc_prefix,:img_exc_prefix,:display_flg,:save_flg,:randseed_flg)
 % (: is optional)
@@ -33,7 +34,7 @@ function [img,fnames]=imAddNoise(tgt_dir,noiseparams,img_ext,img_inc_prefix,img_
 %
 %
 % Created    : "2013-11-14 16:57:54 ban"
-% Last Update: "2013-11-14 16:58:11 ban"
+% Last Update: "2013-11-22 23:27:40 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(tgt_dir), help(mfilename()); return; end

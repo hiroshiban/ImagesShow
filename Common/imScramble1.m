@@ -1,4 +1,7 @@
-function [simg, sidx] = imScramble1(img,sdims);
+function [simg, sidx] = imScramble1(img,sdims)
+
+% Scrambles an intact input image and generates its mosaic image
+% function [simg, sidx] = imScramble1(img,sdims)
 % img: image, a m*n or m*n*3 matrix
 % Scrambles image (mosaic)
 %  [simg, sidx] = imScramble(img,sdims)
@@ -28,14 +31,15 @@ tmp = reshape(tmp, [sdims(1),sdims(2),mdims(1),mdims(2),sz(3)]);
 tmp = ipermute(tmp, [ 1 3 2 4 5]);
 simg = reshape(tmp,sz);
 
-return;
+return
 
-img=imread('pout.tif');
-img=imresize(img,[256,256]);
-figure; imshow(img);
-simg=imScramble(img,64);
-figure; imshow(simg);
-simg2=imScramble(img,32);
-figure; imshow(simg2);
-simg2=imScramble(img,16);
-figure; imshow(simg2);
+% % for debug
+% img=imread('pout.tif');
+% img=imresize(img,[256,256]);
+% figure; imshow(img);
+% simg=imScramble(img,64);
+% figure; imshow(simg);
+% simg2=imScramble(img,32);
+% figure; imshow(simg2);
+% simg2=imScramble(img,16);
+% figure; imshow(simg2);

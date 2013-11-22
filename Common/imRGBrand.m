@@ -1,9 +1,11 @@
 function [img,fnames]=imRGBrand(tgt_dir,intensity,img_ext,img_inc_prefix,img_exc_prefix,display_flg,save_flg,randseed_flg)
 
+% Randomizes RGB values of the input images.
 % function [img,fnames]=imRGBrand(tgt_dir,:intensity,:img_ext,:img_inc_prefix,:img_exc_prefix,:display_flg,:save_flg,:randseed_flg)
 % (: is optional)
 %
-% This function reads RGB images and randomize their RGB values.
+% This function reads RGB images and randomize their RGB values by multiplying
+% intensity*rand() for each pixel values.
 %
 % [input]
 % tgt_dir        : target directory that includes images you want to process.
@@ -24,7 +26,7 @@ function [img,fnames]=imRGBrand(tgt_dir,intensity,img_ext,img_inc_prefix,img_exc
 %
 %
 % Created    : "2013-11-13 15:36:17 ban"
-% Last Update: "2013-11-14 16:54:25 ban"
+% Last Update: "2013-11-22 23:22:34 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(tgt_dir), help(mfilename()); return; end

@@ -1,5 +1,6 @@
 function [checkerboard,mask]=CreateEccenCheckerBoardIDs(edges,width,startangle,pix_per_deg,nwedges,nrings,phase)
 
+% Creates a annular-shaped checkerboard pattern each of whose patch has unique ID.
 % function [checkerboard,mask]=CreateEccenCheckerBoardIDs(edges,width,startangle,pix_per_deg,nwedges,nrings,phase)
 %
 % Generates annular-shaped checkerboard ID pattern. Multiple edges are acceptable
@@ -22,7 +23,7 @@ function [checkerboard,mask]=CreateEccenCheckerBoardIDs(edges,width,startangle,p
 %
 %
 % Created    : "2011-04-12 11:12:37 ban"
-% Last Update: "2011-04-15 11:59:28 ban"
+% Last Update: "2013-11-22 18:45:44 ban (ban.hiroshi@gmail.com)"
 
 
 %% check input variables

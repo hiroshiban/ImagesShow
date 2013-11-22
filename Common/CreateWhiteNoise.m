@@ -1,8 +1,9 @@
 function img = CreateWhiteNoise(idims, sdims, num, noiseM, noiseV, save_flag, show_flag)
 
+% Creates white noise patch image(s).
 % function img = CreateWhiteNoise(idims, sdims, num)
 %
-% Generate Patch-shaped White Noise Image
+% This function generates white noise patch image
 %
 % <input>
 % idims : image dimension [row,col] to create, [240,320] as default

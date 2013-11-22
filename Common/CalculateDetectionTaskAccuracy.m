@@ -1,5 +1,6 @@
 function [numTasks,numHits,numErrors,numResponses,RT]=CalculateDetectionTaskAccuracy(event,correct_event)
 
+% Gathers subject's responses and computes performances of a single-detection/identification task.
 % function [numTasks,numHits,numErrors,numResponses,RT]=CalculateDetectionTaskAccuracy(event,correct_event)
 %
 % Calculates subject's responses and accuracies through the experiment
@@ -24,7 +25,7 @@ function [numTasks,numHits,numErrors,numResponses,RT]=CalculateDetectionTaskAccu
 %
 %
 % Created    : "2013-11-11 12:04:42 ban"
-% Last Update: "2013-11-11 15:20:11 ban"
+% Last Update: "2013-11-22 18:17:15 ban (ban.hiroshi@gmail.com)"
 
 % check input variable
 if nargin<1 || isempty(event), help(mfilename()); end

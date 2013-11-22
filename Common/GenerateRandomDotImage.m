@@ -1,5 +1,6 @@
 function [img,point_idx]=GenerateRandomDotImage(fieldSize,ranges,dense,mode,nimages,pix_per_deg,display_flg,save_flg)
 
+% Generates random-dot image(s)
 % function [img,point_idx]=GenerateRandomDotImage(fieldSize,ranges,dense,mode,pix_per_deg,display_flg,save_flg)
 %
 % This function generates a random dot image in cartesian or polar coordinate space.
@@ -23,7 +24,7 @@ function [img,point_idx]=GenerateRandomDotImage(fieldSize,ranges,dense,mode,nima
 %
 %
 % Created    : "2013-08-29 11:47:04 ban"
-% Last Update: "2013-08-29 11:47:18 ban"
+% Last Update: "2013-11-22 23:11:01 ban (ban.hiroshi@gmail.com)"
 
 % check input variable
 if nargin<2, help(mfilename()); return; end

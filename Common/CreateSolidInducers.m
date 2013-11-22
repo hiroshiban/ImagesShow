@@ -1,12 +1,13 @@
 function [imgL,imgR,maskL,maskR]=CreateSolidInducers(stimSize,fieldSize,theta_deg,orient_deg,colors,ipd,vdist,...
                                          pix_per_deg,oversampling_ratio,display_flag,save_flag)
 
+% Creates a solid rectangular depth inducers.
 % function [imgL,imgR,maskL,maskR]=CreateSolidInducers(stimSize,theta_deg,orient_deg,colors,ipd,vdist,...
 %                                          pix_per_deg,oversampling_ratio,display_flag,save_flag)
 %
 %
 % Created    : "2012-03-14 14:56:13 ban"
-% Last Update: "2012-03-15 11:19:25 ban"
+% Last Update: "2013-11-22 23:04:41 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(stimSize), stimSize=8; end

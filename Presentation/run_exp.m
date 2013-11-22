@@ -1,9 +1,10 @@
 function run_exp(subj,acq)
 
+% a simple wrapper to ImageShowPTB.m.
 % function run_exp(subj,:acq)
 % (: is optional)
 %
-% This function is a simple wrapper to run fMRI/TMS experiment with ImageShowPTB.m
+% This function is a simple wrapper to run fMRI/TMS/EEG/behavior experiments with ImageShowPTB.m
 %
 % [input]
 % subj : subject name, e.g. subj='HB';
@@ -14,7 +15,7 @@ function run_exp(subj,acq)
 %
 %
 % Created:   : "2013-11-15 14:49:29 ban"
-% Last Update: "2013-11-15 14:49:39 ban"
+% Last Update: "2013-11-22 18:11:25 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(subj), help(mfilename()); return; end

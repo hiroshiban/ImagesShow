@@ -34,7 +34,7 @@ function [filenames,originalnames]=ReplaceFilenameSequentially(target_dir,sequen
 %
 %
 % Created    : "2013-11-14 14:14:05 ban"
-% Last Update: "2013-11-14 16:53:38 ban"
+% Last Update: "2013-11-22 23:55:50 ban (ban.hiroshi@gmail.com)"
 
 % check the input variables
 if nargin<1 || isempty(target_dir), help(mfilename()); return; end

@@ -1,5 +1,6 @@
 function DrawTextureWithCLUT(win, src, newclut, srcRect, destRect, rotangle)
 
+% Draws a texture with Color LookupTable you specified (modified version of Screen('DrawTexture')).
 % !!! EXPERIMENTAL - BETA QUALITY !!!
 %
 % function DrawTextureWithCLUT(win_pointer, src_texture, :newclut, :srcRect, :destRect, :rotangle)
@@ -17,7 +18,7 @@ function DrawTextureWithCLUT(win, src, newclut, srcRect, destRect, rotangle)
 %
 %
 % Created    : "2011-04-14 01:00:09 ban"
-% Last Update: "2011-04-14 14:46:31 ban"
+% Last Update: "2013-11-22 18:53:54 ban (ban.hiroshi@gmail.com)"
 %
 % [input]
 % win_pointer  : PTB screen pointer

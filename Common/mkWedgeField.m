@@ -1,8 +1,9 @@
 function [wedges,th]=mkWedgeField(dims,nwedges,phase,org)
 
+% Creates a wedge field image.
 % function [wedges,th]=mkWedgeField(dims,nwedges,phase,org)
 %
-% generates wedge field
+% This function generates a wedge field
 %
 % [input]
 % dims     : size of the image in pixels, [x,y]
@@ -17,7 +18,7 @@ function [wedges,th]=mkWedgeField(dims,nwedges,phase,org)
 %
 %
 % Created    : "2011-04-11 11:20:41 ban"
-% Last Update: "2011-04-11 12:23:39 ban"
+% Last Update: "2013-11-22 23:37:36 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<2, help mkWedge; return; end

@@ -1,5 +1,6 @@
 function [imgL,imgR]=RDSfast(heightfield,dotDens,imgNum,colors,ipd,vdist,pix_per_cm,oversampling_ratio,display_flag,save_flag)
 
+% Generates left/right Random-Dot-Stereogram images.
 % function [imgL,imgR]=RDSfast(heightfield,dotDens,imgNum,ipd,vdist,pix_per_cm,oversampling_ratio,display_flag,save_flag)
 %
 % Generate left/right Random Dot Stereogram (RDS) Images based on heightfield.
@@ -33,7 +34,7 @@ function [imgL,imgR]=RDSfast(heightfield,dotDens,imgNum,colors,ipd,vdist,pix_per
 % If the bias affects your experiment, please use RDS instead.
 %
 % Created: "2010-04-03 14:05:21 ban"
-% Last Update: "2010-06-28 18:26:42 ban"
+% Last Update: "2013-11-23 00:01:23 ban (ban.hiroshi@gmail.com)"
 
 % --- input variable check
 if nargin<1, help RDS; return; end

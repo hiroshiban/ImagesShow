@@ -1,5 +1,6 @@
 function [fixL,fixR]=CreateFixationImg(fixsize,fixcolor,bgcolor,fixlinew,fixlineh,show_flag,save_flag)
 
+% Creates a cross-shaped fixation image for a binocular display setting.
 % function [fixL,fixR]=CreateFixationImg(fixsize,fixcolor,bgcolor,fixlinew,fixlineh,show_flag,save_flag)
 %
 % Create fixation-cross images for left/right eyes
@@ -18,7 +19,7 @@ function [fixL,fixR]=CreateFixationImg(fixsize,fixcolor,bgcolor,fixlinew,fixline
 % imgR     : fixation image for right eye
 %
 % Created    : Jan 29 2010 Hiroshi Ban
-% Last Update: "2011-04-12 04:33:50 ban"
+% Last Update: "2013-11-22 18:44:35 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin < 1, fixsize=32; end

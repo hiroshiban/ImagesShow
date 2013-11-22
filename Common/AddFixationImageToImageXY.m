@@ -1,8 +1,9 @@
 function img=AddFixationImageToImageXY(tgtimg,fiximg,position)
 
+% Adds a circular fixation point at any position of the inupt image.
 % function img=AddFixationImageToImage(tgtimg,fiximg,position)
 %
-% Add a fixation image on the target image
+% This function adds a fixation image on the target image
 %
 % [example]
 % >> fiximg=MakeFineOval(6,[255,0,0],127,1,5,1,0,0);
@@ -19,7 +20,7 @@ function img=AddFixationImageToImageXY(tgtimg,fiximg,position)
 % img         : output image with circular fixation at the position you specified
 %
 % Created    : "2013-09-03 16:47:11 ban"
-% Last Update: "2013-09-03 16:47:22 ban"
+% Last Update: "2013-11-22 18:24:56 ban (ban.hiroshi@gmail.com)"
 
 if nargin<2, help(mfilename()); return; end
 if nargin<3, position=[0,0]; end

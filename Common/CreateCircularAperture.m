@@ -1,5 +1,6 @@
 function img=CreateCircularAperture(fieldSize,apertureSize,gauss_params,pix_per_deg,fine_coefficient,show_flg,save_flg)
 
+% Creates a circular apertures that can be used to mask the other images.
 % function img=CreateCircularAperture(fieldSize,apertureSize,gauss_params,pix_per_deg,fine_coefficient,show_flg,save_flg)
 %
 % Generates circular aperture field.
@@ -21,7 +22,7 @@ function img=CreateCircularAperture(fieldSize,apertureSize,gauss_params,pix_per_
 %
 %
 % Created    : "2013-08-29 11:49:49 ban"
-% Last Update: "2013-08-29 11:49:58 ban"
+% Last Update: "2013-11-22 18:35:46 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

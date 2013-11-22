@@ -77,7 +77,7 @@ function [mask,bmask,vx,vy,x,y] = voronoi2mask(x,y,szImg)
 %
 %
 % $Created: 1.0 $ $Date: 2013/08/11 20:00$ $Author: Pangyu Teng $
-% Last Update: "2013-08-29 11:46:22 ban" added bmask (border mask) and some more output variables.
+% Last Update: "2013-11-22 23:51:53 ban (ban.hiroshi@gmail.com)"
 
 if nargin < 3
     display('requires 3 inputs. (voronoi2mask.m)');
@@ -104,7 +104,6 @@ bmask = logical(false(szImg));
 % draw vertices on mask
 
 for i = 1:size(vx,2)
-
     % create line function between 2 points
     f = makelinefun(vy(1,i),vx(1,i),vy(2,i),vx(2,i),2);
 

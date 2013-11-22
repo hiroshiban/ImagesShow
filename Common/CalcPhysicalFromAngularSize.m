@@ -1,5 +1,6 @@
 function physical = CalcPhysicalFromAngularSize(size_deg,viewdist)
 
+% Calculates the corresponding physical size of the stimulus.
 % function physical = CalcPhysicalFromAngularSize(size_deg,viewdist)
 % 
 % calculate physical size of the stimulus (size_deg,viewdist)

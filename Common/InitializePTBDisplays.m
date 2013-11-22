@@ -1,5 +1,6 @@
 function [winPtr,winRect,initDisplay_OK]=InitializePTBDisplays(disp_mode,bgcolor,flipping,rgb_gains)
 
+% Initializes PTB screen(s) for monocular/binocular presentations using PsychImaging() function.
 % function [winPtr,winRect,initDisplay_OK]=InitializePTBDisplays(:disp_mode,:bgcolor,:flipping,:rgb_gains)
 % (: is optional)
 %
@@ -48,7 +49,7 @@ function [winPtr,winRect,initDisplay_OK]=InitializePTBDisplays(disp_mode,bgcolor
 %
 %
 % Created : Feb 04 2010 Hiroshi Ban
-% Last Update: "2013-11-22 10:20:33 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-22 23:17:53 ban (ban.hiroshi@gmail.com)"
 
 % initialize
 winPtr=[];

@@ -1,5 +1,6 @@
 function [img,fnames]=imFillRect(tgt_dir,outputsize,fillcolor,img_ext,img_inc_prefix,img_exc_prefix,display_flg,save_flg)
 
+% Fills the extended rectangular background regions of the input images.
 % function [img,fnames]=imFillRect(tgt_dir,:outputsize,:fillcolor,:img_ext,:img_inc_prefix,:img_exc_prefix,:display_flg,:save_flg)
 % (: is optional)
 %
@@ -25,7 +26,7 @@ function [img,fnames]=imFillRect(tgt_dir,outputsize,fillcolor,img_ext,img_inc_pr
 %
 %
 % Created    : "2013-11-14 16:55:08 ban"
-% Last Update: "2013-11-14 16:55:15 ban"
+% Last Update: "2013-11-22 23:24:55 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(tgt_dir), help(mfilename()); return; end

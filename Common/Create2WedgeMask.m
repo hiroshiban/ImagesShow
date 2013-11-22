@@ -1,6 +1,6 @@
 function mask=Create2WedgeMask(sz,sz_min,sz_max,pix_per_deg)
 
-% Creates a wedge-shaped (Baumkuchen!) dual mask with 0 & 1 values
+% Creates a wedge-shaped (Baumkuchen!) dual mask with 0 & 1 values.
 % mask go through the image on the first and third quadrants (upper right & lower left)
 % [input]
 % meanval     : baseline magnitude of gratings

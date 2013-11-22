@@ -1,5 +1,6 @@
 function [imgL,imgR]=RDSfastest(heightfield,posL,posR,colors,dotDens)
 
+% Generates left/right Random-Dot-Stereogram images.
 % function [imgL,imgR]=RDSfastest(heightfield,posL,posR,colors,dotDens)
 %
 % Generate left/right Random Dot Stereogram (RDS) Image (fastest version without any duplicated processing)
@@ -21,7 +22,7 @@ function [imgL,imgR]=RDSfastest(heightfield,posL,posR,colors,dotDens)
 % imgR        : generated image(s) for right eye, [row,col]
 % 
 % Created:     "2010-04-03 14:05:21 ban"
-% Last Update: "2010-06-28 18:00:20 ban"
+% Last Update: "2013-11-23 00:00:21 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<3, help RDSbyOvalFastest; return; end

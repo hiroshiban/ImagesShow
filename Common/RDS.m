@@ -1,6 +1,7 @@
 function [imgL,imgR]=RDS(heightfield,dotDens,imgNum,colors,ipd,...
                          vdist,pix_per_cm,oversampling_ratio,display_flag,save_flag)
 
+% Generates left/right Random-Dot-Stereogram images.
 % function [imgL,imgR]=RDS(heightfield,dotDens,imgNum,ipd,...
 %                          vdist,pix_per_cm,oversampling_ratio,display_flag,save_flag)
 %
@@ -30,7 +31,7 @@ function [imgL,imgR]=RDS(heightfield,dotDens,imgNum,colors,ipd,...
 % [imgL,imgR]=RDS(field,30,1,[128,0],6.4,50,57,1,0);
 %
 % Created: "2010-04-03 14:05:21 ban"
-% Last Update: "2010-06-28 18:13:38 ban"
+% Last Update: "2013-11-23 00:05:40 ban (ban.hiroshi@gmail.com)"
 
 % --- input variable check
 if nargin<1, help RDS; return; end

@@ -1,6 +1,7 @@
 function [imgL,imgR]=RDSbyOvalbyRayTracer(heightfield,dotRadius,dotDens,imgNum,...
                                           colors,ipd,vdist,pix_per_cm,oversampling_ratio,display_flag,save_flag)
 
+% Generates left/right Random-Dot-Stereogram images using Ray-tracer procedure (thus, vertical disparities are included).
 % function [imgL,imgR]=RDSbyOvalbyRayTracer(heightfield,dotRadius,dotDens,imgNum,...
 %                                           ipd,vdist,pix_per_cm,oversampling_ratio,display_flag,save_flag)
 %
@@ -39,7 +40,7 @@ function [imgL,imgR]=RDSbyOvalbyRayTracer(heightfield,dotRadius,dotDens,imgNum,.
 % [imgL,imgR]=RDSbyOvalbyRayTracer(field,0.05,3,1,[255,0,128],6.4,50,57,1,0);
 %
 % Created: "2010-04-03 14:05:21 ban"
-% Last Update: "2010-06-23 18:16:05 ban"
+% Last Update: "2013-11-23 00:04:35 ban (ban.hiroshi@gmail.com)"
 
 %% --- input variable check
 if nargin<1, help RDSbyOvalbyRayTracer; return; end

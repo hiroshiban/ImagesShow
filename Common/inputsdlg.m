@@ -1,5 +1,5 @@
 function [Answer,Canceled] = inputsdlg(Prompt, Title, Formats, DefAns, Options)
-%INPUTSDLG Enhanced input dialog box supporting multiple data types
+% INPUTSDLG Enhanced input dialog box supporting multiple data types
 % ANSWER = INPUTSDLG(PROMPT) creates a modal dialog box that returns user
 % input for multiple prompts in the cell array ANSWER. PROMPT is a 1-D
 % cell array containing the PROMPT strings.
@@ -44,9 +44,9 @@ function [Answer,Canceled] = inputsdlg(Prompt, Title, Formats, DefAns, Options)
 %   enable - Defines how to respond to mouse button clicks, including which
 %            callback routines execute. One of:
 %            [{'on'}      - UI control is operational.
-%              'inactive' ñ UI control is not operational, but looks the
+%              'inactive' ÅEUI control is not operational, but looks the
 %                           same as when Enable is on.
-%              'off'      ñ UI uicontrol is not operational and its image
+%              'off'      ÅEUI uicontrol is not operational and its image
 %                           is grayed out.
 %
 % FORMATS type field defines what type of prompt item to be shown.

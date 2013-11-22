@@ -1,5 +1,6 @@
 function [img,fnames]=imCropResize(tgt_dir,crop_region,resize_ratio,img_ext,img_inc_prefix,img_exc_prefix,display_flg,save_flg)
 
+% Crops and resizes the input images.
 % function [img,fnames]=imCropResize(tgt_dir,:crop_region,:resize_ratio,:img_ext,:img_inc_prefix,:img_exc_prefix,:display_flg,:save_flg)
 % (: is optional)
 %
@@ -25,7 +26,7 @@ function [img,fnames]=imCropResize(tgt_dir,crop_region,resize_ratio,img_ext,img_
 %
 %
 % Created    : "2013-11-14 16:57:08 ban"
-% Last Update: "2013-11-14 16:57:35 ban"
+% Last Update: "2013-11-22 23:25:31 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(tgt_dir), help(mfilename()); return; end

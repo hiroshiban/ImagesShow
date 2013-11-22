@@ -1,9 +1,10 @@
 function [leftEyeWindow,rightEyeWindow,leftEyeScreenRect,rightEyeScreenRect,initDisplay_OK] = InitializeBinocularDisplays(exp_run,bgcolor,ScrWidth,ScrHeight)
 
+% Initializes PTB screen for monocular/binocular presentations (OLD PTB method).
 % function [leftEyeWindow,rightEyeWindow,leftEyeScreenRect,rightEyeScreenRect,initDisplay_OK] =
 %                                        InitializeBinocularDisplays(exp_run, bgcolor, ScrWidth, ScrHeight)
 %
-% Initialize PTB Screen settings for binocular viewing display
+% Initialize PTB Screen settings for monocular/binocular viewing display
 % Available for both haploscope and fMRI experimental environment.
 %
 % [requirement/dependency]
@@ -33,7 +34,7 @@ function [leftEyeWindow,rightEyeWindow,leftEyeScreenRect,rightEyeScreenRect,init
 % on MATLAB command window.
 %
 % Created : Feb 04 2010 Hiroshi Ban
-% Last Update: "2012-12-11 10:22:53 ban"
+% Last Update: "2013-11-22 23:18:05 ban (ban.hiroshi@gmail.com)"
 
 % initialize
 leftEyeWindow=[];

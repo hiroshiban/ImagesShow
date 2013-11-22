@@ -1,8 +1,9 @@
 function img = CreateWBnoise(idims, sdims, num, save_flag, show_flag)
 
+% Creates a white/black patch-based noise image.
 % function img = CreateWBnoise(idims, sdims, num)
 % 
-% Generate White/Black Patch Noise Image
+% This function generates white/black patch-based noise image
 % 
 % <input>
 % idims : image dimension [row,col] to create

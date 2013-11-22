@@ -17,7 +17,6 @@ function filenames=GetFiles(target_fullpath_dir,extension,prefix)
 %                       path format, e.g. 'C:/home/ban/scripts/'
 % extension  : extension of files you want to get
 %              e.g. "*.vtc"
-% prefix     : (optional) string to determine the target from
 %              multiple files, e.g. 'CD'
 %
 % [output]
@@ -29,7 +28,7 @@ function filenames=GetFiles(target_fullpath_dir,extension,prefix)
 %
 %
 % Created    : "2010-06-09 11:32:50 ban"
-% Last Update: "2013-02-11 15:33:34 banh"
+% Last Update: "2013-11-22 23:32:19 ban (ban.hiroshi@gmail.com)"
 
 % check the input variables
 if nargin < 2, help(mfilename()); return; end

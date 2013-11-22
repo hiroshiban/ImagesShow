@@ -41,7 +41,7 @@ classdef responselogger
 %
 %
 % Created    : "2013-11-17 21:42:47 ban"
-% Last Update: "2013-11-17 21:42:55 ban"
+% Last Update: "2013-11-22 23:55:45 ban (ban.hiroshi@gmail.com)"
 
 properties (Hidden)  %(SetAccess = protected)
   key_codes=[37,39]; % array of key codes, [1xn] matrix in which keycodes you want to check should be included.

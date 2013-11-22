@@ -1,8 +1,9 @@
 function map = rainbow(m)
-%
+
+% Returns an M-by-3 marix containing a rainbow colormap.
 %   function map = rainbow(m)
 %
-%   RAINBOW(M) returns an M-by-3 matrix containing an RAINBOW colormap.
+%   RAINBOW(M) returns an M-by-3 matrix containing a RAINBOW colormap.
 %   RAINBOW, by itself, is the same length as the current colormap.
 %
 %   For example, to reset the colormap of the current figure:

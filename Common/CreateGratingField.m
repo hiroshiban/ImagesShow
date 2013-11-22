@@ -1,5 +1,6 @@
 function field=CreateGratingField(fieldSize,spf,amp,meanval,orient_deg,pix_per_deg,flip)
 
+% Creates a grating image.
 % function field=CreateGratingField(fieldSize,spf,amp,meanval,orient_deg,pix_per_deg,flip)
 %
 % Creates oriented gratings with values varying between -amp and amp
@@ -18,7 +19,7 @@ function field=CreateGratingField(fieldSize,spf,amp,meanval,orient_deg,pix_per_d
 % field       : grating image, double format, [row,col]
 %
 % Created: "2010-04-03 16:26:51 ban"
-% Last Update: "2013-08-29 13:49:29 ban"
+% Last Update: "2013-11-22 18:43:22 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

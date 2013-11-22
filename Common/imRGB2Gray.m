@@ -1,5 +1,6 @@
 function [img,fnames]=imRGB2Gray(tgt_dir,img_ext,img_inc_prefix,img_exc_prefix,display_flg,save_flg)
 
+% Converts input RGB images to grayscale ones.
 % function [img,fnames]=imRGB2Gray(tgt_dir,:img_ext,:img_inc_prefix,:img_exc_prefix,:display_flg,:save_flg)
 % (: is optional)
 %
@@ -22,7 +23,7 @@ function [img,fnames]=imRGB2Gray(tgt_dir,img_ext,img_inc_prefix,img_exc_prefix,d
 %
 %
 % Created    : "2013-11-14 16:54:40 ban"
-% Last Update: "2013-11-14 16:54:49 ban"
+% Last Update: "2013-11-22 23:23:22 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(tgt_dir), help(mfilename()); return; end

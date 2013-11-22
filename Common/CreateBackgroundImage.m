@@ -1,6 +1,7 @@
 function [Bimg,parameters] = CreateBackgroundImage(wdims,stdims,pdims,bgcolor,...
                                  color1,color2,fixcolor,patchnum,fix_flag,save_flag,show_flag)
 
+% Creates background image that can be used as a background of your stimulus displays.
 % function [Bimg,parameters] = CreateBackgroundImage(wdims,stdims,pdims,bgcolor,...
 %                                  color1,color2,fixcolor,patchnum,fix_flag,save_flag,show_flag)
 %

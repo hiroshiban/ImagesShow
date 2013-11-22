@@ -1,5 +1,6 @@
 function [img,fnames]=imDisplayInfo(tgt_dir,img_ext,img_inc_prefix,img_exc_prefix,save_flg)
 
+% Reads images in the target directory and displays their pixel intensities.
 % function [img,fnames]=imDisplayInfo(tgt_dir,:img_ext,:img_inc_prefix,:img_exc_prefix,:save_flg)
 % (: is optional)
 %
@@ -21,7 +22,7 @@ function [img,fnames]=imDisplayInfo(tgt_dir,img_ext,img_inc_prefix,img_exc_prefi
 %
 %
 % Created    : "2013-11-14 16:56:48 ban"
-% Last Update: "2013-11-14 16:56:55 ban"
+% Last Update: "2013-11-22 23:15:54 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(tgt_dir), help(mfilename()); return; end

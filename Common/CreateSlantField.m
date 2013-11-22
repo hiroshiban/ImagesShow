@@ -1,8 +1,9 @@
 function field=CreateSlantField(fieldSize,theta_deg,orient_deg,pix_per_deg)
 
+% Creates a slant height field image.
 % function field=CreateSlantField(fieldSize,theta_deg,orient_deg,pix_per_deg)
 %
-% Creates oriented slant field
+% This function creates an oriented slant field image.
 %
 % [input]
 % fieldSize   : the size of the field in degrees, [row,col] (deg)
@@ -15,7 +16,7 @@ function field=CreateSlantField(fieldSize,theta_deg,orient_deg,pix_per_deg)
 % field       : grating image, double format, [row,col]
 %
 % Created    : "2010-06-11 12:32:41 ban"
-% Last Update: "2012-03-14 11:06:38 ban"
+% Last Update: "2013-11-22 23:05:06 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

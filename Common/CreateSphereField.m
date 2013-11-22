@@ -1,8 +1,9 @@
 function field=CreateSphereField(fieldSize,radius,meanval,pix_per_deg,flip)
 
+% Creates a spheric height field image.
 % function field=CreateSphereField(fieldSize,radius,meanval,pix_per_deg,flip)
 %
-% Generate Exponential field with values varying between -amp and amp
+% This function generates a spheric field with values varying between -amp and amp
 %
 % [input]
 % fieldSize   : the size of the graing in degrees, [deg]
@@ -12,10 +13,10 @@ function field=CreateSphereField(fieldSize,radius,meanval,pix_per_deg,flip)
 % flip        : [1|-1], depth is flipped or not
 %
 % [output]
-% field       : exponential image, double format, [row,col]
+% field       : spheric height image, double format, [row,col]
 %
 % Created: "2010-04-03 15:03:25 ban"
-% Last Update: "2010-11-29 19:10:52 ban"
+% Last Update: "2013-11-22 23:03:16 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

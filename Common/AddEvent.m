@@ -1,8 +1,9 @@
 function [event,eventcounter]=AddEvent(event,eventcounter,ref_time,name,parameter)
 
+% Adds event name and its parameter to event arrays.
 % function [event,eventcounter]=AddEvent(event,eventcounter,ref_time,name,parameter)
 %
-% Adds event name and its parameter to event arrays
+% This function adds event name and its parameter to event arrays
 %
 % [input]
 % event        : (optional) cell array to store event. see AddEvent.m for details
@@ -17,7 +18,7 @@ function [event,eventcounter]=AddEvent(event,eventcounter,ref_time,name,paramete
 %
 %
 % Created
-% Last Update: "2013-11-08 09:20:33 ban"
+% Last Update: "2013-11-22 18:26:00 ban (ban.hiroshi@gmail.com)"
 
 event{eventcounter,1}=GetSecs()-ref_time;
 event{eventcounter,2}=name;

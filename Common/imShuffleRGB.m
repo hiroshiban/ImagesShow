@@ -1,5 +1,6 @@
 function [img,fnames]=imShuffleRGB(tgt_dir,rgb_order,img_ext,img_inc_prefix,img_exc_prefix,display_flg,save_flg)
 
+% Shuffles RGB image color orders (e.g. RGB ---> GRB).
 % function [img,fnames]=imShuffleRGB(tgt_dir,:rgb_order,:img_ext,:img_inc_prefix,...
 %                                     :img_exc_prefix,:display_flg,:save_flg)
 % (: is optional)
@@ -28,7 +29,7 @@ function [img,fnames]=imShuffleRGB(tgt_dir,rgb_order,img_ext,img_inc_prefix,img_
 %
 %
 % Created    : "2013-11-14 16:53:45 ban"
-% Last Update: "2013-11-14 16:53:53 ban"
+% Last Update: "2013-11-22 23:19:02 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(tgt_dir), help(mfilename()); return; end

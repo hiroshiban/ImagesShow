@@ -43,7 +43,7 @@ function [filenames,dirnames]=ReplaceFilename(target_dir,extension,prefix_tgt,..
 %
 %
 % Created    : "2010-08-19 16:02:21 banh"
-% Last Update: "2013-11-14 16:53:14 ban"
+% Last Update: "2013-11-22 23:55:54 ban (ban.hiroshi@gmail.com)"
 
 % check the input variables
 if nargin<2, help(mfilename()); return; end

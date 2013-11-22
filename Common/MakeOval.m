@@ -1,8 +1,9 @@
 function img=MakeOval(imsize,color,bgcolor,bg_expand_ratio,show_flag,save_flag)
 
+% Generates an oval image.
 % function img=MakeOval(imsize,color,bgcolor,show_flag,save_flag)
 %
-% Generate oval image
+% This function generates an oval image
 % 
 % [input]
 % imsize   : size of the oval, [raw_pix,col_pix]
@@ -20,7 +21,7 @@ function img=MakeOval(imsize,color,bgcolor,bg_expand_ratio,show_flag,save_flag)
 % img      : oval image, [row x col x rgba]
 %
 % Created    : "2010-06-11 10:44:46 ban"
-% Last Update: "2010-06-11 18:50:48 ban"
+% Last Update: "2013-11-22 23:39:30 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin < 1, imsize=[32,32]; end

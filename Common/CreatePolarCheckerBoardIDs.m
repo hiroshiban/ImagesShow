@@ -1,5 +1,6 @@
 function [checkerboard,mask]=CreatePolarCheckerBoardIDs(rmin,rmax,width,startangle,pix_per_deg,nwedges,nrings,phase)
 
+% Creates a wedge-shaped checkerboard pattern each of whose patch has unique ID.
 % function [checkerboard,mask]=CreatePolarCheckerBoardIDs(rmin,rmax,width,startangle,pix_per_deg,nwedges,nrings,phase)
 %
 % Generates wedge-shaped checkerboard ID pattern. Multiple start angles are acceptable
@@ -22,7 +23,7 @@ function [checkerboard,mask]=CreatePolarCheckerBoardIDs(rmin,rmax,width,startang
 % mask        : (optional) checkerboard regional mask, cell structure, logical
 %
 % Created    : "2011-04-12 11:12:37 ban"
-% Last Update: "2011-04-15 11:59:36 ban"
+% Last Update: "2013-11-22 18:40:38 ban (ban.hiroshi@gmail.com)"
 
 
 %% check input variables

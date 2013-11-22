@@ -1,8 +1,9 @@
 function field=CreateRFPField(fieldSize,spf,amp,Afrq,nfrq,startangle,meanval,pix_per_deg,flip)
 
+% Creates a Radial-Frequency-Pattern image.
 % function field=CreateRFPField(fieldSize,spf,amp,Afrq,nfrq,startangle,meanval,pix_per_deg,flip)
 %
-% Generate Radial-Frequency-Pattern field with values varying between -amp and amp
+% This function generates a Radial-Frequency-Pattern field with values varying between -amp and amp
 %
 % [input]
 % fieldSize   : the size of the graing in degrees, [row,col]
@@ -19,7 +20,7 @@ function field=CreateRFPField(fieldSize,spf,amp,Afrq,nfrq,startangle,meanval,pix
 % field       : exponential image, double format, [row,col]
 %
 % Created: "2010-04-03 15:03:25 ban"
-% Last Update: "2013-08-29 13:49:14 ban"
+% Last Update: "2013-11-22 23:05:41 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

@@ -1,3 +1,6 @@
+function oldkey=DisableJISkeyTrouble
+
+% Disables keys which are always ON by default (used to avoid JIS key trouble).
 % function DisableJISkeyTrouble
 %
 % USAGE: [oldkey]=DisableJISkeyTrouble
@@ -12,8 +15,6 @@
 % and disable default-ON key(s) with DisableKeysForKbCheck([keynumber])
 %
 % Dec 17 2007 Hiroshi Ban
-
-function oldkey=DisableJISkeyTrouble
 
 clear all;
 [keyIsDown,secs,keyCode]=KbCheck();

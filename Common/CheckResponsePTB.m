@@ -1,9 +1,10 @@
 function [key_status,event,eventcounter]=CheckResponsePTB(key_codes,key_status,event,eventcounter,ref_time)
 
+% Get participant's key responses using Psychtoolbox utility functions.
 % function [key_status,event,eventcounter]=CheckResponsePTB(key_codes,key_status,:event,:eventcounter,:ref_time)
 % (: is optional)
 %
-% Checks key press with PTB functions. Used for record observer responses.
+% This function checks key press(es) with PTB functions. Used for record observer responses.
 %
 % [input]
 % key_codes    : array of key codes, [1xn] matrix in which keycodes you want to check should be included.
@@ -20,7 +21,7 @@ function [key_status,event,eventcounter]=CheckResponsePTB(key_codes,key_status,e
 %
 %
 % Created    : "2013-11-07 16:33:36 ban"
-% Last Update: "2013-11-07 23:58:48 ban"
+% Last Update: "2013-11-22 18:28:38 ban (ban.hiroshi@gmail.com)"
 
 %KbName('UnifyKeyNames');
 if nargin<3 || isempty(event), event=[]; end

@@ -1,8 +1,9 @@
 function field=CreatePlaneField(fieldSize,plane_height,pix_per_deg,fine_coefficient)
 
+% Creates a plane height field.
 % function field=CreatePlaneField(fieldSize,plane_height,pix_per_deg,fine_coefficient)
 %
-% Creates plane field with height
+% This function creates a simple plane height field.
 % 
 % [input]
 % fieldSize   : the size of the field in degrees, [row,col] (deg)
@@ -24,7 +25,7 @@ function field=CreatePlaneField(fieldSize,plane_height,pix_per_deg,fine_coeffici
 % Please be careful.
 %
 % Created    : "2010-06-14 12:20:56 ban"
-% Last Update: "2010-07-29 13:47:58 ban"
+% Last Update: "2013-11-22 18:41:10 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<3, help CreatePlaneField; return; end

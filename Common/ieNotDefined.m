@@ -21,7 +21,6 @@ function notDefined = ieNotDefined( varString )
 %
 %    if ieNotDefined('varname')
 %
-%
 
 if (~ischar(varString)), error('Varible name must be a string'); end
 

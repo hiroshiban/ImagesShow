@@ -1,8 +1,9 @@
 function H = generate_gabor_nonlin_orientation_filter(d_center,d_range,num_detectors,y_size,theta,lambda,psi,display_flg)
 
+% Generates nonlinear 2D Gabor orientation filter(s).
 % function H = generate_gabor_nonlin_orientation_filter(d_center,d_range,num_detectors,y_size,theta,lambda,psi,display_flg)
 %
-% Generates nonlinear 2D Gabor orientation filter(s)
+% This function generates nonlinear 2D Gabor orientation filter(s)
 %
 % [input]
 % d_center : filter center, disparity, -2<=d_center<=2, 1 shifts the filter to 1 radius
@@ -25,7 +26,7 @@ function H = generate_gabor_nonlin_orientation_filter(d_center,d_range,num_detec
 %
 %
 % Created    : "2011-07-18 10:17:48 banh"
-% Last Update: "2011-07-18 16:59:07 banh"
+% Last Update: "2013-11-22 18:49:52 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<3, help generate_gabor_nonlin_orientation_filter; return; end

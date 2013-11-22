@@ -1,8 +1,9 @@
 function xyz=mkTorus(aL,bL,center_xyz,rad,steps,display_flg)
 
+% Returns [x,y,z] coordinate of a torus object.
 % function xyz=mkTorus(aL,bL,center_xyz,rad,steps,display_flg)
 %
-% generates (x,y,z) coordinates of a torus object
+% This function generates (x,y,z) coordinates of a torus object
 %
 % [input]
 % aL         : torus major radius along x-axis, [val]
@@ -19,7 +20,7 @@ function xyz=mkTorus(aL,bL,center_xyz,rad,steps,display_flg)
 %
 %
 % Created    : "2012-01-12 13:42:04 banh"
-% Last Update: "2012-01-12 17:04:33 banh"
+% Last Update: "2013-11-22 23:37:19 ban (ban.hiroshi@gmail.com)"
 
 %% check input variables
 if nargin<1 || isempty(aL), aL=4; end

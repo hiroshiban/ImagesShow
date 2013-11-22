@@ -1,5 +1,6 @@
 function field=CreateRectField(outer_fieldSize,inner_fieldSize,inner_height,pix_per_deg,fine_coefficient)
 
+% Creates a rectangular height field.
 % function field=CreateRectField(outer_fieldSize,inner_fieldSize,inner_height,pix_per_deg,fine_coefficient)
 %
 % Creates rectangular height field
@@ -19,7 +20,7 @@ function field=CreateRectField(outer_fieldSize,inner_fieldSize,inner_height,pix_
 % 
 %
 % Created    : "2010-06-14 12:20:56 ban"
-% Last Update: "2010-08-01 14:33:09 ban"
+% Last Update: "2013-11-22 18:39:08 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin < 4, help CreateRectField; return; end

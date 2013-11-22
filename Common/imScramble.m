@@ -1,5 +1,6 @@
 function [img,fnames]=imScramble(tgt_dir,sdims,img_ext,img_inc_prefix,img_exc_prefix,display_flg,save_flg,randseed_flg)
 
+% Scrambles intact input images and generates their mosaic images.
 % function [img,fnames]=imScramble(tgt_dir,sdims,:img_ext,:img_inc_prefix,:img_exc_prefix,:display_flg,:save_flg,:randseed_flg)
 % (: is optional)
 %
@@ -25,7 +26,7 @@ function [img,fnames]=imScramble(tgt_dir,sdims,img_ext,img_inc_prefix,img_exc_pr
 %
 %
 % Created    : "2013-11-14 16:54:03 ban"
-% Last Update: "2013-11-14 16:54:10 ban"
+% Last Update: "2013-11-22 23:19:40 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(tgt_dir), help(mfilename()); return; end

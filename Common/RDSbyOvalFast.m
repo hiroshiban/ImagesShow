@@ -1,6 +1,7 @@
 function [imgL,imgR]=RDSbyOvalFast(heightfield,dotRadius,dotDens,...
                                    imgNum,colors,ipd,vdist,pix_per_cm,oversampling_ratio,display_flag,save_flag)
 
+% Generates left/right Random-Dot-Stereogram images.
 % function [imgL,imgR]=RDSbyOvalFast(heightfield,dotRadius,dotDens,...
 %                                    imgNum,bgcolor,ipd,vdist,pix_per_cm,display_flag,save_flag)
 %
@@ -31,7 +32,7 @@ function [imgL,imgR]=RDSbyOvalFast(heightfield,dotRadius,dotDens,...
 % [imgL,imgR]=RDSbyOvalFast(field,0.05,3,1,[255,0,128],6.4,50,57,1,0);
 %
 % Created:     "2010-04-03 14:05:21 ban"
-% Last Update: "2010-06-28 17:53:03 ban"
+% Last Update: "2013-11-23 00:03:58 ban (ban.hiroshi@gmail.com)"
 
 % --- input variable check
 if nargin<1, help RDSbyOval; return; end

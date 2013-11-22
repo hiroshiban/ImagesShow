@@ -1,8 +1,9 @@
 function oimg=mkAnaglyph(img1,img2,mode,display_flg,save_flg)
 
+% Generates a red/green or color-optimized anaglyph image (e.g. for stereo viewing).
 % function oimg=mkAnaglyph(img1,img2,mode,display_flg,save_flg)
 %
-% Generates red/green anaglyph image from img1 & img2
+% This function generates red/green anaglyph image from img1 & img2
 %
 % [input]
 % img1 : input image 1 with relative path, e.g. '/imgs/scene_left.bmp'
@@ -21,7 +22,7 @@ function oimg=mkAnaglyph(img1,img2,mode,display_flg,save_flg)
 %
 %
 % Created    : "2012-01-18 14:13:37 banh"
-% Last Update: "2012-01-18 14:26:27 banh"
+% Last Update: "2013-11-22 23:39:11 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<3, help mkAnaglyph; return; end

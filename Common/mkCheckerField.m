@@ -1,8 +1,9 @@
 function checkerboard=mkCheckerField(dims,nwedges,nrings,phase,org)
 
+% Creates a checkerboard field image.
 % function checkerboard=mkCheckerField(dims,nwedges,nrings,org)
 %
-% generates checkerboard field
+% This function generates checkerboard field
 %
 % [input]
 % dims    : size of the image in pixels, [x,y]
@@ -18,7 +19,7 @@ function checkerboard=mkCheckerField(dims,nwedges,nrings,phase,org)
 %
 %
 % Created    : "2011-04-11 11:48:05 ban"
-% Last Update: "2011-04-11 12:23:57 ban"
+% Last Update: "2013-11-22 23:38:12 ban (ban.hiroshi@gmail.com)"
 
 %% check input variables
 if nargin<3, help mkChecker; return; end

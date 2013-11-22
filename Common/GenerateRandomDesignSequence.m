@@ -1,5 +1,6 @@
 function [design,p_val]=GenerateRandomDesignSequence(num_conds,num_repeat,num_check_history,rand_init_flag,efficiency_flag)
 
+% Generates a randomozed event array.
 % function [design,p_val]=GenerateRandomDesignSequence(num_conds,num_repeat,
 %                        :num_check_history,:rand_init_flag,:efficiency_flag)
 %                                             (: is optional input variables)
@@ -42,7 +43,7 @@ function [design,p_val]=GenerateRandomDesignSequence(num_conds,num_repeat,num_ch
 % For event-related fMRI design, use M-sequnce generator instead.
 %
 % Created: Feb 24 2010 Hiroshi Ban
-% Last Update: "2012-12-12 07:00:07 ban"
+% Last Update: "2013-11-22 23:07:16 ban (ban.hiroshi@gmail.com)"
 
 
 %%% check input variables

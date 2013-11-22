@@ -1,6 +1,7 @@
 function field=CreateCircularSinusoidalSlantField(fieldSize,theta_deg,orient_deg,sin_amp,sin_cpd,...
                             grating_deg,aperture_deg,fill_val,outer_val,pix_per_deg,fine_coefficient)
 
+% Creates a circular slant field with sinusoidal gratings.
 % function field=CreateCircularSinusoidalSlantField(fieldSize,theta_deg,orient_deg,sin_amp,sin_cpd,...
 %                                      grating_deg,aperture_deg,fill_val,pix_per_deg,fine_coefficient)
 %
@@ -29,7 +30,7 @@ function field=CreateCircularSinusoidalSlantField(fieldSize,theta_deg,orient_deg
 % field       : grating image, double format, [row,col]
 % 
 % Created    : "2010-06-11 12:32:41 ban"
-% Last Update: "2010-11-29 19:03:20 ban"
+% Last Update: "2013-11-22 18:35:21 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1  || isempty(fieldSize), fieldSize=8; end

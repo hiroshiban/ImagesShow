@@ -1,4 +1,5 @@
 function h = hash(inp,meth)
+
 % HASH - Convert an input variable into a message digest using any of
 %        several common hash algorithms
 %

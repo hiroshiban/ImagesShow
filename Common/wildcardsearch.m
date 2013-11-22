@@ -1,4 +1,5 @@
 function result = wildcardsearch(rootdir, searchstr, casesensitive, strict)
+
 % WILDCARDSEARCH Searches the file system for files matching a wildcard
 % pattern.
 %    WILDCARDSEARCH(ROOTDIR, SEARCHSTRING) Searches the file system from

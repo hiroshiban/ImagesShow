@@ -1,5 +1,6 @@
 function [img,fnames]=imNormalize(tgt_dir,normparams,img_ext,img_inc_prefix,img_exc_prefix,display_flg,save_flg)
 
+% Normalizes pixel intensities of the input images.
 % function [img,fnames]=imNormalize(tgt_dir,:normparams,:img_ext,:img_inc_prefix,:img_exc_prefix,:display_flg,:save_flg)
 % (: is optional)
 %
@@ -23,7 +24,7 @@ function [img,fnames]=imNormalize(tgt_dir,normparams,img_ext,img_inc_prefix,img_
 %
 %
 % Created    : "2013-11-14 16:54:55 ban"
-% Last Update: "2013-11-14 16:55:02 ban"
+% Last Update: "2013-11-22 23:23:35 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(tgt_dir), help(mfilename()); return; end

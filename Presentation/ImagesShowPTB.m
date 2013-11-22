@@ -1,5 +1,6 @@
 function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma_table)
 
+% a fully-customizable image presentation script for your fMRI(event- and block-design)/TMS/EEG/behavior experiments.
 % function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,:viewfile,:optionfile,:gamma_table)
 % (: is optional)
 %
@@ -9,15 +10,16 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 % in Tcl/Tk with VTK by Hiroki Yamamoto in 2002). The Psychtoolbox with MATLAB/Octave is required
 % to use this function for your fMRI, TMS, or EEG experiments.
 %
-% This function presents sequences of monocular/binocular images for your block & event-related paradigm
-% fMRI/TMS/EEG/behavior experiments. The images to be presented, image presentation protocols, display
-% options, and more can be set as you like in protocolfile, imgdbfile, viewfile, optionfile. You can
-% also use this script for behavior, EEG, and TMS experiments without or with only slight modifications
-% depending on your purposes. For details, please read ../doc/readme.txt
+% This function presents sequences of monocular/binocular images with accurate timing controls for
+% your block & event-related paradigm fMRI/TMS/EEG/behavior experiments. The way of image presentation,
+% experiment protocols, display options, and more can be fully customizable; you can run any type of
+% experiment by editing your protocolfile, imgdbfile, viewfile, optionfile for your purposes. You can
+% also record participant's key responses, get trigger from the external devices and more.
+% For details, please read ../doc/readme.txt
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-22 16:56:23 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-22 18:11:27 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]

@@ -1,5 +1,6 @@
 function [imgL,imgR]=RDSbyOvalFastest(posL,posR,wdot,bdot,dotalpha,dotDens,bgcolor)
 
+% Generates left/right Random-Dot-Stereogram images.
 % function [imgL,imgR]=RDSbyOvalFastest(posL,posR,wdot,bdot,dotalpha,dotDens,bgcolor)
 %
 % Generate left/right Random Dot Stereogram (RDS) Image (fastest version without any duplicated processing)
@@ -22,7 +23,7 @@ function [imgL,imgR]=RDSbyOvalFastest(posL,posR,wdot,bdot,dotalpha,dotDens,bgcol
 % imgR        : generated image(s) for right eye, [row,col]
 % 
 % Created:     "2010-04-03 14:05:21 ban"
-% Last Update: "2010-08-13 11:21:16 ban"
+% Last Update: "2013-11-23 00:03:45 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<6, help RDSbyOvalFastest; return; end

@@ -1,5 +1,6 @@
 function DisplayMessage(message,bgcolor,screens,drawing_font,drawing_size)
 
+% Display message on a PTB window.
 % function DisplayMessage(message,bgcolor,scrren_size)
 %
 % Display message on the center of the left/right (if available)
@@ -19,7 +20,7 @@ function DisplayMessage(message,bgcolor,screens,drawing_font,drawing_size)
 % no output variable
 %
 % Created: Feb 04 2010 Hiroshi Ban
-% Last Update: "2011-04-01 17:39:11 ban"
+% Last Update: "2013-11-22 22:51:58 ban (ban.hiroshi@gmail.com)"
 
 % input variable check
 if nargin < 3, help DisplayMessage; end

@@ -1,5 +1,6 @@
 function ovalimg=ConvertRandomDots2RandomOvals(dotimg,ovalRadius,colors,pix_per_cm,display_flag,save_flag)
 
+% Converts each of random dots to a shaded oval texture.
 % function ovalimg=ConvertRandomDots2RandomOvals(dotimg,ovalRadius,colors,pix_per_cm,display_flag,save_flag)
 %
 % this function replaces random dot image to random white/black OVAL image
@@ -22,7 +23,7 @@ function ovalimg=ConvertRandomDots2RandomOvals(dotimg,ovalRadius,colors,pix_per_
 %
 % 
 % Created    : "2010-06-14 13:52:23 ban"
-% Last Update: "2010-06-16 09:43:21 ban"
+% Last Update: "2013-11-22 18:38:26 ban (ban.hiroshi@gmail.com)"
 
 % add path
 addpath(fullfile(pwd,'Common'));

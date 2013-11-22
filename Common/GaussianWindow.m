@@ -1,5 +1,6 @@
 function img=GaussianWindow(img, sd, pix_per_deg)
 
+% Generates a gaussian window.
 % function img=GaussianWindow(img, sd, pix_per_deg)
 %
 % windows an square image with a Gaussian filter.
@@ -19,7 +20,7 @@ function img=GaussianWindow(img, sd, pix_per_deg)
 % ref IF 7/2000
 %
 % Created: "2010-04-03 17:09:15 ban"
-% Last Update: "2010-04-03 17:24:12 ban"
+% Last Update: "2013-11-22 18:50:11 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1, help GaussianWindow; return; end

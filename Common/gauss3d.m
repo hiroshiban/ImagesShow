@@ -1,6 +1,6 @@
 function outArray=gauss3d(hSize,sigma)
 
-% Generates a 3D gaussian kernel
+% Generates a 3D gaussian kernel.
 % function outArray=gauss3d(hSize,sigma)
 %
 % Generates a 3D gaussian

@@ -1,8 +1,9 @@
 function H = generate_gabor_orientation_filter(x,y,sigma,theta,lambda,psi,display_flg)
 
+% Generates 2D Gabor orientation filter(s).
 % function H = generate_gabor_orientation_filter(x,y,sigma,theta,lambda,psi,display_flg)
 %
-% Generates 2D Gabor orientation filter(s)
+% This function generates 2D Gabor orientation filter(s)
 %
 % [input]
 % x      : filter field coordinates in column
@@ -24,7 +25,7 @@ function H = generate_gabor_orientation_filter(x,y,sigma,theta,lambda,psi,displa
 %
 %
 % Created    : "2011-07-15 13:53:29 banh"
-% Last Update: "2011-07-18 13:40:13 banh"
+% Last Update: "2013-11-22 18:49:31 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<2, help generate_gabor_orientation_filter; return; end

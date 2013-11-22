@@ -1,6 +1,8 @@
 function cleanpport
+
 % Sets most pins of the parallel port to zero
-%
+% function cleanpport
+
 parport = digitalio('parallel','LPT1');
 addline(parport,0:7,'out');
 

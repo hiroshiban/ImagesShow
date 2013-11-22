@@ -1,5 +1,6 @@
 function field=CreateCurvatureField(fieldSize,curvature_rad,curvature_height,pix_per_deg,fine_coefficient)
 
+% Creates 3D-cosine-wave-based curvature fields.
 % function CreateCurvatureField(fieldSize,curvature_radius_deg,..
 %                               curvature_height_deg,pix_per_deg,fine_coefficient)
 %
@@ -26,7 +27,7 @@ function field=CreateCurvatureField(fieldSize,curvature_rad,curvature_height,pix
 % Please be careful.
 %
 % Created    : "2010-07-13 15:09:06 ban"
-% Last Update: "2011-01-19 13:21:32 ban"
+% Last Update: "2013-11-22 18:31:56 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end

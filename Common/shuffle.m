@@ -1,5 +1,6 @@
 function [Y,index] = shuffle(X)
 
+% Randomly sorts the input array.
 % function [Y,index] = shuffle(X)
 %
 % Randomly sorts X.
@@ -15,7 +16,7 @@ function [Y,index] = shuffle(X)
 % 6/29/96   dgp  Edited comments above.
 %
 %
-% Last Update: "2013-11-08 16:12:51 ban"
+% Last Update: "2013-11-22 23:53:31 ban (ban.hiroshi@gmail.com)"
 
 [null,index] = sort(rand(size(X)));
 Y = X(index);

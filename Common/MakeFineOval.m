@@ -1,5 +1,6 @@
 function img=MakeFineOval(imsize,color,bgcolor,bg_expand_ratio,fine_coefficient,gauss_flag,show_flag,save_flag)
 
+% Genrates a beautiful oval image with an antialiasing option.
 % function img=MakeFineOval(imsize,color,bgcolor,show_flag,save_flag)
 %
 % Generates oval image with clear curve based on antialiasing.
@@ -25,7 +26,7 @@ function img=MakeFineOval(imsize,color,bgcolor,bg_expand_ratio,fine_coefficient,
 % img      : oval image, [row x col x rgba]
 %
 % Created    : "2010-06-11 10:44:46 ban"
-% Last Update: "2010-06-15 11:38:56 ban"
+% Last Update: "2013-11-22 23:32:51 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin < 1, imsize=[32,32]; end

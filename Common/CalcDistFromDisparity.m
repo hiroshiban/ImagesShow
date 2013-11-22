@@ -1,5 +1,6 @@
 function zdist = CalcDistFromDisparity(ipd,disparity,viewdist)
 
+% Calculates the actual distance (cm) from binocular disparity (arcmin).
 % function zdist = CalcDistFromDisparity(ipd,disparity,viewdist)
 % 
 % [INPUT]

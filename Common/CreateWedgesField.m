@@ -1,10 +1,11 @@
 function field=CreateWedgeField(fieldSize,radiusMin,radiusMax,height,nwedges,...
                                 wedgeangle,rot_angle,pix_per_deg,fine_coefficient)
 
+% Creates a wedge-shaped field image.
 % function field=CreateWedgeField(fieldSize,radiusMin,radiusMax,height,nwedges,...
 %                                 wedgeangle,rot_angle,pix_per_deg,fine_coefficient)
 %
-% Creates wedge-shaped (Baumkuchen) field
+% This function creates a wedge-shaped (Baumkuchen) field image.
 % 
 % [input]
 % fieldSize   : the whole image size in deg, [row,col]
@@ -25,7 +26,7 @@ function field=CreateWedgeField(fieldSize,radiusMin,radiusMax,height,nwedges,...
 % 
 %
 % Created    : "2010-08-05 01:15:18 ban"
-% Last Update: "2010-08-05 10:22:38 ban"
+% Last Update: "2013-11-22 22:57:38 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<8, help CreateWedgeField; return; end

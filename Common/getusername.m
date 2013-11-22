@@ -1,6 +1,6 @@
 function userName = getusername
 
-%GETUSERNAME  Get user name.
+% GETUSERNAME  Get user name.
 %       USERNAME = GETUSERNAME returns the login name of the current MATLAB
 %       user. Function should work for both Linux and Windows.
 %

@@ -1,5 +1,6 @@
 function vangle=CalcVisualAngleFromCM(vdist,stim_size_in_cm)
 
+% Calculates the corresponding visual angle (deg) from the actual stimulus size (cm)
 % function vangle=CalcVisualAngleFromCM(vdist,stim_size_in_cm)
 %
 % [INPUT]
@@ -10,7 +11,7 @@ function vangle=CalcVisualAngleFromCM(vdist,stim_size_in_cm)
 % vangle     : visual angle in deg
 %
 % Created    : "2010-06-23 14:56:49 ban" 
-% Last Update: "2010-06-23 15:00:55 ban"
+% Last Update: "2013-11-22 18:30:30 ban (ban.hiroshi@gmail.com)"
 
 vangle= atan( stim_size_in_cm / vdist) * 180 / pi;
 

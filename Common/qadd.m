@@ -1,21 +1,21 @@
 function y = qadd(a,b,base)
-  
+
 %    qadd(a,b,base)
 %
 % addition in a Galois Field for mod (power of prime)
 % Reference: K. Godfrey, Perturbation Signals for System Identificaton,
 % 1993
 %
-% send comments and questions to ttliu@ucsd.edu  
+% send comments and questions to ttliu@ucsd.edu
 %
 % some modification by Hiroshi Ban
 % Created    : "2010-03-03 11:59:17 ban"
-% Last Update: "2010-03-03 12:00:34 ban"
+% Last Update: "2013-11-22 23:43:51 ban (ban.hiroshi@gmail.com)"
 
 if (a >= base) || (b >= base)
   error('qadd(a,b), a and b must be < %d',base);
 end
-  
+
 switch base
   case 4
     amat = [0 1 2 3;

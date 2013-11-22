@@ -1,5 +1,6 @@
 function [new_fname,backup_fname]=BackUpObsoleteFiles(tgt_dir,tgt_fname,backup_prefix)
 
+% Backups already-existing file(s) in the target directory by adding some file-prefix.
 % function BackUpObsoleteFiles(tgt_dir,tgt_fname,:backup_prefix)
 % (: is optional)
 %
@@ -38,7 +39,7 @@ function [new_fname,backup_fname]=BackUpObsoleteFiles(tgt_dir,tgt_fname,backup_p
 %
 %
 % Created    : "2013-11-19 13:56:33 ban (ban.hiroshi@gmail.com)"
-% Last Update: "2013-11-21 11:44:59 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-22 18:22:21 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<2, help(mfilename()); return; end

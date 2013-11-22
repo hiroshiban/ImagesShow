@@ -1,4 +1,5 @@
 function ndef = notDefined( varString )
+
 % Test whether a variable (usually a function argument) is defined
 %
 %    ndef = notDefined( varString )

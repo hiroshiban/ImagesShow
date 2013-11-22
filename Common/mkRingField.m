@@ -1,8 +1,9 @@
 function rings=mkRingField(dims,radii,org)
 
+% Creates a ring field image.
 % function rings=mkRingField(dims,radii,org)
 %
-% generates ring field
+% This function generates a ring field
 %
 % [input]
 % dims     : size of the image in pixels, [x,y]
@@ -14,7 +15,7 @@ function rings=mkRingField(dims,radii,org)
 %
 %
 % Created    : "2011-04-11 11:27:29 ban"
-% Last Update: "2011-04-11 12:23:47 ban"
+% Last Update: "2013-11-22 23:37:51 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<2, help mkRing; return; end

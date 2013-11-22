@@ -1,5 +1,6 @@
 function field=CreateGaborField(fieldSize,spf,amp,meanval,sd,orient_deg,phase_deg,pix_per_deg,flip)
 
+% Creates a gabor patch image.
 % function field=CreateGaborField(fieldSize,spf,amp,meanval,sd,orient_deg,pix_per_deg,flip)
 %
 % Creates oriented gratings with values varying between -amp and amp
@@ -20,7 +21,7 @@ function field=CreateGaborField(fieldSize,spf,amp,meanval,sd,orient_deg,phase_de
 % field       : grating image, double format, [row,col]
 %
 % Created: "2010-04-03 16:26:51 ban"
-% Last Update: "2013-08-29 13:49:23 ban"
+% Last Update: "2013-11-22 18:43:32 ban (ban.hiroshi@gmail.com)"
 
 % check input variables
 if nargin<1 || isempty(fieldSize), fieldSize=8; end
