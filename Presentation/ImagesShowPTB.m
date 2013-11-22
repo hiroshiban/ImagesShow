@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-22 18:11:27 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-23 00:46:31 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
@@ -374,7 +374,7 @@ resps=resps.disable_jis_key_trouble(); % force to set 0 for the keys that are ON
 %%%% Wait for user reponse to start
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-user_answer=resps.wait_to_proceed();
+[user_answer,resps]=resps.wait_to_proceed();
 if ~user_answer, return; end
 
 

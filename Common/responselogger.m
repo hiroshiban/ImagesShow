@@ -10,8 +10,8 @@ classdef responselogger
 % >> resps=resps.unify_keys()                                  : unify key names across different operating systems
 % >> [resps,oldkey]=resps.disable_jis_key_trouble()            : disable JIS key-related trouble (must run before the actual response acquisitions).
 % >> [resps,event,keyCode]=resps.check_responses(event,reference_time) : check participant's key resonses and record them to the event log.
-% >> user_answer=resps.wait_to_proceed(:my_message)            : wait until the user responds to the question by 'y' (yes) or 'n' (no).
-% >> pstart=resps.wait_stimulus_presentation(:mode,:tgt_key)   : wait for stimulus presentation.
+% >> [user_answer,resps]=resps.wait_to_proceed(:my_message)    : wait until the user responds to the question by 'y' (yes) or 'n' (no).
+% >> [pstart,resps]=resps.wait_stimulus_presentation(:mode,:tgt_key) : wait for stimulus presentation.
 % (: is optional)
 %
 % [about input/output variables]
@@ -41,7 +41,7 @@ classdef responselogger
 %
 %
 % Created    : "2013-11-17 21:42:47 ban"
-% Last Update: "2013-11-22 23:55:45 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-23 00:45:43 ban (ban.hiroshi@gmail.com)"
 
 properties (Hidden)  %(SetAccess = protected)
   key_codes=[37,39]; % array of key codes, [1xn] matrix in which keycodes you want to check should be included.
@@ -128,7 +128,7 @@ methods
   end
 
   % wait until the user responds to the question by 'y' (yes) or 'n' (no).
-  function user_answer=wait_to_proceed(obj,my_message)
+  function [user_answer,obj]=wait_to_proceed(obj,my_message)
     if nargin==2, obj.my_message=my_message; end
     while 1
       user_answer=input(obj.my_message,'s');
@@ -146,9 +146,9 @@ methods
   end
 
   % wait for stimulus presentation.
-  function pstart=wait_stimulus_presentation(obj,mode,start_key)
+  function [pstart,obj]=wait_stimulus_presentation(obj,mode,start_key)
     if nargin>=2 && ~isempty(mode), obj.mode=mode; end
-    if nargin==3 && ~isempty(start_key), obj.start_key='s'; end
+    if nargin==3 && ~isempty(start_key), obj.start_key=start_key; end
     if isempty(intersect(obj.mode,0:1:3))
       error('mode should be 0:enter/space, 1:left-mouse button, or 2:waiting the first MR trigger. check input variable.');
     end
