@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-23 00:46:31 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-23 02:07:30 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
@@ -730,21 +730,23 @@ elseif dparam.task(1)==3 % text 'C' detection task
 
 elseif dparam.task(1)==4 || dparam.task(1)==5 % 1-back task
 
-  % there is no fixation/vernier task in 1-back task sequence. Thus, just create the standard fixation as dummy PTB textures.
-  if dparam.fixation{1}==1 % circular fixational dot
-    fix=MakeFineOval(dparam.fixation{2},dparam.fixation{3},dparam.background{1},1,8,0,0,0);
-    task_L=Screen('MakeTexture',winPtr,fix);
-    task_R=Screen('MakeTexture',winPtr,fix);
-  elseif dparam.fixation{1}==2 % fixation cross
-    if strcmpi(dparam.exp_mode,'mono')
-      fix_L=CreateFixationImgMono(dparam.fixation{2},dparam.fixation{3},dparam.background{1},fixlinew,fixlineh,0,0);
-      fix_R=fix_L;
-    else % if strcmpi(dparam.exp_mode,'mono') % binocular stimuli
-      [fix_L,fix_R]=CreateFixationImg(dparam.fixation{2},dparam.fixation{3},dparam.background{1},fixlinew,fixlineh,0,0);
-    end
-    task_L=Screen('MakeTexture',winPtr,fix_L);
-    task_R=Screen('MakeTexture',winPtr,fix_R);
-  end % if dparam.fixation{1}==1 % circular dot
+  % for 1-back task, do nothing
+
+  %% there is no fixation/vernier task in 1-back task sequence. Thus, just create the standard fixation as dummy PTB textures.
+  %if dparam.fixation{1}==1 % circular fixational dot
+  %  fix=MakeFineOval(dparam.fixation{2},dparam.fixation{3},dparam.background{1},1,8,0,0,0);
+  %  task_L=Screen('MakeTexture',winPtr,fix);
+  %  task_R=Screen('MakeTexture',winPtr,fix);
+  %elseif dparam.fixation{1}==2 % fixation cross
+  %  if strcmpi(dparam.exp_mode,'mono')
+  %    fix_L=CreateFixationImgMono(dparam.fixation{2},dparam.fixation{3},dparam.background{1},fixlinew,fixlineh,0,0);
+  %    fix_R=fix_L;
+  %  else % if strcmpi(dparam.exp_mode,'mono') % binocular stimuli
+  %    [fix_L,fix_R]=CreateFixationImg(dparam.fixation{2},dparam.fixation{3},dparam.background{1},fixlinew,fixlineh,0,0);
+  %  end
+  %  task_L=Screen('MakeTexture',winPtr,fix_L);
+  %  task_R=Screen('MakeTexture',winPtr,fix_R);
+  %end % if dparam.fixation{1}==1 % circular dot
 
 end % if dparam.task(1)==1
 
@@ -1030,7 +1032,8 @@ for ii=1:1:length(prt) % blocks
           elseif dparam.task(1)==3 && task.arrays(taskcounter) % character detection task
             Screen('DrawTexture',winPtr,textPtr(task.texttype(taskcounter)),[],CenterRect(task.textrect,winRect)+centeroffset);
           elseif (dparam.task(1)==4 || dparam.task(1)==5) && task.arrays(taskcounter) % 1-back
-            Screen('DrawTexture',winPtr,task_L,[],CenterRect(fixRect,winRect)+centeroffset);
+            % for 1-back task, do nothing
+            %Screen('DrawTexture',winPtr,task_L,[],CenterRect(fixRect,winRect)+centeroffset);
           end
 
           % drawing right-eye image
@@ -1075,7 +1078,8 @@ for ii=1:1:length(prt) % blocks
           elseif dparam.task(1)==3 && task.arrays(taskcounter) % character detection task
             Screen('DrawTexture',winPtr,textPtr(task.texttype(taskcounter)),[],CenterRect(task.textrect,winRect)+centeroffset);
           elseif (dparam.task(1)==4 || dparam.task(1)==5) && task.arrays(taskcounter) % 1-back
-            Screen('DrawTexture',winPtr,task_R,[],CenterRect(fixRect,winRect)+centeroffset);
+            % for 1-back task, do nothing
+            %Screen('DrawTexture',winPtr,task_R,[],CenterRect(fixRect,winRect)+centeroffset);
           end
 
           [resps,event]=resps.check_responses(event);
@@ -1138,7 +1142,8 @@ for ii=1:1:length(prt) % blocks
         elseif dparam.task(1)==3 && task.arrays(taskcounter) % character detection task
           Screen('DrawTexture',winPtr,textPtr(task.texttype(taskcounter)),[],CenterRect(task.textrect,winRect)+centeroffset);
         elseif (dparam.task(1)==4 || dparam.task(1)==5) && task.arrays(taskcounter) % 1-back
-          Screen('DrawTexture',winPtr,task_L,[],CenterRect(fixRect,winRect)+centeroffset);
+          % for 1-back task, do nothing
+          %Screen('DrawTexture',winPtr,task_L,[],CenterRect(fixRect,winRect)+centeroffset);
         end
 
         [resps,event]=resps.check_responses(event);
@@ -1185,7 +1190,8 @@ for ii=1:1:length(prt) % blocks
         elseif dparam.task(1)==3 && task.arrays(taskcounter) % character detection task
           Screen('DrawTexture',winPtr,textPtr(task.texttype(taskcounter)),[],CenterRect(task.textrect,winRect)+centeroffset);
         elseif (dparam.task(1)==4 || dparam.task(1)==5) && task.arrays(taskcounter) % 1-back
-          Screen('DrawTexture',winPtr,task_R,[],CenterRect(fixRect,winRect)+centeroffset);
+          % for 1-back task, do nothing
+          %Screen('DrawTexture',winPtr,task_R,[],CenterRect(fixRect,winRect)+centeroffset);
         end
 
         % Mark end of all graphics operation (until flip). This allows GPU to optimize its operations. Then, flip to the current frame
