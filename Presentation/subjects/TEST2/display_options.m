@@ -34,7 +34,7 @@ options.fixation={1,6,[255,0,0]};
 options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
 
 % whether setting background color automatically by matching it with the upper-left (1,1) pixel color of the first target image
-options.auto_background=1;
+options.auto_background=0;
 
 % whether forcing to use the full-screen display, [0|1]
 options.use_fullscr=0;

@@ -36,49 +36,40 @@
 % blocks{n}.sequence=(2xN matrix);
 % Then, the same randomization parameter (0) will be applied to both sequences. Please be careful.
 
-% if you want to set display duration in msec
-blocks{1}.randomization=5;   % 0:OFF, 1:ALL, 2:Even seq. only, 3:Odd seq. only, 4:first half seq. only, 5:last half seq. only.
-%                            % 6:2-N-1 blocks are randomized whereas the first and the last sequences are fixed.
-%                            % or "matrix":randomize specific sequences you set. e.g. blocks{n}.randomization=1:3:ceil(N/2);
-blocks{1}.sequence=1;        % image numbers to be used, 1xN (monocular) or 2xN (binocular) vector
-blocks{1}.msec=500;          % display duration in msec of each image
-blocks{1}.slicing=100;       % (optional) minimum time slice in presentation (used to display task), if not specified, 6(frames) or 100(msec) are used by default
-blocks{1}.repetitions=1;     % the number of repetitions of this block
-blocks{1}.name='cond 1';     % (optional) name of the conditions, empty if not specified
+blocks{1}.randomization=0;
+blocks{1}.sequence=201;
+blocks{1}.msec=16000;
+blocks{1}.slicing=100;
+blocks{1}.repetitions=1;
+blocks{1}.name='The First Fixation';
 
-blocks{2}.randomization=0;
-blocks{2}.sequence=[7 5 1 2 3 4 6 5 1 2 3 4 6 5 1 2 3 4 6 7];
-blocks{2}.msec=[500 200 100 200 100 200 100 200 100 200 100 200 100 200 100 200 100 200 100 500];
-blocks{2}.slicing=100;
-blocks{2}.repetitions=1;
-blocks{2}.name='images 1';
+block_counter=1; n_each=20;
+for ii=1:1:100/n_each
+  block_counter=block_counter+1;
+  stim_array=n_each*(ii-1)+1:n_each*ii;
+  stim_array=[stim_array;stim_array+100;stim_array;stim_array+100];
+  stim_array=stim_array(:)';
 
-blocks{3}.randomization=3;
-blocks{3}.sequence=[7 5 1 2 3 4 6 5 1 2 3 4 6 5 1 2 3 4 6 7];
-blocks{3}.msec=[500 200 100 200 100 200 100 200 100 200 100 200 100 200 100 200 100 200 100 500];
-blocks{3}.slicing=100;
-blocks{3}.repetitions=2;
-blocks{3}.name='images 2';
+  blocks{block_counter}.randomization=0;
+  blocks{block_counter}.sequence=Pad2Array(stim_array,201,0);
+  blocks{block_counter}.msec=repmat([200,100],1,numel(stim_array));
+  blocks{block_counter}.slicing=100;
+  blocks{block_counter}.repetitions=3;
+  blocks{block_counter}.name=sprintf('Voronoi Textures %02d',ii);
 
-% alternatively, if you want to set display duration in frames (vertical sync signals), please set protocols as below.
+  block_counter=block_counter+1;
+  blocks{block_counter}.randomization=0;
+  blocks{block_counter}.sequence=201;
+  blocks{block_counter}.msec=6000;
+  blocks{block_counter}.slicing=100;
+  blocks{block_counter}.repetitions=1;
+  blocks{block_counter}.name='Fixation Rest';
+end
 
-%blocks{1}.randomization=5;
-%blocks{1}.sequence=1;
-%blocks{1}.frame=30;
-%blocks{1}.slicing=10;
-%blocks{1}.repetitions=1;
-%blocks{1}.name='cond 1';
-%
-%blocks{2}.randomization=0;
-%blocks{2}.sequence=[7 5 1 2 3 4 6 5 1 2 3 4 6 5 1 2 3 4 6 7];
-%blocks{2}.frame=[30 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 30]; % you can alternatively set display durations in frames of each image
-%blocks{2}.slicing=10;
-%blocks{2}.repetitions=1;
-%blocks{2}.name='images 1';
-%
-%blocks{3}.randomization=3;
-%blocks{3}.sequence=[7 5 1 2 3 4 6 5 1 2 3 4 6 5 1 2 3 4 6 7];
-%blocks{3}.frame=[30 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 30];
-%blocks{3}.slicing=10;
-%blocks{3}.repetitions=2;
-%blocks{3}.name='images 2';
+% replace the final fixation rest as below.
+blocks{block_counter}.randomization=0;
+blocks{block_counter}.sequence=201;
+blocks{block_counter}.msec=16000;
+blocks{block_counter}.slicing=100;
+blocks{block_counter}.repetitions=1;
+blocks{block_counter}.name='The Final Fixation';

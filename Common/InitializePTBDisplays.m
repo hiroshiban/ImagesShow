@@ -30,7 +30,8 @@ function [winPtr,winRect,initDisplay_OK]=InitializePTBDisplays(disp_mode,bgcolor
 %             "mono" by default.
 % bgcolor   : background color, [r,g,b]. [127,127,127] by default.
 % flipping  : whther flipping displays, 0:none, 1:horizontal, 2:vertical, 3:horizontal & vertical. 0 by default.
-% rgb_gains : RGB phosphor gains, [2(left/right)x3(r,g,b)] matrix. empty by default.
+% rgb_gains : RGB phosphor gains, [2(left/right)x3(r,g,b)] matrix. [1,1,1;1,1,1] by default.
+%             if empty, the default parameters will be set. For details, see the codes below.
 %
 % [output]
 % winPtr         : target window pointer
@@ -47,7 +48,7 @@ function [winPtr,winRect,initDisplay_OK]=InitializePTBDisplays(disp_mode,bgcolor
 %
 %
 % Created : Feb 04 2010 Hiroshi Ban
-% Last Update: "2013-11-15 14:54:48 ban"
+% Last Update: "2013-11-22 10:20:33 ban (ban.hiroshi@gmail.com)"
 
 % initialize
 winPtr=[];
@@ -57,7 +58,11 @@ winRect=[];
 if nargin<1 || isempty(disp_mode), disp_mode='mono'; end
 if nargin<2 || isempty(bgcolor), bgcolor=[127,127,127]; end
 if nargin<3 || isempty(flipping), flipping=0; end
-if nargin<4, rgb_gains=[]; end
+if nargin<4, rgb_gains=[1,1,1;1,1,1]; end
+
+if numel(bgcolor)==1, bgcolor=[bgcolor,bgcolor,bgcolor]; end
+if ~isempty(rgb_gains) && size(rgb_gains,2)==1, rgb_gains=[rgb_gains,rgb_gains,rgb_gains]; end
+if ~isempty(rgb_gains) && size(rgb_gains,1)==1, rgb_gains=[rgb_gains;rgb_gains]; end
 
 % check OS (Windows or the others)
 is_windows=false;
@@ -93,6 +98,8 @@ try
     display_mode=100; % interleaved line stereo: left=even scanlines, right=odd scanlines
   elseif strcmpi(disp_mode,'interleavedcolumn')
     display_mode=101; % interleaved column stereo: left=even columns, right=odd columns
+  else
+    error('disp_mode is not valid. check input variable.');
   end
 
   % set window ID
