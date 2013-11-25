@@ -1,7 +1,7 @@
-function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma_table)
+function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma_table,overwrite_flg)
 
 % a fully-customizable image presentation script for your fMRI(event- and block-design)/TMS/EEG/behavior experiments.
-% function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,:viewfile,:optionfile,:gamma_table)
+% function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,:viewfile,:optionfile,:gamma_table,:overwrite_flg)
 % (: is optional)
 %
 % This MATLAB function is a fully updated version of ImagesShow that was originally written in C++
@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-23 02:07:30 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-25 09:44:31 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
@@ -52,6 +52,9 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %                are different (e.g. you have 3 displays and 256x3x!2! gamma-tables), the last
 %                gamma_table will be applied to the second and third displays.
 %                if empty, normalized gamma table (repmat(linspace(0.0,1.0,256),3,1)) will be applied.
+% overwrite_flg: whether overwriting pre-existing result file. if 1, the previous results file with the
+%                same acquisition number will be overwritten by the previous one. if 0, the existing file
+%                will be back-uped by adding a prefix '_old' at the tail of the file. 0 by default.
 %
 % [output]
 % No output variable.
@@ -123,7 +126,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %                                            July 26 2009 H.Ban
 % The final version of ImagesShow C++ was released
 %                                            July 27 2009 H.Ban
-% The first version (v1.0) of ImageShow Psychtoolbox was released
+% The first version of ImageShow Psychtoolbox was released
 % The internal procedures have been fully revised from the scratch
 % Lots of new fancy functions such as binocular displays are available
 %                                            Nov  15 2013 H.Ban
@@ -132,6 +135,8 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %                                            Nov  21 2013 H.Ban
 % some bug fixes, save more memory in storing PTB textures
 %                                            Nov  23 2013 H.Ban
+% Bug fixed, the final version 1.0 was released
+%                                            Nov  25 2013 H.Ban
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -780,8 +785,10 @@ fprintf('saving the stimulus generation and presentation parameters...');
 savefname=fullfile(resultDir,[num2str(subj),'_ImagesShowPTB_results_run_',num2str(acq,'%02d'),'.mat']);
 
 % backup the old file(s)
-BackUpObsoleteFiles(fullfile('subjects',num2str(subj),'results',today),...
-                    [num2str(subj),'_ImagesShowPTB_results_run_',num2str(acq,'%02d'),'.mat'],'_old');
+if overwrite_flg
+  BackUpObsoleteFiles(fullfile('subjects',num2str(subj),'results',today),...
+                      [num2str(subj),'_ImagesShowPTB_results_run_',num2str(acq,'%02d'),'.mat'],'_old');
+end
 
 % save the current parameters
 eval(sprintf('save %s subj acq prt vparam dparam task gamma_table;',savefname));
@@ -1336,6 +1343,10 @@ catch lasterror
   tmp=lasterror; %#ok
   if exist('event','var'), event=event.get_event(); end %#ok % just for debugging
   diary off;
+  fprintf(['\nErrror detected and the program was terminated.\n',...
+           'To check error(s), please type ''tmp''.\n',...
+           'Please save the current variables now if you need.\n',...
+           'Then, quit by ''dbquit''\n']);
   keyboard;
   rmpath(fullfile(rootDir,'..','Common'));
   rmpath(fullfile(rootDir,'..','Generation'));

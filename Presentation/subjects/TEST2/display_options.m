@@ -72,7 +72,8 @@ options.img_flip=0;
 %options.task=[0,4,250];
 options.task=[1,4,250];
 %options.task=[2,4,250];
-%options.task=[3,3,250];
+%options.task=[3,4,250];
+%options.task=[4,3,250];
 
 % whether randomize the order of the 'blocks' in protocol file.
 % 0:OFF, 1:ALL, 2:Even seq. only, 3:Odd seq. only, 4:first half seq. only, 5:last half seq. only
