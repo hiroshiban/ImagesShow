@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-25 09:44:31 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-25 10:00:50 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
@@ -172,7 +172,9 @@ warning off; %#ok warning('off','MATLAB:dispatcher:InexactCaseMatch');
 clear global; clear mex;
 
 if nargin<4, help(mfilename()); return; end
-if nargin>7, error('takes at most 7 arguments: ImagesShowPTB(subj,acq,protocolfile,imgdbfile,(:viewfile),(:optionfile),(:gamma_table))'); end
+if nargin<8 || isempty(overwrite_flg), overwrite_flg=0; end
+if nargin>8, error(['takes at most 7 arguments: ',...
+                    'ImagesShowPTB(subj,acq,protocolfile,imgdbfile,(:viewfile),(:optionfile),(:gamma_table)),(:overwrite_flg)']); end
 
 % check the aqcuisition number. up to 10 design files can be used
 if acq<1, error('Acquistion number must be integer and greater than zero'); end
