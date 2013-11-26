@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-26 17:15:59 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-26 18:49:13 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
@@ -135,8 +135,10 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %                                            Nov  21 2013 H.Ban
 % some bug fixes, save more memory in storing PTB textures
 %                                            Nov  23 2013 H.Ban
-% Bug fixed, the final version 1.0 was released
+% Bug fixes, the final version 1.0 was released
 %                                            Nov  25 2013 H.Ban
+% Made the source code clean and shorter by changing variable structures
+%                                            Nov  28 2013 H.Ban
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -854,34 +856,32 @@ for nn=1:1:nScr
   if dparam.fixation{1}, Screen('DrawTexture',winPtr,wait_fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
   if dparam.onset_punch(1), Screen('FillRect',winPtr,[0,0,0],CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset); end
 end
-Screen('DrawingFinished',winPtr,2);
+Screen('DrawingFinished',winPtr,2); % Mark end of all graphics operation (until flip). This allows GPU to optimize its operations.
 Screen('Flip',winPtr,[],[],[],1);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Prepare the first display for frame-waiting display mode
+%%%% Prepare the first display
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if strcmpi(prt{1}.mode,'frame')
-  % set the current sequence numbers
-  cseq=[prt{1}.sequence(1,1),prt{1}.sequence(min([size(prt{1}.sequence,1),2]),1)];
-  % drawing left/right-eye images
-  for nn=1:1:nScr
-    Screen('SelectStereoDrawBuffer',winPtr,nn-1);
-    Screen('DrawTexture',winPtr,background(nn),[],CenterRect(bgRect,winRect)+centeroffset);
-    if dparam.img_loading_mode~=3
-      Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
-    else
-      Screen('DrawTexture',winPtr,timg(cseq(nn)),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
-    end
-    if dparam.fixation{1}, Screen('DrawTexture',winPtr,fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
-    if dparam.onset_punch(1) % draw a punch rectangle for photo-trigger etc.
-      if imgs.trigger{cseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
-      Screen('FillRect',winPtr,trigcolor,CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset);
-    end
+% set the current sequence numbers
+cseq=[prt{1}.sequence(1,1),prt{1}.sequence(min([size(prt{1}.sequence,1),2]),1)];
+% drawing left/right-eye images
+for nn=1:1:nScr
+  Screen('SelectStereoDrawBuffer',winPtr,nn-1);
+  Screen('DrawTexture',winPtr,background(nn),[],CenterRect(bgRect,winRect)+centeroffset);
+  if dparam.img_loading_mode~=3
+    Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
+  else
+    Screen('DrawTexture',winPtr,timg(cseq(nn)),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
   end
-  Screen('DrawingFinished',winPtr,2);
+  if dparam.fixation{1}, Screen('DrawTexture',winPtr,fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
+  if dparam.onset_punch(1) % draw a punch rectangle for photo-trigger etc.
+    if imgs.trigger{cseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
+    Screen('FillRect',winPtr,trigcolor,CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset);
+  end
 end
+Screen('DrawingFinished',winPtr,2);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -906,37 +906,40 @@ fprintf('\nExperiment Start.\n');
 [event,the_experiment_start]=event.set_reference_time(GetSecs());
 for ii=1:1:length(prt) % blocks
 
-  fprintf('Block #%03d(% 8s): ',ii,prt{ii}.name(1:min(8,length(prt{ii}.name))));
   %event=event.add_event('Start block',sprintf('Cond_%03d',ii));
   event=event.add_event(sprintf('Start block %03d',ii),prt{ii}.name);
+  fprintf('Block #%03d(% 8s): ',ii,prt{ii}.name(1:min(8,length(prt{ii}.name))));
 
-  if strcmpi(prt{ii}.mode,'frame') % vertical sync precision
+  if sum(strcmpi(prt{ii}.mode,{'frame','msec'})) % frame or msec precision
 
     for jj=1:1:size(prt{ii}.sequence,2) % trials
 
       % set the current sequence numbers
       cseq=[prt{ii}.sequence(1,jj),prt{ii}.sequence(min([size(prt{ii}.sequence,1),2]),jj)];
 
-      for mm=1:1:numel(prt{ii}.subduration{jj})
+      for mm=1:1:numel(prt{ii}.subduration{jj}) % sub-durations
 
-        if mm==1
-          if cseq(1)~=cseq(2)
-            fprintf('%03d/%03d ',cseq(1),cseq(2)); event=event.add_event('Stim on',sprintf('%d/%d',cseq(1),cseq(2)));
-          else
-            fprintf('%03d ',cseq(1)); event=event.add_event('Stim on',sprintf('%d',cseq(1)));
-          end
-          if jj==size(prt{ii}.sequence,2), fprintf('\n'); end
+        % present the current displays
+        if strcmpi(prt{ii}.mode,'frame')
+          % flip here is required only for the first time for "frame" mode.
+          if ii==1 && jj==1 && mm==1, Screen('Flip',winPtr,[],[],[],1); end
+        else
+          Screen('Flip',winPtr,[],[],[],1);
         end
-        if ii==1 && jj==1 && mm==1, Screen('Flip',winPtr,[],[],[],1); end
 
-        % send a trigger
+        % record the stimulus onset and send the stimulus trigger
         if mm==1
           if cseq(1)~=cseq(2)
+            event=event.add_event('Stim on',sprintf('%d/%d',cseq(1),cseq(2)));
             if imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger L',imgs.trigger{cseq(1)}); end
             if imgs.trigger{cseq(2)}~=0, event=event.add_event('Stim Trigger R',imgs.trigger{cseq(2)}); end
+            fprintf('%03d/%03d ',cseq(1),cseq(2));
           else
+            event=event.add_event('Stim on',sprintf('%d',cseq(1)));
             if imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger',imgs.trigger{cseq(1)}); end
+            fprintf('%03d ',cseq(1));
           end
+          if jj==size(prt{ii}.sequence,2), fprintf('\n'); end
         end
 
         % add task event
@@ -983,8 +986,6 @@ for ii=1:1:length(prt) % blocks
                 timg(2)=timg(1);
               end
             end
-          else
-            nextblockidx=ii; nextstimidx=jj;
           end % if nextblockidx<=length(prt)
         else
           nextblockidx=ii; nextstimidx=jj;
@@ -997,7 +998,7 @@ for ii=1:1:length(prt) % blocks
           % set the next sequence numbers
           nseq=[prt{nextblockidx}.sequence(1,nextstimidx),prt{nextblockidx}.sequence(min([size(prt{nextblockidx}.sequence,1),2]),nextstimidx)];
 
-          % drawing left/right-eye images
+          % drawing the next left/right-eye images
           for nn=1:1:nScr
             Screen('SelectStereoDrawBuffer',winPtr,nn-1);
 
@@ -1037,144 +1038,23 @@ for ii=1:1:length(prt) % blocks
             [resps,event]=resps.check_responses(event);
           end % for nn=1:1:nScr
 
-          % flip to the next display
           Screen('DrawingFinished',winPtr,2);
-          Screen('Flip',winPtr,the_experiment_start+(prt{ii}.subcumduration{jj}(mm)-0.5)*dparam.ifi,[],[],1);
         end % if nextblockidx<=length(prt)
 
-      end % for mm=1:1:numel(prt{ii}.subduration{jj})
-    end % for jj=1:1:numel(prt{ii}) % trials
-
-  elseif strcmpi(prt{ii}.mode,'msec') % msec precision
-
-    for jj=1:1:size(prt{ii}.sequence,2) % trials
-
-      % set the current sequence numbers
-      cseq=[prt{ii}.sequence(1,jj),prt{ii}.sequence(min([size(prt{ii}.sequence,1),2]),jj)];
-
-      for mm=1:1:numel(prt{ii}.subduration{jj})
-
-        if mm==1
-          if cseq(1)~=cseq(2)
-            fprintf('%03d/%03d ',cseq(1),cseq(2)); event=event.add_event('Stim on',sprintf('%d/%d',cseq(1),cseq(2)));
-          else
-            fprintf('%03d ',cseq(1)); event=event.add_event('Stim on',sprintf('%d',cseq(1)));
-          end
-          if jj==size(prt{ii}.sequence,2), fprintf('\n'); end
+        if strcmpi(prt{ii}.mode,'frame')
+          % wait for the current sub-duration and then flip to the next screen
+          Screen('Flip',winPtr,the_experiment_start+(prt{ii}.subcumduration{jj}(mm)-0.5)*dparam.ifi,[],[],1);
+        else
+          % wait for the current sub-duration
+          while (GetSecs()-the_experiment_start < prt{ii}.subcumduration{jj}(mm)/1000), [resps,event]=resps.check_responses(event); end
         end
-
-        taskcounter=taskcounter+1;
-        [resps,event]=resps.check_responses(event);
-
-        % drawing left/right-eye images
-        for nn=1:1:nScr
-          Screen('SelectStereoDrawBuffer',winPtr,nn-1);
-
-          % background & target stimulus
-          Screen('DrawTexture',winPtr,background(nn),[],CenterRect(bgRect,winRect)+centeroffset);
-
-          % target image
-          if dparam.img_loading_mode~=3
-            Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
-          else
-            Screen('DrawTexture',winPtr,timg(cseq(nn)),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
-          end
-
-          % fixation
-          if dparam.fixation{1} && ~(ismember(dparam.task(1),[1,3]) && task.arrays(taskcounter))
-            Screen('DrawTexture',winPtr,fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset);
-          end
-
-          % onset marker
-          if dparam.onset_punch(1) % draw a punch rectangle for photo-trigger etc.
-            if imgs.trigger{cseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
-            Screen('FillRect',winPtr,trigcolor,CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset);
-          end
-
-          % task
-          if dparam.task(1)==1 && task.arrays(taskcounter) % luminance detection
-            Screen('DrawTexture',winPtr,tasktex(nn),[],CenterRect(fixRect,winRect)+centeroffset);
-          elseif dparam.task(1)==2 && task.arrays(taskcounter) % vernier left/right
-            Screen('DrawTexture',winPtr,tasktex(nn),[],CenterRect([0,0,2,10],winRect)+centeroffset+[task.vernierpos(taskcounter),0,task.vernierpos(taskcounter),0]);
-          elseif dparam.task(1)==3 && task.arrays(taskcounter) % character detection task
-            Screen('DrawTexture',winPtr,textPtr(task.texttype(taskcounter)),[],CenterRect(task.textrect,winRect)+centeroffset);
-          elseif (dparam.task(1)==4 || dparam.task(1)==5) && task.arrays(taskcounter) % 1-back
-            % for 1-back task, do nothing
-            %Screen('DrawTexture',winPtr,tasktex(nn),[],CenterRect(fixRect,winRect)+centeroffset);
-          end
-
-          [resps,event]=resps.check_responses(event);
-        end % for nn=1:1:nScr
-
-        % Mark end of all graphics operation (until flip). This allows GPU to optimize its operations. Then, flip to the current frame
-        Screen('DrawingFinished',winPtr,2);
-        Screen('Flip',winPtr,[],[],[],1);
-
-        % send a trigger
-        if mm==1
-          if cseq(1)~=cseq(2)
-            if imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger L',imgs.trigger{cseq(1)}); end
-            if imgs.trigger{cseq(2)}~=0, event=event.add_event('Stim Trigger R',imgs.trigger{cseq(2)}); end
-          else
-            if imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger',imgs.trigger{cseq(1)}); end
-          end
-        end
-
-        % add task event
-        if dparam.task(1)==1 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % luminance detection
-          event=event.add_event('Lum Task',1);
-        elseif dparam.task(1)==2 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % vernier left/right
-          event=event.add_event('Vernier Task',task.vernierpos(taskcounter));
-        elseif dparam.task(1)==3 && task.texttype(taskcounter)==1 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % vernier left/right
-          event=event.add_event('Character Task',task.chars{1});
-        elseif (dparam.task(1)==4 || dparam.task(1)==5) && task.arrays(taskcounter) % 1-back
-          event=event.add_event('OneBack Task',1);
-        end
-
-        [resps,event]=resps.check_responses(event);
-
-        % generate the next image after cleaning up the current texture (to save memory)
-        if mm==numel(prt{ii}.subduration{jj})
-          if dparam.img_loading_mode~=3, Screen('Close',timg(1)); Screen('Close',timg(2)); end
-          nextblockidx=ii; nextstimidx=jj+1;
-          if nextstimidx>size(prt{ii}.sequence,2), nextblockidx=ii+1; nextstimidx=1; end
-          if nextblockidx<=length(prt)
-            if dparam.img_loading_mode==1 % load image one-by-one
-              cimg=imread(imgs.img{prt{nextblockidx}.sequence(1,nextstimidx)});
-              if dparam.use_original_imgsize
-                sz=size(cimg); imgRect(prt{nextblockidx}.sequence(1,nextstimidx),3:4)=fliplr(sz(1:2)).*imgReduceRatio;
-              end
-              timg(1)=Screen('MakeTexture',winPtr,cimg);
-              if size(prt{nextblockidx}.sequence,1)==2 && prt{nextblockidx}.sequence(2,nextstimidx)~=prt{nextblockidx}.sequence(1,nextstimidx)
-                cimg=imread(imgs.img{prt{nextblockidx}.sequence(2,nextstimidx)});
-                if dparam.use_original_imgsize
-                  sz=size(cimg); imgRect(prt{nextblockidx}.sequence(2,nextstimidx),3:4)=fliplr(sz(1:2)).*imgReduceRatio;
-                end
-                timg(2)=Screen('MakeTexture',winPtr,cimg);
-              else
-                timg(2)=timg(1);
-              end
-              clear cimg;
-            elseif dparam.img_loading_mode==2 % make PTB texture one-by-one
-              timg(1)=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(1,nextstimidx)});
-              if size(prt{nextblockidx}.sequence,1)==2 && prt{nextblockidx}.sequence(2,nextstimidx)~=prt{nextblockidx}.sequence(1,nextstimidx)
-                timg(2)=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(2,nextstimidx)});
-              else
-                timg(2)=timg(1);
-              end
-            end
-          end % if nextblockidx<=length(prt)
-        end % if mm==numel(prt{ii}.subduration{jj})
-
-        % wait for stim_on_duration
-        while (GetSecs()-the_experiment_start < prt{ii}.subcumduration{jj}(mm)/1000), [resps,event]=resps.check_responses(event); end
 
       end % for mm=1:1:numel(prt{ii}.subduration{jj})
     end % for jj=1:1:numel(prt{ii}) % trials
 
   else
     error('prt{%d}.mode should be ''msec'' or ''frame''. check input variable',ii);
-  end % if strcmpi(prt{ii}.mode,'msec') % msec precision
+  end % if strcmpi(prt{ii}.mode,'frame') || strcmpi(prt{ii}.mode,'msec') % frame or msec precision
 
 end % for ii=1:1:length(prt) % blocks
 
