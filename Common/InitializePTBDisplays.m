@@ -49,7 +49,7 @@ function [winPtr,winRect,initDisplay_OK]=InitializePTBDisplays(disp_mode,bgcolor
 %
 %
 % Created : Feb 04 2010 Hiroshi Ban
-% Last Update: "2013-11-22 23:17:53 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-26 17:34:38 ban (ban.hiroshi@gmail.com)"
 
 % initialize
 winPtr=[];
@@ -159,31 +159,33 @@ try
   end
 
   % set color gains for stereo glasses viewing
-  if isempty(rgb_gains)
-    switch display_mode
-      case 6,
-        SetAnaglyphStereoParameters('LeftGains',winPtr,[1.0,0.0,0.0]);
-        SetAnaglyphStereoParameters('RightGains',winPtr,[0.0,0.6,0.0]);
-      case 7,
-        SetAnaglyphStereoParameters('LeftGains',winPtr,[0.0,0.6,0.0]);
-        SetAnaglyphStereoParameters('RightGains',winPtr,[1.0,0.0,0.0]);
-      case 8,
-        SetAnaglyphStereoParameters('LeftGains',winPtr,[0.4,0.0,0.0]);
-        SetAnaglyphStereoParameters('RightGains',winPtr,[0.0,0.2,0.7]);
-      case 9,
-        SetAnaglyphStereoParameters('LeftGains',winPtr,[0.0,0.2,0.7]);
-        SetAnaglyphStereoParameters('RightGains',winPtr,[0.4,0.0,0.0]);
-      otherwise
-        % do nothing
+  if ismember(display_mode,[6,7,8,9])
+    if isempty(rgb_gains)
+      switch display_mode
+        case 6,
+          SetAnaglyphStereoParameters('LeftGains',winPtr,[1.0,0.0,0.0]);
+          SetAnaglyphStereoParameters('RightGains',winPtr,[0.0,0.6,0.0]);
+        case 7,
+          SetAnaglyphStereoParameters('LeftGains',winPtr,[0.0,0.6,0.0]);
+          SetAnaglyphStereoParameters('RightGains',winPtr,[1.0,0.0,0.0]);
+        case 8,
+          SetAnaglyphStereoParameters('LeftGains',winPtr,[0.4,0.0,0.0]);
+          SetAnaglyphStereoParameters('RightGains',winPtr,[0.0,0.2,0.7]);
+        case 9,
+          SetAnaglyphStereoParameters('LeftGains',winPtr,[0.0,0.2,0.7]);
+          SetAnaglyphStereoParameters('RightGains',winPtr,[0.4,0.0,0.0]);
+        otherwise
+          % do nothing
+      end
+    else
+      SetAnaglyphStereoParameters('LeftGains',winPtr,rgb_gains(1,:));
+      SetAnaglyphStereoParameters('RightGains',winPtr,rgb_gains(2,:));
     end
-  else
-    SetAnaglyphStereoParameters('LeftGains',winPtr,rgb_gains(1,:));
-    SetAnaglyphStereoParameters('RightGains',winPtr,rgb_gains(2,:));
   end
 
   initDisplay_OK=true;
 catch lasterror
-  fprintf(lasterror);
+  display(lasterror);
   initDisplay_OK=false;
 end
 
