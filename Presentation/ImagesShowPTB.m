@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-26 18:49:13 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-27 10:26:43 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
@@ -160,8 +160,7 @@ today=strrep(datestr(now,'yy/mm/dd'),'/','');
 
 % result directry & file
 resultDir=fullfile(rootDir,'subjects',num2str(subj),'results',today);
-is_exist1=IsExistYouWant(resultDir,'dir');
-if ~is_exist1, mkdir(resultDir); end
+if ~exist(resultDir,'dir'), mkdir(resultDir); end
 logfname=fullfile(resultDir,[num2str(subj),'_ImagesShowPTB_results_run_',num2str(acq,'%02d'),'.log']);
 diary(logfname);
 warning off; %#ok warning('off','MATLAB:dispatcher:InexactCaseMatch');
@@ -175,7 +174,7 @@ clear global; clear mex;
 
 if nargin<4, help(mfilename()); return; end
 if nargin<8 || isempty(overwrite_flg), overwrite_flg=0; end
-if nargin>8, error(['takes at most 7 arguments: ',...
+if nargin>8, error(['takes at most 8 arguments: ',...
                     'ImagesShowPTB(subj,acq,protocolfile,imgdbfile,(:viewfile),(:optionfile),(:gamma_table)),(:overwrite_flg)']); end
 
 % check the aqcuisition number. up to 10 design files can be used
@@ -384,16 +383,15 @@ resps=resps.disable_jis_key_trouble(); % force to set 0 for the keys that are ON
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [user_answer,resps]=resps.wait_to_proceed();
-if ~user_answer, return; end
+if ~user_answer, clear all; close all; return; end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Initialization of Left & Right screens for binocular presenting/viewing mode
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[winPtr,winRect,initDisplay_OK]=InitializePTBDisplays(dparam.exp_mode,dparam.background{1},dparam.img_flip,RGBgain);
+[winPtr,winRect,nScr,initDisplay_OK]=InitializePTBDisplays(dparam.exp_mode,dparam.background{1},dparam.img_flip,RGBgain);
 if ~initDisplay_OK, error('Display initialization error. Please check your exp_run parameter.'); end
-if strcmpi(dparam.exp_mode,'mono'), nScr=1; else nScr=2; end
 HideCursor();
 
 % update refresh rate and inter-flip-interval
@@ -491,11 +489,9 @@ DisplayMessage2('Initializing...',dparam.background{1},winPtr,nScr,'Arial',36);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if dparam.use_fullscr
-  ratio_wid=( winRect(3)-winRect(1) )/dparam.window_size(2);
-  ratio_hei=( winRect(4)-winRect(2) )/dparam.window_size(1);
+  ratio_wid=( winRect(3)-winRect(1) )/dparam.window_size(2); ratio_hei=( winRect(4)-winRect(2) )/dparam.window_size(1);
 else
-  ratio_wid=1;
-  ratio_hei=1;
+  ratio_wid=1; ratio_hei=1;
 end
 
 if dparam.use_original_imgsize && dparam.img_loading_mode~=1
@@ -611,9 +607,7 @@ if ~isempty(intersect(dparam.task(1),1:3))
   % get all the potential task periods into an arary
   task.arrays=[];
   for ii=1:1:length(prt)
-    for jj=1:1:size(prt{ii}.sequence,2)
-      task.arrays=[task.arrays,zeros(1,numel(prt{ii}.subduration{jj}))];
-    end
+    for jj=1:1:size(prt{ii}.sequence,2), task.arrays=[task.arrays,zeros(1,numel(prt{ii}.subduration{jj}))]; end
   end
 
   % select task periods randomlly
@@ -839,8 +833,6 @@ end
 
 % displaying texts on the center of the screen
 DisplayMessage2('Ready to Start',dparam.background{1},winPtr,nScr,'Arial',36);
-
-% display the message for a while
 ttime=GetSecs(); while (GetSecs()-ttime < 0.5), end  % run up the clock.
 
 
@@ -889,7 +881,7 @@ Screen('DrawingFinished',winPtr,2);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % initialize task counter
-taskcounter=0;
+taskcounter=1;
 
 % add time stamp (this also works to load add_event method in memory in advance of the actual displays)
 event=event.add_event('Experiment Start',strcat([strrep(datestr(now,'yy/mm/dd'),'/',''),' ',datestr(now,'HH:mm:ss')]),[]);
@@ -921,8 +913,7 @@ for ii=1:1:length(prt) % blocks
 
         % present the current displays
         if strcmpi(prt{ii}.mode,'frame')
-          % flip here is required only for the first time for "frame" mode.
-          if ii==1 && jj==1 && mm==1, Screen('Flip',winPtr,[],[],[],1); end
+          if ii==1 && jj==1 && mm==1, Screen('Flip',winPtr,[],[],[],1); end % flip here is required only for the first time for "frame" mode.
         else
           Screen('Flip',winPtr,[],[],[],1);
         end
@@ -943,7 +934,6 @@ for ii=1:1:length(prt) % blocks
         end
 
         % add task event
-        taskcounter=taskcounter+1;
         if dparam.task(1)==1 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % luminance detection
           event=event.add_event('Lum Task',1);
         elseif dparam.task(1)==2 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % vernier left/right
@@ -995,6 +985,8 @@ for ii=1:1:length(prt) % blocks
 
         % preparing the next displays
         if nextblockidx<=length(prt)
+          taskcounter=taskcounter+1;
+
           % set the next sequence numbers
           nseq=[prt{nextblockidx}.sequence(1,nextstimidx),prt{nextblockidx}.sequence(min([size(prt{nextblockidx}.sequence,1),2]),nextstimidx)];
 
@@ -1054,7 +1046,7 @@ for ii=1:1:length(prt) % blocks
 
   else
     error('prt{%d}.mode should be ''msec'' or ''frame''. check input variable',ii);
-  end % if strcmpi(prt{ii}.mode,'frame') || strcmpi(prt{ii}.mode,'msec') % frame or msec precision
+  end % if sum(strcmpi(prt{ii}.mode,{'frame','msec'})) % frame or msec precision
 
 end % for ii=1:1:length(prt) % blocks
 
@@ -1066,9 +1058,9 @@ end % for ii=1:1:length(prt) % blocks
 experimentDuration=GetSecs()-the_experiment_start;
 event=event.add_event('End',[]);
 if strcmpi(prt{ii}.mode,'frame')
-  disp(['Experiment Completed: ',num2str(experimentDuration),'/',num2str(prt{end}.cumduration(end)*dparam.ifi),' sec']);
+  fprintf('Experiemnt Completed: %.3f/%.3f sec.\n',experimentDuration,prt{end}.cumduration(end)*dparam.ifi);
 else
-  disp(['Experiment Completed: ',num2str(experimentDuration),'/',num2str(prt{end}.cumduration(end)/1000),' sec']);
+  fprintf('Experiemnt Completed: %.3f/%.3f sec.\n',experimentDuration,prt{end}.cumduration(end)/1000); 
 end
 
 % clean up
