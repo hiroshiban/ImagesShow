@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-27 10:26:43 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-27 16:41:50 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
@@ -1074,7 +1074,7 @@ if dparam.img_loading_mode~=1, imgs=rmfield(imgs,'img'); end %#ok % clean up raw
 
 % saving the results
 fprintf('saving the results...');
-eval(sprintf('save -append %s subj acq prt vparam dparam task event gamma_table imgs;',savefname));
+eval(sprintf('save -append %s prt event imgs;',savefname));
 disp('done.');
 
 % calculate & display task performance
@@ -1125,7 +1125,7 @@ catch lasterror
            'Please save the current variables now if you need.\n',...
            'Then, quit by ''dbquit''\n']);
   keyboard;
-  rmpath(fullfile(rootDir,'..','Common'));
+  rmpath(genpath(fullfile(rootDir,'..','Common')));
   rmpath(fullfile(rootDir,'..','Generation'));
   %psychrethrow(psychlasterror);
   clear global; clear mex; clear all; close all;
