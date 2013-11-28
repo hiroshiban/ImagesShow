@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-27 16:41:50 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-28 14:02:31 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
@@ -52,9 +52,10 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %                are different (e.g. you have 3 displays and 256x3x!2! gamma-tables), the last
 %                gamma_table will be applied to the second and third displays.
 %                if empty, normalized gamma table (repmat(linspace(0.0,1.0,256),3,1)) will be applied.
-% overwrite_flg: whether overwriting pre-existing result file. if 1, the previous results file with the
-%                same acquisition number will be overwritten by the previous one. if 0, the existing file
-%                will be back-uped by adding a prefix '_old' at the tail of the file. 0 by default.
+% overwrite_flg: (optional) whether overwriting pre-existing result file. if 1, the previous results
+%                file with the same acquisition number will be overwritten by the previous one.
+%                if 0, the existing file will be backed-up by adding a prefix '_old' at the tail
+%                of the file. 0 by default.
 %
 % [output]
 % No output variable.
@@ -249,10 +250,10 @@ disp('done.');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Getting temporal display refresh rate and inter-flip-interval
-%%%% (required just for protocol file setting)
+%%%% (required just for protocol file setting in frame precision)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-winPtr=0; % temporal setting, may be changed later in InitializePTBDisplays
+winPtr=0; % temporal setting, will be changed later in InitializePTBDisplays
 dparam.fps=Screen('FrameRate',winPtr); dparam.ifi=1/dparam.fps;
 if dparam.fps==0, dparam.fps=1/dparam.ifi; end
 
@@ -373,9 +374,7 @@ fprintf('\n');
 % initialize MATLAB objects for event and response logs
 event=eventlogger();
 resps=responselogger(dparam.keys);
-resps.unify_keys();
-resps.check_responses(event); % load function(s) once before running the main trial loop
-resps=resps.disable_jis_key_trouble(); % force to set 0 for the keys that are ON by default.
+resps.initialize(event); % initialize responselogger
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -390,15 +389,9 @@ if ~user_answer, clear all; close all; return; end
 %%%% Initialization of Left & Right screens for binocular presenting/viewing mode
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[winPtr,winRect,nScr,initDisplay_OK]=InitializePTBDisplays(dparam.exp_mode,dparam.background{1},dparam.img_flip,RGBgain);
+[winPtr,winRect,nScr,dparam.fps,dparam.ifi,initDisplay_OK]=InitializePTBDisplays(dparam.exp_mode,dparam.background{1},dparam.img_flip,RGBgain);
 if ~initDisplay_OK, error('Display initialization error. Please check your exp_run parameter.'); end
 HideCursor();
-
-% update refresh rate and inter-flip-interval
-dparam.fps=Screen('FrameRate',winPtr); dparam.ifi=Screen('GetFlipInterval',winPtr);
-if dparam.fps==0, dparam.fps=1/dparam.ifi; end
-%dparam.fps=Screen('FrameRate',winPtr);
-%if dparam.fps==0, dparam.ifi=Screen('GetFlipInterval',winPtr); dparam.fps=1/dparam.ifi; else, dparam.ifi=1/dparam.fps; end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -414,6 +407,30 @@ Priority(priorityLevel);
 % Usually you want PTB to share all ressources like offscreen windows, textures and GLSL shaders among all open
 % onscreen windows. If that causes trouble for some weird reason, you can prevent automatic sharing with this flag.
 %Screen('Preference','ConserveVRAM',32);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Setting the PTB OpenGL functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Enable OpenGL mode of Psychtoolbox: This is crucially needed for clut animation
+InitializeMatlabOpenGL();
+
+% This script calls Psychtoolbox commands available only in OpenGL-based versions of the Psychtoolbox.
+% (So far, the OS X Psychtoolbox is the only OpenGL-base Psychtoolbox.) The Psychtoolbox command AssertPsychOpenGL
+% will issue an error message if someone tries to execute this script on a computer without an OpenGL Psychtoolbox
+AssertOpenGL();
+
+% set OpenGL blend functions
+Screen('BlendFunction',winPtr,GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Displaying 'Initializing...'
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% displaying texts on the center of the screen
+DisplayMessage2('Initializing...',dparam.background{1},winPtr,nScr,'Arial',36);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -457,30 +474,6 @@ for ii=1:1:length(prt)
     end
   end
 end
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Setting the PTB OpenGL functions
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Enable OpenGL mode of Psychtoolbox: This is crucially needed for clut animation
-InitializeMatlabOpenGL();
-
-% This script calls Psychtoolbox commands available only in OpenGL-based versions of the Psychtoolbox.
-% (So far, the OS X Psychtoolbox is the only OpenGL-base Psychtoolbox.) The Psychtoolbox command AssertPsychOpenGL
-% will issue an error message if someone tries to execute this script on a computer without an OpenGL Psychtoolbox
-AssertOpenGL();
-
-% set OpenGL blend functions
-Screen('BlendFunction',winPtr,GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Displaying 'Initializing...'
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% displaying texts on the center of the screen
-DisplayMessage2('Initializing...',dparam.background{1},winPtr,nScr,'Arial',36);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -994,7 +987,7 @@ for ii=1:1:length(prt) % blocks
           for nn=1:1:nScr
             Screen('SelectStereoDrawBuffer',winPtr,nn-1);
 
-            % background & target stimulus
+            % background
             Screen('DrawTexture',winPtr,background(nn),[],CenterRect(bgRect,winRect)+centeroffset);
 
             % target image
@@ -1092,29 +1085,28 @@ eval(sprintf('save -append %s task event;',savefname)); % save the updated task 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Cleaning up the PTB screen
+%%%% Cleaning up the PTB screen, removing path to the subfunctions, and finalizing the script
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Priority(0); showcursor; Screen('CloseAll');
+Screen('CloseAll');
+ShowCursor();
+Priority(0);
 GammaResetPTB(1.0);
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% removing path to the subfunctions
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% remove paths to the subfunctions
 rmpath(genpath(fullfile(rootDir,'..','Common')));
 rmpath(fullfile(rootDir,'..','Generation'));
-clear global; clear mex; clear all;
+clear all; clear mex; clear global;
 diary off;
 
-%%%%% catch the error(s) %%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Catch the errors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 catch lasterror
   % this "catch" section executes in case of an error in the "try" section
   % above.  Importantly, it closes the onscreen window if its open.
   Screen('CloseAll');
-  ShowCursor;
+  ShowCursor();
   Priority(0);
   GammaResetPTB(1.0);
   tmp=lasterror; %#ok
@@ -1132,5 +1124,9 @@ catch lasterror
   return
 end % try..catch
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% that's it - we're done
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 return
 % end % function ImagesShowPTB

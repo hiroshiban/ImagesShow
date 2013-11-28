@@ -13,7 +13,7 @@
 options.start_method=0;
 
 % when you want to use your own trigger key to start the stimulus presentation, set a character here.
-% but note that the setting here is only valid when you set options.start_method=4;
+% but note that the setting here is valid only when you set options.start_method=4;
 options.custom_trigger='s';
 
 % display mode, one of "mono", "dual", "cross", "parallel", "redgreen", "greenred", "redblue",
