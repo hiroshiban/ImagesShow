@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-28 14:02:31 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-28 15:46:44 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
@@ -841,7 +841,7 @@ for nn=1:1:nScr
   if dparam.fixation{1}, Screen('DrawTexture',winPtr,wait_fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
   if dparam.onset_punch(1), Screen('FillRect',winPtr,[0,0,0],CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset); end
 end
-Screen('DrawingFinished',winPtr,2); % Mark end of all graphics operation (until flip). This allows GPU to optimize its operations.
+Screen('DrawingFinished',winPtr); % Mark end of all graphics operation (until flip). This allows GPU to optimize its operations.
 Screen('Flip',winPtr,[],[],[],1);
 
 
@@ -866,7 +866,7 @@ for nn=1:1:nScr
     Screen('FillRect',winPtr,trigcolor,CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset);
   end
 end
-Screen('DrawingFinished',winPtr,2);
+Screen('DrawingFinished',winPtr);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1023,7 +1023,7 @@ for ii=1:1:length(prt) % blocks
             [resps,event]=resps.check_responses(event);
           end % for nn=1:1:nScr
 
-          Screen('DrawingFinished',winPtr,2);
+          Screen('DrawingFinished',winPtr);
         end % if nextblockidx<=length(prt)
 
         if strcmpi(prt{ii}.mode,'frame')
