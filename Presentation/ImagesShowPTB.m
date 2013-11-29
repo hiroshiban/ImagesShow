@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-29 13:19:32 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-29 13:41:24 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
@@ -1119,7 +1119,7 @@ event=event.add_event('End',[]);
 if strcmpi(prt{ii}.mode,'frame')
   fprintf('Experiemnt Completed: %.3f/%.3f sec.\n',experimentDuration,prt{end}.cumduration(end)*dparam.ifi);
 else
-  fprintf('Experiemnt Completed: %.3f/%.3f sec.\n',experimentDuration,prt{end}.cumduration(end)/1000); 
+  fprintf('Experiemnt Completed: %.3f/%.3f sec.\n',experimentDuration,prt{end}.cumduration(end)/1000);
 end
 
 % clean up
