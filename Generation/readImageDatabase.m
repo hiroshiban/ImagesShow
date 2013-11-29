@@ -17,7 +17,6 @@ function imgs=readImageDatabase(imgdbfile,img_loading_mode)
 %             imgdb.type='image'; % database type, 'image' (image file) or 'matlab'(matlab .mat file).
 %             imgdb.directory='C:/home/ban/images/'; % a full path to the image files or the parent directory
 %             imgdb.presentation_size=[512,512]; % [row,col], this is not the actual image size, all the images will be adjusted based on this value.
-%             (imgdb.RGBgain=[1.0,1.0,1.0; 1.0,1.0,1.0];) % (optional) if you need to change RGB video intensity (e.g. for red-green glasses display), please set these values
 %             imgdb.num=120; % the total number of images
 %             imgdb.img{1}={'image1.bmp','background',0}; % {'file_name','comment','trigger(off=0, on=1, or on=string)'}
 %             imgdb.img{2}={'image2.bmp','taget image 1',1};
@@ -33,7 +32,6 @@ function imgs=readImageDatabase(imgdbfile,img_loading_mode)
 %             imgdb.type='matlab';
 %             imgdb.directory='C:/home/ban/images/';
 %             imgdb.presentation_size=[512,512];
-%             (imgdb.RGBgain=[1.0,1.0,1.0; 1.0,1.0,1.0];)
 %             imgdb.num=7; % the total number of images stored in imgdb.img{1-N}.
 %             imgdb.img{1}={'images1.mat'}; % {'matlab_file_name'}
 %
@@ -61,11 +59,10 @@ function imgs=readImageDatabase(imgdbfile,img_loading_mode)
 %             imgs.img_size(1-n,2(x_width and y_height))
 %             imgs.comment{1-n}
 %             imgs.trigger{1-n}
-%             (imgs.RGBgain)
 %
 %
 % Created:   : "2013-11-08 15:32:41 ban"
-% Last Update: "2013-11-22 18:13:21 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-29 10:19:30 ban (ban.hiroshi@gmail.com)"
 
 % check input variable
 if nargin<1 || isempty(imgdbfile), help(mfilename()); imgs=[]; return; end
@@ -97,7 +94,6 @@ imgs.img=cell(imgdb.num,1);
 imgs.img_size=zeros(imgdb.num,2);
 imgs.comment=cell(imgdb.num,1);
 imgs.trigger=cell(imgdb.num,1);
-if isstructmember(imgdb,'RGBgain'), imgs.RGBgain=imgdb.RGBgain; end
 
 % set images
 if strcmpi(imgdb.type,'image')

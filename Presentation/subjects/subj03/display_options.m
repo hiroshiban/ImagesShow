@@ -24,16 +24,26 @@ options.exp_mode='mono';
 options.keys=[37,39]; % 37=left arrow, 39=right arrow
 
 % screen length along y and x axes which you want to use [row,col] (pixels)
-options.window_size=[768,1024];
+options.window_size=[1200,1920];
+
+% if you need to change RGB video input intensities (e.g. for red-green glasses display mode),
+% please set these values [2(left/right) x 3(RGB)]. Valid only when options.exp_mode is 'redgreen', 'greenred', 'redblue', or 'bluered'.
+options.RGBgain=[1.0,1.0,1.0; 1.0,1.0,1.0];
 
 % fixation parameter, {fixation type(0: non, 1: circle, 2: cross),size,color}
-options.fixation={2,24,[255,255,255]};
+%options.fixation={2,24,[255,255,255]};
+options.fixation={1,6,[255,0,0]};
 
 % background parameter, {background_RGB,patch1_RGB,patch2_RGB,patch_num(row,col),patch_size(row,col),(optional)aperture_size(row,col)}
 options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
 
+% whether masking display images using a circular aperture mask, {on_off(0|1),radius_pix(row,col),gaussian_parameters(mean,sd)}
+% if you want to put a circular aperture mask on each of the images, please set on_off to 1.
+% if gaussian_parameters(1)=0, no smoothing on the edges is applied.
+options.cmask={0,[280,280],[20,20]};
+
 % whether setting background color automatically by matching it with the upper-left (1,1) pixel color of the first target image
-options.auto_background=1;
+options.auto_background=0;
 
 % whether forcing to use the full-screen display, [0|1]
 options.use_fullscr=0;
@@ -53,7 +63,7 @@ options.use_original_imgsize=0;
 % By setting this to 1, you can save memory, but it requires additional computation time in presentation (~30ms with Core2Duo CPU) on Windows.
 % When you set this to 2 or 3, you can save computational time, but requires more memory on your computer.
 % I recommend to test options.img_loading_mode=2 first.
-options.img_loading_mode=2;
+options.img_loading_mode=3;
 
 % image offset, [row,col]. when set [0,0], images will be presented at the center of the screen
 options.center=[0,0];
@@ -68,9 +78,11 @@ options.img_flip=0;
 % about duration: task duration in msec or frame
 % !!!NOTEICE!!! Even you do not need to interpose task (options.task(1)=0), please set the other 2 variables.
 % when you use task in your experiment, please fix the unit of the durations in protocolfile as 'msec' or 'frame'. please do not mix.
-%options.task=[0,3,250];
-%options.task=[1,3,250];
-options.task=[2,4,250];
+%options.task=[0,4,250];
+options.task=[1,4,250];
+%options.task=[2,4,250];
+%options.task=[3,4,250];
+%options.task=[4,3,250];
 
 % whether randomize the order of the 'blocks' in protocol file.
 % 0:OFF, 1:ALL, 2:Even seq. only, 3:Odd seq. only, 4:first half seq. only, 5:last half seq. only
@@ -78,7 +90,7 @@ options.task=[2,4,250];
 % matrix:randomize specific blocks you set. e.g. options.block_rand=[2,4,6,8];
 options.block_rand=0;
 
-% whether displaying stimulus onset marker for images with trigger=ON (you can set in your image database file).
+% whether displaying stimulus onset marker for images with trigger=ON. (you can set in your image database file).
 % the marker can be used to get a photodiode trigger etc.
 % [type,onset_marker_size]
 % type, 0: none, 1: upper-left, 2: upper-right, 3: lower-left, 4: lower-right

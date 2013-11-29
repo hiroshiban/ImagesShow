@@ -26,12 +26,21 @@ options.keys=[37,39]; % 37=left arrow, 39=right arrow
 % screen length along y and x axes which you want to use [row,col] (pixels)
 options.window_size=[1200,1920];
 
+% if you need to change RGB video input intensities (e.g. for red-green glasses display mode),
+% please set these values [2(left/right) x 3(RGB)]. Valid only when options.exp_mode is 'redgreen', 'greenred', 'redblue', or 'bluered'.
+options.RGBgain=[1.0,1.0,1.0; 1.0,1.0,1.0];
+
 % fixation parameter, {fixation type(0: non, 1: circle, 2: cross),size,color}
 %options.fixation={2,24,[255,255,255]};
 options.fixation={1,6,[255,0,0]};
 
 % background parameter, {background_RGB,patch1_RGB,patch2_RGB,patch_num(row,col),patch_size(row,col),(optional)aperture_size(row,col)}
 options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
+
+% whether masking display images using a circular aperture mask, {on_off(0|1),radius_pix(row,col),gaussian_parameters(mean,sd)}
+% if you want to put a circular aperture mask on each of the images, please set on_off to 1.
+% if gaussian_parameters(1)=0, no smoothing on the edges is applied.
+options.cmask={1,[200,200],[20,20]};
 
 % whether setting background color automatically by matching it with the upper-left (1,1) pixel color of the first target image
 options.auto_background=1;

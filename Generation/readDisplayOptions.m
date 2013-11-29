@@ -7,7 +7,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2013-11-22 18:14:01 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-29 12:37:03 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
@@ -36,11 +36,20 @@ function options=readDisplayOptions(optionfile)
 %              % screen length along y and x axes which you want to use [row,col] (pixels)
 %              options.window_size=[768,1024];
 %
+%              % if you need to change RGB video input intensities (e.g. for red-green glasses display mode),
+%              % please set these values [2(left/right) x 3(RGB)]. Valid only when ~strcmpi(options.exp_mode,'mono')
+%              options.RGBgain=[1.0,1.0,1.0; 1.0,1.0,1.0];
+%
 %              % fixation parameter, {fixation type(0: non, 1: circle, 2: cross),size,color}
 %              options.fixation={2,24,[255,255,255]};
 %
 %              % background parameter, {background_RGB,patch1_RGB,patch2_RGB,patch_num(row,col),patch_size(row,col),(optional)aperture_size(row,col)}
 %              options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
+%
+%              % whether masking display images using a circular aperture mask, {on_off(0|1),radius_pix(row,col),gaussian_parameters(mean,sd)}
+%              % if you want to put a circular aperture mask on each of the images, please set on_off to 1.
+%              % if gaussian_parameters(1)=0, no smoothing on the edges is applied.
+%              options.cmask={1,[280,280],[20,20]};
 %
 %              % whether setting background color automatically by matching it with the upper-left (1,1) pixel color of the first target image
 %              options.auto_background=1;
@@ -103,11 +112,15 @@ function options=readDisplayOptions(optionfile)
 %              .exp_mode ('mono')
 %              .keys ([37,39])
 %              .window_size (768,1024)
+%              .RGBgain ([1,1,1;1,1,1])
 %              .fixation ({2,24,[255,255,255]})
 %              .background ({[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]})
+%              .cmask ({0,[280,280],[20,20]})
 %              .auto_background (0)
 %              .use_fullscr (0)
 %              .use_frame (0)
+%              .use_original_imgsize (0)
+%              .img_loading_mode (2)
 %              .center ([0,0])
 %              .img_flip (0)
 %              .task ([0,1,250])
@@ -136,8 +149,10 @@ if ~isstructmember(options,'custom_trigger'), options.custom_trigger='s'; end
 if ~isstructmember(options,'exp_mode'), options.exp_mode='mono'; end
 if ~isstructmember(options,'keys'), options.keys=[37,39]; end
 if ~isstructmember(options,'window_size'), options.window_size=[768,1024]; end
+if ~isstructmember(options,'RGBgain'), options.RGBgain=[1,1,1;1,1,1]; end
 if ~isstructmember(options,'fixation'), options.fixation={2,24,[255,255,255]}; end
 if ~isstructmember(options,'background'), options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]}; end
+if ~isstructmember(options,'cmask'), options.cmask={0,[280,280],[20,20]}; end
 if ~isstructmember(options,'auto_background'), options.auto_background=0; end
 if ~isstructmember(options,'use_fullscr'), options.use_fullscr=0; end
 if ~isstructmember(options,'use_frame'), options.use_frame=0; end
@@ -151,16 +166,19 @@ if ~isstructmember(options,'onset_punch'), options.onset_punch=[0,50]; end
 
 % detect missing parameter values and put them by default ones
 if numel(options.window_size)==1, options.window_size=[options.window_size,options.window_size]; end
+if size(options.RGBgain,1)==1, options.RGBgain=repmat(options.RGBgain,[2,1]); end
 if length(options.fixation)==1, options.fixation{2}=24; end
 if length(options.fixation)==2, options.fixation{3}=[255,255,255]; end
 if length(options.background)==1, options.background{2}=[255,255,255]; end
 if length(options.background)==2, options.background{3}=[0,0,0]; end
 if length(options.background)==3, options.background{4}=[30,30]; end
 if length(options.background)==4, options.background{5}=[20,20]; end
+if length(options.cmask)==1, options.cmask{2}=[280,280]; end
+if length(options.cmask)==2, options.cmask{3}=[20,20]; end
 if numel(options.center)==1, options.center=[options.center,options.center]; end
 if numel(options.task)==1, options.task(2)=3; end
 if numel(options.task)==2, options.task(3)=250; end
-if numel(options.onset_punch)==1, options.onset_punch=50; end
+if numel(options.onset_punch)==1, options.onset_punch(2)=50; end
 
 return
 
@@ -173,8 +191,10 @@ function options=setdefaultoptions()
   options.exp_mode='mono';
   options.keys=[37,39];
   options.window_size=[768,1024];
+  options.RGBgain=[1,1,1;1,1,1];
   options.fixation={2,24,[255,255,255]};
   options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
+  options.cmask={0,[280,280],[20,20]};
   options.auto_background=0;
   options.use_fullscr=0;
   options.use_frame=0;

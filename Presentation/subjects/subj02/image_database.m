@@ -3,7 +3,7 @@
 
 % an example of image database for monocular display
 imgdb.type='image'; % database type, 'image' (image file) or 'matlab'(matlab .mat file).
-imgdb.directory=fullfile(fileparts(mfilename('fullpath')),'PNGs'); % full path to the image files
+imgdb.directory=fullfile(fileparts(mfilename('fullpath')),'..','..','..','images','test_PNGs'); % full path to the image files
 % or imgdb.directory='C:/home/Working/ImagesShowPTB/Presentation/subjects/HB/PNGs';
 imgdb.presentation_size=[256,256]; % this is not the actual image size, all the images will be adjusted based on this value.
 imgdb.num=7; % the total number of images

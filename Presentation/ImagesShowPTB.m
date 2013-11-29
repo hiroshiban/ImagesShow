@@ -19,11 +19,12 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-28 15:46:44 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-11-29 13:19:32 ban (ban.hiroshi@gmail.com)"
 %
 %
 % [input]
 % subj         : name of subject, string, such as 's01', 'HB', 'hiroshi'
+%                you also need to create a directory ./subjects/(subj) and put 4 condition files there.
 % acq          : acquisition number. 1,2,3,...
 % protocolfile : protocol file in which experiment design is described.
 %                the file should be located in ./subjects/(subj)/
@@ -140,35 +141,11 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %                                            Nov  25 2013 H.Ban
 % Made the source code clean and shorter by changing variable structures
 %                                            Nov  28 2013 H.Ban
+% Add a circular aperture mask option        Nov  29 2013 H.Ban
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% adding path to the subfunctions
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% add paths to the subfunctions
-rootDir=fileparts(mfilename('fullpath'));
-addpath(genpath(fullfile(rootDir,'..','Common')));
-addpath(fullfile(rootDir,'..','Generation'));
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% for log file
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% get date
-today=strrep(datestr(now,'yy/mm/dd'),'/','');
-
-% result directry & file
-resultDir=fullfile(rootDir,'subjects',num2str(subj),'results',today);
-if ~exist(resultDir,'dir'), mkdir(resultDir); end
-logfname=fullfile(resultDir,[num2str(subj),'_ImagesShowPTB_results_run_',num2str(acq,'%02d'),'.log']);
-diary(logfname);
-warning off; %#ok warning('off','MATLAB:dispatcher:InexactCaseMatch');
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% check input variables
+%%%% Check input variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear global; clear mex;
@@ -184,6 +161,31 @@ if ~exist(fullfile(pwd,'subjects',subj),'dir'), error('can not find subj directo
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Add paths to the subfunctions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% add paths to the subfunctions
+rootDir=fileparts(mfilename('fullpath'));
+addpath(genpath(fullfile(rootDir,'..','Common')));
+addpath(fullfile(rootDir,'..','Generation'));
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% For a log file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% get date
+today=strrep(datestr(now,'yy/mm/dd'),'/','');
+
+% result directry & file
+resultDir=fullfile(rootDir,'subjects',num2str(subj),'results',today);
+if ~exist(resultDir,'dir'), mkdir(resultDir); end
+logfname=fullfile(resultDir,[num2str(subj),'_ImagesShowPTB_results_run_',num2str(acq,'%02d'),'.log']);
+diary(logfname);
+warning off; %#ok warning('off','MATLAB:dispatcher:InexactCaseMatch');
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Start processing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -192,7 +194,7 @@ try
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% check the PTB version
+%%%% Check the PTB version
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 PTB_OK=CheckPTBversion(3); % check wether the PTB version is 3
@@ -222,7 +224,7 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% read and set size and option parameters
+%%%% Read/set viewing and displaying option parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % load size parameters
@@ -247,6 +249,14 @@ else
 end
 disp('done.');
 
+% set RGB gain
+if strcmpi(dparam.exp_mode,'mono') || strcmpi(dparam.exp_mode,'cross') || strcmpi(dparam.exp_mode,'parallel') || ...
+   strcmpi(dparam.exp_mode,'topbottom') || strcmpi(dparam.exp_mode,'bottomtop')
+  RGBgain=[];
+else
+  RGBgain=options.RGBgain;
+end
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Getting temporal display refresh rate and inter-flip-interval
@@ -259,7 +269,7 @@ if dparam.fps==0, dparam.fps=1/dparam.ifi; end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% read and set protocol and image-database parameters (presentation protocol, images)
+%%%% Read/set the experiment protocol and image-database parameters (presentation protocol, images)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % load experiment protocols
@@ -276,13 +286,6 @@ imgs=readImageDatabase(fimgdbfile,dparam.img_loading_mode);
 clear fimgdbfile;
 disp('done.');
 disp(' ');
-
-% set RGB gain
-if isstructmember(imgs,'RGBgain')
-  RGBgain=imgs.RGBgain;
-else
-  RGBgain=[];
-end
 
 % change duration from msec to frame
 if dparam.use_frame
@@ -305,7 +308,7 @@ if dparam.auto_background
   else
     tmp=imgs.img{1};
   end
-  bgcolor=double(tmp(1,1,:));
+  bgcolor=double(squeeze(tmp(1,1,:))');
   if numel(bgcolor)==1, bgcolor=repmat(bgcolor,[1,3]); end
   dparam.background{1}=bgcolor;
   clear tmp bgcolor;
@@ -313,7 +316,7 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% displaying the presentation parameters you set
+%%%% Displaying the presentation parameters you set
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 disp('The Presentation Parameters are as below.');
@@ -331,10 +334,12 @@ disp('*********** Screen/Display Settings ************');
 eval(sprintf('disp(''Screen Height          : %d'');',dparam.window_size(1)));
 eval(sprintf('disp(''Screen Width           : %d'');',dparam.window_size(2)));
 eval(sprintf('disp(''Window Center [row,col]: [%d,%d]'');',dparam.center(1),dparam.center(2)));
+eval(sprintf('disp(''Image Loading Mode     : %d'');',dparam.img_loading_mode));
 eval(sprintf('disp(''Image Flipping         : %d'');',dparam.img_flip));
 eval(sprintf('disp(''Onset Punch [type,size]: [%d,%d]'');',dparam.onset_punch(1),dparam.onset_punch(2)));
 eval(sprintf('disp(''Fixation Type          : %d'');',dparam.fixation{1}));
 eval(sprintf('disp(''Background Color       : [%d,%d,%d]'');',dparam.background{1}(1),dparam.background{1}(2),dparam.background{1}(3)));
+eval(sprintf('disp(''Ciruclar Aperture Mask : %d'');',dparam.cmask{1}));
 disp('************ The number of blocks **************');
 eval(sprintf('disp(''#conditions            : %d'');',length(prt)));
 if numel(dparam.block_rand)==1
@@ -368,7 +373,7 @@ fprintf('\n');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% initialize response & event logger objects
+%%%% Initialize response & event logger objects
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % initialize MATLAB objects for event and response logs
@@ -553,6 +558,50 @@ background(2)=background(1); %Screen('MakeTexture',winPtr,bgimg{2});
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Creating an aperture mask field
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+if dparam.cmask{1}
+  fine_coefficient=4; % process a larger mask image to avoid a jaggy edge problem
+  % dissociate inner/outer region of the oval
+  step=1/fine_coefficient;
+  [x,y]=meshgrid(-aperture_size(2)/2:step:aperture_size(2)/2,-aperture_size(1)/2:step:aperture_size(1)/2);
+  if mod(size(x,1),2), x=x(1:end-1,:); y=y(1:end-1,:); end
+  if mod(size(x,2),2), x=x(:,1:end-1); y=y(:,1:end-1); end
+  idx=logical( 1<( x.^2/(dparam.cmask{2}(2)/2).^2 + y.^2/(dparam.cmask{2}(1)/2).^2 ) );
+
+  % generate a background-colored rectangle
+  maskimg=ones([size(x),4]);
+  for ii=1:1:3, maskimg(:,:,ii)=dparam.background{1}(ii)*maskimg(:,:,ii); end
+  maskimg(:,:,4)=0;
+
+  % mask the outside of a circular region
+  tmp=maskimg(:,:,4); tmp(idx)=255;
+  if dparam.cmask{3}(1)~=0 % gaussian filtering
+    % create gaussian kernel, using fspecial('gaussian',winwidth,sd);
+    h=fspecial('gaussian',dparam.cmask{3}(1),dparam.cmask{3}(2));
+    % apply gaussian filter
+    tmp=imfilter(uint8(tmp),h,'replicate'); % for speeding up;
+  end
+  maskimg(:,:,4)=tmp;
+
+  % resizing
+  maskimg=imresize(maskimg,step,'bilinear'); % not bicubic
+
+  circularmask(1)=Screen('MakeTexture',winPtr,maskimg);
+  circularmask(2)=circularmask(1);
+
+  % create rect region
+  maskRect=[0,0,size(maskimg,2),size(maskimg,1)];
+  if strcmpi(dparam.exp_mode,'cross') || strcmpi(dparam.exp_mode,'parallel') || ...
+     strcmpi(dparam.exp_mode,'topbottom') || strcmpi(dparam.exp_mode,'bottomtop')
+    maskRect=maskRect./2;
+  end
+  clear fine_coefficient step idx h maskimg;
+end
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Creating the central fixation, circular or cross images (left/right)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -643,7 +692,13 @@ if ~isempty(intersect(dparam.task(1),1:3))
   clear tmpcounter durcounter tmpduration done_flg;
 
   % set ratio of luminance dim
-  if dparam.task(1)==1, task.fixdimratio=0.6; end
+  if dparam.task(1)==1
+    if max(dparam.fixation{3})>127
+      task.fixdimratio=0.6;
+    else
+      task.fixdimratio=1.5;
+    end
+  end
 
   % set vernier positions
   if dparam.task(1)==2
@@ -685,17 +740,19 @@ end % if dparam.task(1)
 if dparam.task(1)==1 % luminance detection task
 
   % generate additional fixation for luminance detection tasks
+  dimfixcolor=task.fixdimratio.*dparam.fixation{3};
+  dimfixcolor(dimfixcolor>255)=255;
   if dparam.fixation{1}==1 % circular fixational dot
-    fix=MakeFineOval(dparam.fixation{2},task.fixdimratio.*dparam.fixation{3},dparam.background{1},1,8,0,0,0);
+    fix=MakeFineOval(dparam.fixation{2},dimfixcolor,dparam.background{1},1,8,0,0,0);
     tasktex(1)=Screen('MakeTexture',winPtr,fix);
     tasktex(2)=Screen('MakeTexture',winPtr,fix);
     clear fix;
   elseif dparam.fixation{1}==2 % fixation cross
     if strcmpi(dparam.exp_mode,'mono')
-      fix_L=CreateFixationImgMono(dparam.fixation{2},task.fixdimratio.*dparam.fixation{3},dparam.background{1},fixlinew,fixlineh,0,0);
+      fix_L=CreateFixationImgMono(dparam.fixation{2},dimfixcolor,dparam.background{1},fixlinew,fixlineh,0,0);
       fix_R=fix_L;
     else % if strcmpi(dparam.exp_mode,'mono') % binocular stimuli
-      [fix_L,fix_R]=CreateFixationImg(dparam.fixation{2},task.fixdimratio.*dparam.fixation{3},dparam.background{1},fixlinew,fixlineh,0,0);
+      [fix_L,fix_R]=CreateFixationImg(dparam.fixation{2},dimfixcolor,dparam.background{1},fixlinew,fixlineh,0,0);
     end
     tasktex(1)=Screen('MakeTexture',winPtr,fix_L);
     tasktex(2)=Screen('MakeTexture',winPtr,fix_R);
@@ -860,6 +917,7 @@ for nn=1:1:nScr
   else
     Screen('DrawTexture',winPtr,timg(cseq(nn)),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
   end
+  if dparam.cmask{1}, Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset); end
   if dparam.fixation{1}, Screen('DrawTexture',winPtr,fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
   if dparam.onset_punch(1) % draw a punch rectangle for photo-trigger etc.
     if imgs.trigger{cseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
@@ -870,7 +928,7 @@ Screen('DrawingFinished',winPtr);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% wait for the first trigger pulse from the MR scanner or for button pressing
+%%%% Wait for the first trigger pulse from the MR scanner or for button pressing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % initialize task counter
@@ -941,7 +999,10 @@ for ii=1:1:length(prt) % blocks
 
         % generate the next image after cleaning up the current texture (to save memory)
         if mm==numel(prt{ii}.subduration{jj})
-          if dparam.img_loading_mode~=3, Screen('Close',timg(1)); Screen('Close',timg(2)); end
+          if dparam.img_loading_mode~=3
+            Screen('Close',timg(1));
+            if cseq(1)~=cseq(2), Screen('Close',timg(2)); end
+          end
           nextblockidx=ii; nextstimidx=jj+1;
           if nextstimidx>size(prt{ii}.sequence,2), nextblockidx=ii+1; nextstimidx=1; end
           if nextblockidx<=length(prt)
@@ -995,6 +1056,11 @@ for ii=1:1:length(prt) % blocks
               Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(nseq(nn),:),winRect)+centeroffset);
             else
               Screen('DrawTexture',winPtr,timg(nseq(nn)),[],CenterRect(imgRect(nseq(nn),:),winRect)+centeroffset);
+            end
+
+            % circular mask
+            if dparam.cmask{1}
+              Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset);
             end
 
             % fixation
@@ -1126,7 +1192,7 @@ end % try..catch
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% that's it - we're done
+%%%%% That's it - we're done
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 return
 % end % function ImagesShowPTB

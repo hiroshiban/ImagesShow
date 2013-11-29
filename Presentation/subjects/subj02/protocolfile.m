@@ -38,8 +38,8 @@
 
 % if you want to set display duration in msec
 blocks{1}.randomization=5;   % 0:OFF, 1:ALL, 2:Even seq. only, 3:Odd seq. only, 4:first half seq. only, 5:last half seq. only.
-%                            % 6:2-N-1 blocks are randomized whereas the first and the last sequences are fixed.
-%                            % or "matrix":randomize specific sequences you set. e.g. blocks{n}.randomization=1:3:ceil(N/2);
+                             % 6:2-N-1 blocks are randomized whereas the first and the last sequences are fixed.
+                             % or "matrix":randomize specific sequences you set. e.g. blocks{n}.randomization=1:3:ceil(N/2);
 blocks{1}.sequence=1;        % image numbers to be used, 1xN (monocular) or 2xN (binocular) vector
 blocks{1}.msec=500;          % display duration in msec of each image
 blocks{1}.slicing=100;       % (optional) minimum time slice in presentation (used to display task), if not specified, 6(frames) or 100(msec) are used by default
