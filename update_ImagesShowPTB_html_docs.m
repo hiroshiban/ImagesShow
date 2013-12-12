@@ -1,7 +1,7 @@
-function Update_ImagesShowPTB_Docs()
+function update_ImagesShowPTB_html_docs()
 
 % Updates all the HTML-based documents of ImagesShowPTB.
-% function Update_ImagesShowPTB_Docs()
+% function update_ImagesShowPTB_html_docs()
 %
 % This function updates html-based documents of ImagesShowPTB
 %
@@ -14,7 +14,7 @@ function Update_ImagesShowPTB_Docs()
 %
 %
 % Created    : "2013-11-13 13:08:05 ban"
-% Last Update: "2013-11-22 18:14:34 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2013-12-12 13:17:04 ban (ban.hiroshi@gmail.com)"
 
 % add path to m2html
 m2htmlpath=fullfile(fileparts(mfilename('fullpath')),'m2html');
@@ -37,6 +37,6 @@ disp(' ');
 disp('completed.');
 
 % remove path to m2html
-addpath(m2htmlpath);
+rmpath(m2htmlpath);
 
 return
