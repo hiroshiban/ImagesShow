@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2013-11-29 13:41:24 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2015-03-13 11:04:26 ban"
 %
 %
 % [input]
@@ -807,6 +807,8 @@ elseif dparam.task(1)==4 || dparam.task(1)==5 % 1-back task
   %end % if dparam.fixation{1}==1 % circular dot
 
 end % if dparam.task(1)==1
+
+if ~exist('task','var'), task=[]; end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
