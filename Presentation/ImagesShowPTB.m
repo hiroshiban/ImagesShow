@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2015-03-13 11:04:26 ban"
+% Last Update: "2015-03-16 18:07:08 ban"
 %
 %
 % [input]
@@ -254,7 +254,7 @@ if strcmpi(dparam.exp_mode,'mono') || strcmpi(dparam.exp_mode,'cross') || strcmp
    strcmpi(dparam.exp_mode,'topbottom') || strcmpi(dparam.exp_mode,'bottomtop')
   RGBgain=[];
 else
-  RGBgain=options.RGBgain;
+  RGBgain=dparam.RGBgain;
 end
 
 
