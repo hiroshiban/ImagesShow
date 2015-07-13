@@ -97,7 +97,7 @@ function protocols=readExpProtocols(protocolfile,blockrand,fps,ifi,init_rand_flg
 %
 %
 % Created    : "2013-11-08 15:30:07 ban"
-% Last Update: "2013-11-22 18:13:15 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2015-07-08 11:08:18 ban"
 
 % check input variable
 if nargin<1 || isempty(protocolfile), help(mfilename()); protocols=[]; return; end
@@ -149,7 +149,7 @@ for ii=1:1:nblocks
   if ~ismember(cell2mat(blocks{ii}.randomization),0:1:6) && numel(cell2mat(blocks{ii}.randomization))==1
     error('blocks{%d}.randomization is not one of 1-6. check input variable.',ii);
   end
-  if ~isempty(find(ismember(cell2mat(blocks{ii}.randomization),1:size(blocks{ii}.sequence,2))==0)) && numel(cell2mat(blocks{ii}.randomization))~=1
+  if ~isempty(find(ismember(cell2mat(blocks{ii}.randomization),1:size(blocks{ii}.sequence,2))==0,1)) && numel(cell2mat(blocks{ii}.randomization))~=1
     error('blocks{%d}.randomization has index that exceeds the number of sequence. check input variable.',ii);
   end
   if isstructmember(blocks{ii},'frame')

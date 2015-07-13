@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2015-03-16 18:07:08 ban"
+% Last Update: "2015-07-13 10:44:54 ban"
 %
 %
 % [input]
@@ -142,7 +142,8 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 % Made the source code clean and shorter by changing variable structures
 %                                            Nov  28 2013 H.Ban
 % Add a circular aperture mask option        Nov  29 2013 H.Ban
-
+% Mofied so that the script can handle prt{ii}.sequence = 0 as no input/display
+%                                            July 13 2015 H.Ban
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Check input variables
@@ -156,7 +157,7 @@ if nargin>8, error(['takes at most 8 arguments: ',...
                     'ImagesShowPTB(subj,acq,protocolfile,imgdbfile,(:viewfile),(:optionfile),(:gamma_table)),(:overwrite_flg)']); end
 
 % check the aqcuisition number. up to 10 design files can be used
-if acq<1, error('Acquistion number must be integer and greater than zero'); end
+if acq<1, error('Acquistion number must be an integer and greater than zero'); end
 if ~exist(fullfile(pwd,'subjects',subj),'dir'), error('can not find subj directory. check input variable.'); end
 
 
@@ -855,23 +856,31 @@ disp('done.');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if dparam.img_loading_mode==1 % read image one-by-one
-  cimg=imread(imgs.img{prt{1}.sequence(1,1)});
-  if dparam.use_original_imgsize, sz=size(cimg); imgRect(prt{1}.sequence(1,1),3:4)=fliplr(sz(1:2)).*imgReduceRatio; end % need to update imgRect
-  timg(1)=Screen('MakeTexture',winPtr,cimg);
-  if size(prt{1}.sequence,1)==2 && prt{1}.sequence(2,1)~=prt{1}.sequence(1,1)
-    cimg=imread(imgs.img{prt{1}.sequence(2,1)});
-    if dparam.use_original_imgsize, sz=size(cimg); imgRect(prt{1}.sequence(2,1),3:4)=fliplr(sz(1:2)).*imgReduceRatio; end
-    timg(2)=Screen('MakeTexture',winPtr,cimg);
+  if prt{1}.sequence(1,1)~=0
+    cimg=imread(imgs.img{prt{1}.sequence(1,1)});
+    if dparam.use_original_imgsize, sz=size(cimg); imgRect(prt{1}.sequence(1,1),3:4)=fliplr(sz(1:2)).*imgReduceRatio; end % need to update imgRect
+    timg(1)=Screen('MakeTexture',winPtr,cimg);
+    if size(prt{1}.sequence,1)==2 && prt{1}.sequence(2,1)~=prt{1}.sequence(1,1)
+      cimg=imread(imgs.img{prt{1}.sequence(2,1)});
+      if dparam.use_original_imgsize, sz=size(cimg); imgRect(prt{1}.sequence(2,1),3:4)=fliplr(sz(1:2)).*imgReduceRatio; end
+      timg(2)=Screen('MakeTexture',winPtr,cimg);
+    else
+      timg(2)=timg(1);
+    end
+    clear cimg;
   else
-    timg(2)=timg(1);
+    timg(1)=[]; timg(2)=[];
   end
-  clear cimg;
 elseif dparam.img_loading_mode==2 % images are already loaded as MATLAB matrix, imgs.img
-  timg(1)=Screen('MakeTexture',winPtr,imgs.img{prt{1}.sequence(1,1)});
-  if size(prt{1}.sequence,1)==2 && prt{1}.sequence(2,1)~=prt{1}.sequence(1,1)
-    timg(2)=Screen('MakeTexture',winPtr,imgs.img{prt{1}.sequence(2,1)});
+  if prt{1}.sequence(1,1)~=0
+    timg(1)=Screen('MakeTexture',winPtr,imgs.img{prt{1}.sequence(1,1)});
+    if size(prt{1}.sequence,1)==2 && prt{1}.sequence(2,1)~=prt{1}.sequence(1,1)
+      timg(2)=Screen('MakeTexture',winPtr,imgs.img{prt{1}.sequence(2,1)});
+    else
+      timg(2)=timg(1);
+    end
   else
-    timg(2)=timg(1);
+    timg(1)=[]; timg(2)=[];
   end
 elseif dparam.img_loading_mode==3 % generate all the textures at once
   timg=zeros(length(imgs.img),1);
@@ -914,12 +923,14 @@ cseq=[prt{1}.sequence(1,1),prt{1}.sequence(min([size(prt{1}.sequence,1),2]),1)];
 for nn=1:1:nScr
   Screen('SelectStereoDrawBuffer',winPtr,nn-1);
   Screen('DrawTexture',winPtr,background(nn),[],CenterRect(bgRect,winRect)+centeroffset);
-  if dparam.img_loading_mode~=3
-    Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
-  else
-    Screen('DrawTexture',winPtr,timg(cseq(nn)),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
+  if ~isempty(timg(nn))
+    if dparam.img_loading_mode~=3
+      Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
+    else
+      Screen('DrawTexture',winPtr,timg(cseq(nn)),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
+    end
+    if dparam.cmask{1}, Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset); end
   end
-  if dparam.cmask{1}, Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset); end
   if dparam.fixation{1}, Screen('DrawTexture',winPtr,fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
   if dparam.onset_punch(1) % draw a punch rectangle for photo-trigger etc.
     if imgs.trigger{cseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
@@ -1008,29 +1019,33 @@ for ii=1:1:length(prt) % blocks
           nextblockidx=ii; nextstimidx=jj+1;
           if nextstimidx>size(prt{ii}.sequence,2), nextblockidx=ii+1; nextstimidx=1; end
           if nextblockidx<=length(prt)
-            if dparam.img_loading_mode==1 % load image one-by-one
-              cimg=imread(imgs.img{prt{nextblockidx}.sequence(1,nextstimidx)});
-              if dparam.use_original_imgsize
-                sz=size(cimg); imgRect(prt{nextblockidx}.sequence(1,nextstimidx),3:4)=fliplr(sz(1:2)).*imgReduceRatio;
-              end
-              timg(1)=Screen('MakeTexture',winPtr,cimg);
-              if size(prt{nextblockidx}.sequence,1)==2 && prt{nextblockidx}.sequence(2,nextstimidx)~=prt{nextblockidx}.sequence(1,nextstimidx)
-                cimg=imread(imgs.img{prt{nextblockidx}.sequence(2,nextstimidx)});
+            if prt{nextblockidx}.sequence(1,nextstimidx)~=0
+              if dparam.img_loading_mode==1 % load image one-by-one
+                cimg=imread(imgs.img{prt{nextblockidx}.sequence(1,nextstimidx)});
                 if dparam.use_original_imgsize
-                  sz=size(cimg); imgRect(prt{nextblockidx}.sequence(2,nextstimidx),3:4)=fliplr(sz(1:2)).*imgReduceRatio;
+                  sz=size(cimg); imgRect(prt{nextblockidx}.sequence(1,nextstimidx),3:4)=fliplr(sz(1:2)).*imgReduceRatio;
                 end
-                timg(2)=Screen('MakeTexture',winPtr,cimg);
-              else
-                timg(2)=timg(1);
+                timg(1)=Screen('MakeTexture',winPtr,cimg);
+                if size(prt{nextblockidx}.sequence,1)==2 && prt{nextblockidx}.sequence(2,nextstimidx)~=prt{nextblockidx}.sequence(1,nextstimidx)
+                  cimg=imread(imgs.img{prt{nextblockidx}.sequence(2,nextstimidx)});
+                  if dparam.use_original_imgsize
+                    sz=size(cimg); imgRect(prt{nextblockidx}.sequence(2,nextstimidx),3:4)=fliplr(sz(1:2)).*imgReduceRatio;
+                  end
+                  timg(2)=Screen('MakeTexture',winPtr,cimg);
+                else
+                  timg(2)=timg(1);
+                end
+                clear cimg;
+              elseif dparam.img_loading_mode==2 % make PTB texture one-by-one
+                timg(1)=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(1,nextstimidx)});
+                if size(prt{nextblockidx}.sequence,1)==2 && prt{nextblockidx}.sequence(2,nextstimidx)~=prt{nextblockidx}.sequence(1,nextstimidx)
+                  timg(2)=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(2,nextstimidx)});
+                else
+                  timg(2)=timg(1);
+                end
               end
-              clear cimg;
-            elseif dparam.img_loading_mode==2 % make PTB texture one-by-one
-              timg(1)=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(1,nextstimidx)});
-              if size(prt{nextblockidx}.sequence,1)==2 && prt{nextblockidx}.sequence(2,nextstimidx)~=prt{nextblockidx}.sequence(1,nextstimidx)
-                timg(2)=Screen('MakeTexture',winPtr,imgs.img{prt{nextblockidx}.sequence(2,nextstimidx)});
-              else
-                timg(2)=timg(1);
-              end
+            else
+              timg(1)=[]; timg(2)=[];
             end
           end % if nextblockidx<=length(prt)
         else
@@ -1054,15 +1069,17 @@ for ii=1:1:length(prt) % blocks
             Screen('DrawTexture',winPtr,background(nn),[],CenterRect(bgRect,winRect)+centeroffset);
 
             % target image
-            if dparam.img_loading_mode~=3
-              Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(nseq(nn),:),winRect)+centeroffset);
-            else
-              Screen('DrawTexture',winPtr,timg(nseq(nn)),[],CenterRect(imgRect(nseq(nn),:),winRect)+centeroffset);
-            end
+            if ~isempty(timg(nn))
+              if dparam.img_loading_mode~=3
+                Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(nseq(nn),:),winRect)+centeroffset);
+              else
+                Screen('DrawTexture',winPtr,timg(nseq(nn)),[],CenterRect(imgRect(nseq(nn),:),winRect)+centeroffset);
+              end
 
-            % circular mask
-            if dparam.cmask{1}
-              Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset);
+              % circular mask
+              if dparam.cmask{1}
+                Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset);
+              end
             end
 
             % fixation
@@ -1180,7 +1197,7 @@ catch lasterror
   tmp=lasterror; %#ok
   if exist('event','var'), event=event.get_event(); end %#ok % just for debugging
   diary off;
-  fprintf(['\nErrror detected and the program was terminated.\n',...
+  fprintf(['\nError detected and the program was terminated.\n',...
            'To check error(s), please type ''tmp''.\n',...
            'Please save the current variables now if you need.\n',...
            'Then, quit by ''dbquit''\n']);

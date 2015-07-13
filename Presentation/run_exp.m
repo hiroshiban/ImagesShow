@@ -15,13 +15,13 @@ function run_exp(subj,acq)
 %
 %
 % Created:   : "2013-11-15 14:49:29 ban"
-% Last Update: "2013-11-22 18:11:25 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2015-07-08 10:26:21 ban"
 
 % check input variables
 if nargin<1 || isempty(subj), help(mfilename()); return; end
 if nargin<2 || isempty(acq), acq=1; end
 
-if acq<1, error('acq should be interger above 0. check input variable.'); end
+if acq<1, error('acq should be an interger and greater than 0. check input variable.'); end
 
 % set default input file names
 protocolfile='protocolfile';
