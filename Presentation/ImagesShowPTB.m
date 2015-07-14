@@ -1,7 +1,7 @@
-function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma_table,overwrite_flg)
+function ImagesShowPTB(subj,acq,session,protocolfile,imgdbfile,viewfile,optionfile,gamma_table,overwrite_flg)
 
 % a fully-customizable image presentation script for your fMRI(event- and block-design)/TMS/EEG/behavior experiments.
-% function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,:viewfile,:optionfile,:gamma_table,:overwrite_flg)
+% function ImagesShowPTB(subj,acq,session,protocolfile,imgdbfile,:viewfile,:optionfile,:gamma_table,:overwrite_flg)
 % (: is optional)
 %
 % This MATLAB function is a fully updated version of ImagesShow that was originally written in C++
@@ -19,13 +19,14 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2015-07-13 10:44:54 ban"
+% Last Update: "2015-07-14 12:47:37 ban"
 %
 %
 % [input]
 % subj         : name of subject, string, such as 's01', 'HB', 'hiroshi'
 %                you also need to create a directory ./subjects/(subj) and put 4 condition files there.
 % acq          : acquisition number. 1,2,3,...
+% session      : session (day) number. 1,2,3,...
 % protocolfile : protocol file in which experiment design is described.
 %                the file should be located in ./subjects/(subj)/
 %                You can define block- or event-related-design experiment using this file.
@@ -142,8 +143,10 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 % Made the source code clean and shorter by changing variable structures
 %                                            Nov  28 2013 H.Ban
 % Add a circular aperture mask option        Nov  29 2013 H.Ban
-% Mofied so that the script can handle prt{ii}.sequence = 0 as no input/display
+% Modified so that the script can handle prt{ii}.sequence = 0 as no input/display
 %                                            July 13 2015 H.Ban
+% Adde a parameter, session, to discriminate experiments in different runs etc.
+%                                            July 14 2015 H.Ban
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Check input variables
@@ -151,10 +154,10 @@ function ImagesShowPTB(subj,acq,protocolfile,imgdbfile,viewfile,optionfile,gamma
 
 clear global; clear mex;
 
-if nargin<4, help(mfilename()); return; end
-if nargin<8 || isempty(overwrite_flg), overwrite_flg=0; end
-if nargin>8, error(['takes at most 8 arguments: ',...
-                    'ImagesShowPTB(subj,acq,protocolfile,imgdbfile,(:viewfile),(:optionfile),(:gamma_table)),(:overwrite_flg)']); end
+if nargin<5, help(mfilename()); return; end
+if nargin<9 || isempty(overwrite_flg), overwrite_flg=0; end
+if nargin>9, error(['takes at most 9 arguments: ',...
+                    'ImagesShowPTB(subj,acq,session,protocolfile,imgdbfile,(:viewfile),(:optionfile),(:gamma_table)),(:overwrite_flg)']); end
 
 % check the aqcuisition number. up to 10 design files can be used
 if acq<1, error('Acquistion number must be an integer and greater than zero'); end
@@ -216,7 +219,7 @@ InitializeRandomSeed();
 %%%% Reset/load display Gamma-function
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if nargin<7 || isempty(gamma_table)
+if nargin<8 || isempty(gamma_table)
   gamma_table=repmat(linspace(0.0,1.0,256),3,1); %#ok
   GammaResetPTB(1.0);
 else
@@ -230,7 +233,7 @@ end
 
 % load size parameters
 fprintf('step 1: loading viewing size parameters...');
-if nargin<5 || isempty(viewfile)
+if nargin<6 || isempty(viewfile)
   vparam=readViewingParameters('default'); %#ok
 else
   fviewfile=fullfile('subjects',subj,viewfile);
@@ -241,7 +244,7 @@ disp('done.');
 
 % load display options
 fprintf('step 2: loading display options...');
-if nargin<6 || isempty(optionfile)
+if nargin<7 || isempty(optionfile)
   dparam=readDisplayOptions('default');
 else
   foptionfile=fullfile('subjects',subj,optionfile);
@@ -276,7 +279,7 @@ if dparam.fps==0, dparam.fps=1/dparam.ifi; end
 % load experiment protocols
 fprintf('step 3: loading protocols...');
 fprotocolfile=fullfile('subjects',subj,protocolfile);
-prt=readExpProtocols(fprotocolfile,dparam.block_rand,dparam.fps,dparam.ifi);
+prt=readExpProtocols(fprotocolfile,dparam.block_rand,dparam.fps,dparam.ifi,0);
 clear fprotocolfile;
 disp('done.');
 
@@ -847,7 +850,7 @@ if overwrite_flg
 end
 
 % save the current parameters
-eval(sprintf('save %s subj acq prt vparam dparam task gamma_table;',savefname));
+eval(sprintf('save %s subj acq session prt vparam dparam task gamma_table;',savefname));
 disp('done.');
 
 
