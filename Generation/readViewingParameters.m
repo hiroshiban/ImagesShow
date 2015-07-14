@@ -24,7 +24,7 @@ function vparams=readViewingParameters(viewfile)
 %
 %
 % Created    : "2013-11-08 15:33:56 ban"
-% Last Update: "2013-11-22 18:12:21 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2015-07-14 13:08:32 ban"
 
 % check input variable
 if nargin<1 || isempty(viewfile), help(mfilename()); vparams=[]; return; end

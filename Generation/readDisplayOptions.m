@@ -7,7 +7,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2013-11-29 12:37:03 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2015-07-14 13:08:27 ban"
 %
 %
 % [input]

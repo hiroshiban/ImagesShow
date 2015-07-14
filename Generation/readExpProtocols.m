@@ -97,7 +97,7 @@ function protocols=readExpProtocols(protocolfile,blockrand,fps,ifi,init_rand_flg
 %
 %
 % Created    : "2013-11-08 15:30:07 ban"
-% Last Update: "2015-07-08 11:08:18 ban"
+% Last Update: "2015-07-14 13:08:40 ban"
 
 % check input variable
 if nargin<1 || isempty(protocolfile), help(mfilename()); protocols=[]; return; end

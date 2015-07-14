@@ -62,7 +62,7 @@ function imgs=readImageDatabase(imgdbfile,img_loading_mode)
 %
 %
 % Created:   : "2013-11-08 15:32:41 ban"
-% Last Update: "2013-11-29 10:19:30 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2015-07-14 13:08:36 ban"
 
 % check input variable
 if nargin<1 || isempty(imgdbfile), help(mfilename()); imgs=[]; return; end

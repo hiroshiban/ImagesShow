@@ -1,4 +1,4 @@
-function ImagesShowPTB(subj,acq,session,protocolfile,imgdbfile,viewfile,optionfile,gamma_table,overwrite_flg)
+function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optionfile,gamma_table,overwrite_flg)
 
 % a fully-customizable image presentation script for your fMRI(event- and block-design)/TMS/EEG/behavior experiments.
 % function ImagesShowPTB(subj,acq,session,protocolfile,imgdbfile,:viewfile,:optionfile,:gamma_table,:overwrite_flg)
@@ -19,7 +19,7 @@ function ImagesShowPTB(subj,acq,session,protocolfile,imgdbfile,viewfile,optionfi
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2015-07-14 12:47:37 ban"
+% Last Update: "2015-07-14 14:03:12 ban"
 %
 %
 % [input]
@@ -147,17 +147,32 @@ function ImagesShowPTB(subj,acq,session,protocolfile,imgdbfile,viewfile,optionfi
 %                                            July 13 2015 H.Ban
 % Adde a parameter, session, to discriminate experiments in different runs etc.
 %                                            July 14 2015 H.Ban
+% Change the attribute of the parameters -- subj, acq, session,
+% vparam, dparam, imgs, prt, and imgs -- as the global variables.
+% The modification is danger and will never be recommended for the
+% function independence and safety. But I decided to take this
+% modification because I thought the users will have more benefits
+% by this change as we can generate more powerful and flexible
+% configuration files if the users can access to some global
+% parameters. Please be careful in use. To get global variable
+% value(s), please use getGlobalParameters function in
+% ~/ImagesShowPTB/Generation.
+%                                            July 14 2015 H.Ban
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Check input variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clear global; clear mex;
+%clear global; clear mex;
+global subj acq session vparam dparam prt imgs;
 
 if nargin<5, help(mfilename()); return; end
 if nargin<9 || isempty(overwrite_flg), overwrite_flg=0; end
 if nargin>9, error(['takes at most 9 arguments: ',...
                     'ImagesShowPTB(subj,acq,session,protocolfile,imgdbfile,(:viewfile),(:optionfile),(:gamma_table)),(:overwrite_flg)']); end
+
+% set global variables (the other parameters are set later)
+subj=subj_; acq=acq_; session=session_;
 
 % check the aqcuisition number. up to 10 design files can be used
 if acq<1, error('Acquistion number must be an integer and greater than zero'); end
@@ -276,18 +291,18 @@ if dparam.fps==0, dparam.fps=1/dparam.ifi; end
 %%%% Read/set the experiment protocol and image-database parameters (presentation protocol, images)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% load experiment protocols
-fprintf('step 3: loading protocols...');
-fprotocolfile=fullfile('subjects',subj,protocolfile);
-prt=readExpProtocols(fprotocolfile,dparam.block_rand,dparam.fps,dparam.ifi,0);
-clear fprotocolfile;
-disp('done.');
-
 % load image database
-fprintf('step 4: loading image database...');
+fprintf('step 3: loading image database...');
 fimgdbfile=fullfile('subjects',subj,imgdbfile);
 imgs=readImageDatabase(fimgdbfile,dparam.img_loading_mode);
 clear fimgdbfile;
+disp('done.');
+
+% load experiment protocols
+fprintf('step 4: loading protocols...');
+fprotocolfile=fullfile('subjects',subj,protocolfile);
+prt=readExpProtocols(fprotocolfile,dparam.block_rand,dparam.fps,dparam.ifi,0);
+clear fprotocolfile;
 disp('done.');
 disp(' ');
 
