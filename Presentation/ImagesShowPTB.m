@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2015-07-14 14:34:55 ban"
+% Last Update: "2015-07-14 19:16:25 ban"
 %
 %
 % [input]
@@ -592,7 +592,7 @@ if dparam.cmask{1}
   if dparam.cmask{1}==1 % oval aperture
     idx=logical( 1<( x.^2/(dparam.cmask{2}(2)/2).^2 + y.^2/(dparam.cmask{2}(1)/2).^2 ) );
   elseif dparam.cmask{1}==2 % rectangular aperture
-    idx=logical( -dparam.cmask{2}(2)/2<x & x<dparam.cmask{2}(2)/2 & -dparam.cmask{2}(1)/2<y & y<dparam.cmask{2}(1)/2 );
+    idx=logical( x<-dparam.cmask{2}(2)/2 | dparam.cmask{2}(2)/2<x | y<-dparam.cmask{2}(1)/2 | dparam.cmask{2}(1)/2<y );
   end
 
   % generate a background-colored rectangle
@@ -947,14 +947,17 @@ cseq=[prt{1}.sequence(1,1),prt{1}.sequence(min([size(prt{1}.sequence,1),2]),1)];
 for nn=1:1:nScr
   Screen('SelectStereoDrawBuffer',winPtr,nn-1);
   Screen('DrawTexture',winPtr,background(nn),[],CenterRect(bgRect,winRect)+centeroffset);
-  if ~isempty(timg(nn))
-    if dparam.img_loading_mode~=3
+  if dparam.img_loading_mode~=3
+    if ~isempty(timg(nn))
       Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
-    else
+    end
+  else
+    if cseq(nn)~=0
       Screen('DrawTexture',winPtr,timg(cseq(nn)),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
     end
-    if dparam.cmask{1}, Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset); end
   end
+  if dparam.cmask{1}, Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset); end
+
   if dparam.fixation{1}, Screen('DrawTexture',winPtr,fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
   if dparam.onset_punch(1) % draw a punch rectangle for photo-trigger etc.
     if imgs.trigger{cseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
@@ -1010,12 +1013,12 @@ for ii=1:1:length(prt) % blocks
         if mm==1
           if cseq(1)~=cseq(2)
             event=event.add_event('Stim on',sprintf('%d/%d',cseq(1),cseq(2)));
-            if imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger L',imgs.trigger{cseq(1)}); end
-            if imgs.trigger{cseq(2)}~=0, event=event.add_event('Stim Trigger R',imgs.trigger{cseq(2)}); end
+            if cseq(1)~=0 && imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger L',imgs.trigger{cseq(1)}); end
+            if cseq(2)~=0 && imgs.trigger{cseq(2)}~=0, event=event.add_event('Stim Trigger R',imgs.trigger{cseq(2)}); end
             fprintf('%03d/%03d ',cseq(1),cseq(2));
           else
             event=event.add_event('Stim on',sprintf('%d',cseq(1)));
-            if imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger',imgs.trigger{cseq(1)}); end
+            if cseq(1)~=0 && imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger',imgs.trigger{cseq(1)}); end
             fprintf('%03d ',cseq(1));
           end
           if jj==size(prt{ii}.sequence,2), fprintf('\n'); end
@@ -1037,8 +1040,10 @@ for ii=1:1:length(prt) % blocks
         % generate the next image after cleaning up the current texture (to save memory)
         if mm==numel(prt{ii}.subduration{jj})
           if dparam.img_loading_mode~=3
-            Screen('Close',timg(1));
-            if cseq(1)~=cseq(2), Screen('Close',timg(2)); end
+            if ~isempty(timg(1))
+              Screen('Close',timg(1));
+              if cseq(1)~=cseq(2) && ~isempty(timg(2)), Screen('Close',timg(2)); end
+            end
           end
           nextblockidx=ii; nextstimidx=jj+1;
           if nextstimidx>size(prt{ii}.sequence,2), nextblockidx=ii+1; nextstimidx=1; end
@@ -1069,7 +1074,9 @@ for ii=1:1:length(prt) % blocks
                 end
               end
             else
-              timg(1)=[]; timg(2)=[];
+              if dparam.img_loading_mode~=3
+                timg(1)=[]; timg(2)=[];
+              end
             end
           end % if nextblockidx<=length(prt)
         else
@@ -1093,17 +1100,19 @@ for ii=1:1:length(prt) % blocks
             Screen('DrawTexture',winPtr,background(nn),[],CenterRect(bgRect,winRect)+centeroffset);
 
             % target image
-            if ~isempty(timg(nn))
-              if dparam.img_loading_mode~=3
+            if dparam.img_loading_mode~=3
+              if ~isempty(timg(nn))
                 Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(nseq(nn),:),winRect)+centeroffset);
-              else
+              end
+            else
+              if nseq(nn)~=0
                 Screen('DrawTexture',winPtr,timg(nseq(nn)),[],CenterRect(imgRect(nseq(nn),:),winRect)+centeroffset);
               end
+            end
 
-              % circular mask
-              if dparam.cmask{1}
-                Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset);
-              end
+            % circular mask
+            if dparam.cmask{1}
+              Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset);
             end
 
             % fixation
