@@ -37,7 +37,7 @@ options.fixation={1,6,[255,0,0]};
 % background parameter, {background_RGB,patch1_RGB,patch2_RGB,patch_num(row,col),patch_size(row,col),(optional)aperture_size(row,col)}
 options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
 
-% whether masking display images using a circular aperture mask, {on_off(0|1),radius_pix(row,col),gaussian_parameters(mean,sd)}
+% whether masking display images using a circular aperture mask, {on_off(0|1(circular)|2(rectangular)),radius_pix(row,col),gaussian_parameters(mean,sd)}
 % if you want to put a circular aperture mask on each of the images, please set on_off to 1.
 % if gaussian_parameters(1)=0, no smoothing on the edges is applied.
 options.cmask={0,[280,280],[20,20]};

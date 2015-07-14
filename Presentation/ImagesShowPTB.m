@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2015-07-14 14:03:12 ban"
+% Last Update: "2015-07-14 14:34:55 ban"
 %
 %
 % [input]
@@ -145,7 +145,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 % Add a circular aperture mask option        Nov  29 2013 H.Ban
 % Modified so that the script can handle prt{ii}.sequence = 0 as no input/display
 %                                            July 13 2015 H.Ban
-% Adde a parameter, session, to discriminate experiments in different runs etc.
+% Add a parameter, session, to discriminate experiments in different runs etc.
 %                                            July 14 2015 H.Ban
 % Change the attribute of the parameters -- subj, acq, session,
 % vparam, dparam, imgs, prt, and imgs -- as the global variables.
@@ -158,6 +158,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 % value(s), please use getGlobalParameters function in
 % ~/ImagesShowPTB/Generation.
 %                                            July 14 2015 H.Ban
+% Add a rectangular aperture mask option     July 14 2015 H.Ban
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Check input variables
@@ -587,7 +588,12 @@ if dparam.cmask{1}
   [x,y]=meshgrid(-aperture_size(2)/2:step:aperture_size(2)/2,-aperture_size(1)/2:step:aperture_size(1)/2);
   if mod(size(x,1),2), x=x(1:end-1,:); y=y(1:end-1,:); end
   if mod(size(x,2),2), x=x(:,1:end-1); y=y(:,1:end-1); end
-  idx=logical( 1<( x.^2/(dparam.cmask{2}(2)/2).^2 + y.^2/(dparam.cmask{2}(1)/2).^2 ) );
+
+  if dparam.cmask{1}==1 % oval aperture
+    idx=logical( 1<( x.^2/(dparam.cmask{2}(2)/2).^2 + y.^2/(dparam.cmask{2}(1)/2).^2 ) );
+  elseif dparam.cmask{1}==2 % rectangular aperture
+    idx=logical( -dparam.cmask{2}(2)/2<x & x<dparam.cmask{2}(2)/2 & -dparam.cmask{2}(1)/2<y & y<dparam.cmask{2}(1)/2 );
+  end
 
   % generate a background-colored rectangle
   maskimg=ones([size(x),4]);
