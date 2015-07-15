@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2015-07-14 19:16:25 ban"
+% Last Update: "2015-07-16 13:13:32 ban"
 %
 %
 % [input]
@@ -143,7 +143,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 % Made the source code clean and shorter by changing variable structures
 %                                            Nov  28 2013 H.Ban
 % Add a circular aperture mask option        Nov  29 2013 H.Ban
-% Modified so that the script can handle prt{ii}.sequence = 0 as no input/display
+% Modified so that the script can handle prt{ii}.sequence = 0 as no input/Display
 %                                            July 13 2015 H.Ban
 % Add a parameter, session, to discriminate experiments in different runs etc.
 %                                            July 14 2015 H.Ban
@@ -200,7 +200,7 @@ today=strrep(datestr(now,'yy/mm/dd'),'/','');
 % result directry & file
 resultDir=fullfile(rootDir,'subjects',num2str(subj),'results',today);
 if ~exist(resultDir,'dir'), mkdir(resultDir); end
-logfname=fullfile(resultDir,[num2str(subj),'_ImagesShowPTB_results_run_',num2str(acq,'%02d'),'.log']);
+logfname=fullfile(resultDir,[num2str(subj),'_ImagesShowPTB_results_session_',num2str(session,'%02d'),'_run_',num2str(acq,'%02d'),'.log']);
 diary(logfname);
 warning off; %#ok warning('off','MATLAB:dispatcher:InexactCaseMatch');
 
@@ -250,10 +250,10 @@ end
 % load size parameters
 fprintf('step 1: loading viewing size parameters...');
 if nargin<6 || isempty(viewfile)
-  vparam=readViewingParameters('default'); %#ok
+  vparam=readViewingParameters('default');
 else
   fviewfile=fullfile('subjects',subj,viewfile);
-  vparam=readViewingParameters(fviewfile); %#ok
+  vparam=readViewingParameters(fviewfile);
   clear fviewfile;
 end
 disp('done.');
@@ -862,12 +862,12 @@ end
 % saving the current parameters
 % (this is required to analyze part of the data obtained even when the experiment is interrupted unexpectedly)
 fprintf('saving the stimulus generation and presentation parameters...');
-savefname=fullfile(resultDir,[num2str(subj),'_ImagesShowPTB_results_run_',num2str(acq,'%02d'),'.mat']);
+savefname=fullfile(resultDir,[num2str(subj),'_ImagesShowPTB_results_session_',num2str(session,'%02d'),'_run_',num2str(acq,'%02d'),'.mat']);
 
 % backup the old file(s)
 if overwrite_flg
   BackUpObsoleteFiles(fullfile('subjects',num2str(subj),'results',today),...
-                      [num2str(subj),'_ImagesShowPTB_results_run_',num2str(acq,'%02d'),'.mat'],'_old');
+                      [num2str(subj),'_ImagesShowPTB_results_session_',num2str(session,'%02d'),'_run_',num2str(acq,'%02d'),'.mat'],'_old');
 end
 
 % save the current parameters
@@ -893,7 +893,7 @@ if dparam.img_loading_mode==1 % read image one-by-one
     end
     clear cimg;
   else
-    timg(1)=[]; timg(2)=[];
+    timg=[];
   end
 elseif dparam.img_loading_mode==2 % images are already loaded as MATLAB matrix, imgs.img
   if prt{1}.sequence(1,1)~=0
@@ -904,7 +904,7 @@ elseif dparam.img_loading_mode==2 % images are already loaded as MATLAB matrix, 
       timg(2)=timg(1);
     end
   else
-    timg(1)=[]; timg(2)=[];
+    timg=[];
   end
 elseif dparam.img_loading_mode==3 % generate all the textures at once
   timg=zeros(length(imgs.img),1);
@@ -948,7 +948,7 @@ for nn=1:1:nScr
   Screen('SelectStereoDrawBuffer',winPtr,nn-1);
   Screen('DrawTexture',winPtr,background(nn),[],CenterRect(bgRect,winRect)+centeroffset);
   if dparam.img_loading_mode~=3
-    if ~isempty(timg(nn))
+    if ~isempty(timg)
       Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(cseq(nn),:),winRect)+centeroffset);
     end
   else
@@ -960,7 +960,7 @@ for nn=1:1:nScr
 
   if dparam.fixation{1}, Screen('DrawTexture',winPtr,fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
   if dparam.onset_punch(1) % draw a punch rectangle for photo-trigger etc.
-    if imgs.trigger{cseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
+    if cseq(nn)~=0 && imgs.trigger{cseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
     Screen('FillRect',winPtr,trigcolor,CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset);
   end
 end
@@ -1040,7 +1040,7 @@ for ii=1:1:length(prt) % blocks
         % generate the next image after cleaning up the current texture (to save memory)
         if mm==numel(prt{ii}.subduration{jj})
           if dparam.img_loading_mode~=3
-            if ~isempty(timg(1))
+            if numel(timg)~=0 && ~isempty(timg(1))
               Screen('Close',timg(1));
               if cseq(1)~=cseq(2) && ~isempty(timg(2)), Screen('Close',timg(2)); end
             end
@@ -1075,7 +1075,7 @@ for ii=1:1:length(prt) % blocks
               end
             else
               if dparam.img_loading_mode~=3
-                timg(1)=[]; timg(2)=[];
+                timg=[];
               end
             end
           end % if nextblockidx<=length(prt)
@@ -1101,7 +1101,7 @@ for ii=1:1:length(prt) % blocks
 
             % target image
             if dparam.img_loading_mode~=3
-              if ~isempty(timg(nn))
+              if ~isempty(timg)
                 Screen('DrawTexture',winPtr,timg(nn),[],CenterRect(imgRect(nseq(nn),:),winRect)+centeroffset);
               end
             else
@@ -1122,7 +1122,7 @@ for ii=1:1:length(prt) % blocks
 
             % onset marker
             if dparam.onset_punch(1) % draw a punch rectangle for photo-trigger etc.
-              if imgs.trigger{nseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
+              if nseq(nn)~=0 && imgs.trigger{nseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
               Screen('FillRect',winPtr,trigcolor,CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset);
             end
 
@@ -1176,7 +1176,7 @@ end
 
 % clean up
 for ii=1:1:length(prt), prt{ii}=rmfield(prt{ii},{'subcumduration','subduration'}); end
-if dparam.img_loading_mode~=1, imgs=rmfield(imgs,'img'); end %#ok % clean up raw image data if they are stored
+if dparam.img_loading_mode~=1, imgs=rmfield(imgs,'img'); end % clean up raw image data if they are stored
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1192,11 +1192,11 @@ disp('done.');
 disp(' ');
 if ~isempty(intersect(dparam.task(1),[1,3:5])) % detection/identification task
   correct_event=cell(numel(dparam.keys),1); for ii=1:1:numel(dparam.keys), correct_event{ii}=sprintf('key%d',ii); end
-  [task.numTasks,task.numHits,task.numErrors,task.numResponses,task.RT]=event.calc_accuracy(correct_event);
+  [task.numTasks,task.numHits,task.numErrors,task.numResponses,task.RT]=event.calc_accuracy(correct_event); %#ok
 elseif dparam.task(1)==2 % vernier line detection task
   correct_event{1}={-3,'key1'}; correct_event{2}={-2,'key1'}; correct_event{3}={-1,'key1'}; correct_event{4}={ 0,'key2'};
   correct_event{5}={ 1,'key2'}; correct_event{6}={ 2,'key2'}; correct_event{7}={ 3,'key2'};
-  [task.numTasks,task.numHits,task.numErrors,task.numResponses,task.RT]=event.calc_accuracies(correct_event);
+  [task.numTasks,task.numHits,task.numErrors,task.numResponses,task.RT]=event.calc_accuracies(correct_event); %#ok
 end
 event=event.get_event(); % convert an event logger object to a cell data structure
 eval(sprintf('save -append %s task event;',savefname)); % save the updated task & event structures
