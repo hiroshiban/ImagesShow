@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2016-08-29 13:55:53 ban"
+% Last Update: "2016-08-29 17:56:08 ban"
 %
 %
 % [input]
@@ -460,6 +460,11 @@ if ~user_answer, close all; return; end
 [winPtr,winRect,nScr,dparam.fps,dparam.ifi,initDisplay_OK]=InitializePTBDisplays(dparam.exp_mode,dparam.background{2},dparam.img_flip,RGBgain);
 if ~initDisplay_OK, error('Display initialization error. Please check your exp_run parameter.'); end
 HideCursor();
+
+if ~dparam.force_frame_rate
+  dparam.fps=dparam.force_frame_rate;
+  dparam.ifi=1/dparam.fps;
+end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
