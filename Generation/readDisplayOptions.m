@@ -7,7 +7,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2015-07-14 13:08:27 ban"
+% Last Update: "2016-08-29 12:40:17 ban"
 %
 %
 % [input]
@@ -43,8 +43,9 @@ function options=readDisplayOptions(optionfile)
 %              % fixation parameter, {fixation type(0: non, 1: circle, 2: cross),size,color}
 %              options.fixation={2,24,[255,255,255]};
 %
-%              % background parameter, {background_RGB,patch1_RGB,patch2_RGB,patch_num(row,col),patch_size(row,col),(optional)aperture_size(row,col)}
-%              options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
+%              % background parameters,
+%              % {type(uniform(0) or with patches(1)),background_RGB,patch1_RGB,patch2_RGB,patch_num(row,col),patch_size(row,col),(optional)aperture_size(row,col)}
+%              options.background={1,[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
 %
 %              % whether masking display images using a circular aperture mask, {on_off(0|1),radius_pix(row,col),gaussian_parameters(mean,sd)}
 %              % if you want to put a circular aperture mask on each of the images, please set on_off to 1.
@@ -56,6 +57,13 @@ function options=readDisplayOptions(optionfile)
 %
 %              % whether forcing to use the full-screen display, [0|1]
 %              options.use_fullscr=0;
+%
+%              % whether skipping frame sync (flip) test
+%              option.skip_frame_sync_test=0;
+%
+%              % whether forcing to use specific frame rate, if 0, the frame rate wil bw computed in the ImagesShowPTB function.
+%              % if non zero, the value is used as the screen frame rate.
+%              option.force_frame_rate=60;
 %
 %              % whether forcing to use frames (vertical sync signals) as a unit of display duration instead of msec.
 %              % 0: none, 1: force to use the number of frames for presentation duration setting
@@ -135,7 +143,7 @@ run_optionfile=optionfile;
 if ~strcmpi(run_optionfile(end-1:end),'.m'), run_optionfile=strcat(run_optionfile,'.m'); end
 
 if ~exist(fullfile(pwd,run_optionfile),'file')
-  warning('can not find optionfile: %s. setting default parameters...',run_optionfile); %#ok
+  warning('can not find optionfile: %s. setting default parameters...',run_optionfile);
   options=setdefaultoptions();
   return
 end
@@ -151,7 +159,9 @@ if ~isstructmember(options,'keys'), options.keys=[37,39]; end
 if ~isstructmember(options,'window_size'), options.window_size=[768,1024]; end
 if ~isstructmember(options,'RGBgain'), options.RGBgain=[1,1,1;1,1,1]; end
 if ~isstructmember(options,'fixation'), options.fixation={2,24,[255,255,255]}; end
-if ~isstructmember(options,'background'), options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]}; end
+if ~isstructmember(options,'background'), options.background={0,[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]}; end
+if ~isstructmember(options,'skip_frame_sync_test'), options.skip_frame_sync_test=0; end
+if ~isstructmember(options,'force_frame_rate'), options.force_frame_rate=0; end
 if ~isstructmember(options,'cmask'), options.cmask={0,[280,280],[20,20]}; end
 if ~isstructmember(options,'auto_background'), options.auto_background=0; end
 if ~isstructmember(options,'use_fullscr'), options.use_fullscr=0; end
@@ -169,10 +179,11 @@ if numel(options.window_size)==1, options.window_size=[options.window_size,optio
 if size(options.RGBgain,1)==1, options.RGBgain=repmat(options.RGBgain,[2,1]); end
 if length(options.fixation)==1, options.fixation{2}=24; end
 if length(options.fixation)==2, options.fixation{3}=[255,255,255]; end
-if length(options.background)==1, options.background{2}=[255,255,255]; end
-if length(options.background)==2, options.background{3}=[0,0,0]; end
-if length(options.background)==3, options.background{4}=[30,30]; end
-if length(options.background)==4, options.background{5}=[20,20]; end
+if length(options.background)==1, options.background{2}=[127,127,127]; end
+if length(options.background)==2, options.background{3}=[255,255,255]; end
+if length(options.background)==3, options.background{4}=[0,0,0]; end
+if length(options.background)==4, options.background{5}=[30,30]; end
+if length(options.background)==5, options.background{6}=[20,20]; end
 if length(options.cmask)==1, options.cmask{2}=[280,280]; end
 if length(options.cmask)==2, options.cmask{3}=[20,20]; end
 if numel(options.center)==1, options.center=[options.center,options.center]; end
@@ -197,6 +208,8 @@ function options=setdefaultoptions()
   options.cmask={0,[280,280],[20,20]};
   options.auto_background=0;
   options.use_fullscr=0;
+  options.skip_frame_sync_test=0;
+  options.force_frame_rate=0;
   options.use_frame=0;
   options.use_original_imgsize=0;
   options.img_loading_mode=2;

@@ -1,4 +1,4 @@
-function run_exp(subj,acq,session)
+function OK=run_exp(subj,acq,session)
 
 % a simple wrapper to ImageShowPTB.m.
 % function run_exp(subj,:acq,:session)
@@ -16,7 +16,7 @@ function run_exp(subj,acq,session)
 %
 %
 % Created:   : "2013-11-15 14:49:29 ban"
-% Last Update: "2015-07-14 13:11:03 ban"
+% Last Update: "2016-08-29 10:10:48 ban"
 
 % check input variables
 if nargin<1 || isempty(subj), help(mfilename()); return; end
@@ -33,6 +33,37 @@ viewfile='size_params';
 optionfile='display_options';
 %gamma_table='../gamma_table/gamma_table_131115.mat';
 
+%% check directory with subject name
+
+% [NOTE]
+% if the subj directory is not found, create subj directory, copy all condition
+% files from DEFAULT and then run the script using DEFAULT parameters
+
+subj_dir=fullfile(pwd,'subjects',subj);
+if ~exist(subj_dir,'dir')
+
+  disp('The subject directory was not found.');
+  user_response=0;
+  while ~user_response
+    user_entry = input('Do you want to proceed using DEFAULT parameters? (y/n) : ', 's');
+    if(user_entry == 'y')
+      fprintf('Generating subj directory using DEFAULT parameters...');
+      user_response=1; %#ok
+      break;
+    elseif (user_entry == 'n')
+      disp('quiting the script...');
+      if nargout, OK=false; end
+      return;
+    else
+      disp('Please answer y or n!'); continue;
+    end
+  end
+
+  %mkdir(subj_dir);
+  copyfile(fullfile(pwd,'subjects','_DEFAULT_'),subj_dir);
+end
+
+%% run ImagesShowPTB
 for ii=1:1:numel(session)
   %for jj=1:1:numel(acq), ImagesShowPTB(subj,acq(jj),session(ii),protocolfile,imgdbfile,viewfile,optionfile,gamma_table); end
   for jj=1:1:numel(acq), ImagesShowPTB(subj,acq(jj),session(ii),protocolfile,imgdbfile,viewfile,optionfile); end

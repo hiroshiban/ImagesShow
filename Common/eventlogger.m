@@ -38,7 +38,7 @@ classdef eventlogger
 %
 %
 % Created    : "2013-11-17 21:42:27 ban"
-% Last Update: "2014-02-12 12:06:11 ban"
+% Last Update: "2016-08-29 13:13:51 ban"
 
 properties (Hidden) %(SetAccess = protected)
   eventcounter=1; % a counter for event logging
@@ -63,7 +63,7 @@ methods
   function [obj,reference_time]=set_reference_time(obj,reference_time)
     obj.ref_time=reference_time;
   end
-  
+
   % get reference time point for the event log
   function [reference_time,obj]=get_reference_time(obj)
     reference_time=obj.ref_time;
@@ -131,18 +131,22 @@ methods
 
     % calculate Hit rate
     numTasks=0; numHits=0; numErrors=0; RT=[];
-    for ii=1:length(obj.event)-1
+    for ii=1:length(obj.event)
       % check subject responses
       if strfind(obj.event{ii,2},'Task')
         numTasks=numTasks+1;
-        for jj=ii+1:1:length(obj.event)-1
+        for jj=ii+1:1:length(obj.event)
           if strfind(obj.event{jj,2},'Task') % check observer responses: whether observer responded before the next task event occured
             RT(numTasks)=NaN; %#ok
             numErrors=numErrors+1;
             break
-          elseif ismember(obj.event{jj,3},correct_event)
+          elseif ischar(obj.event{jj,3}) && ismember(obj.event{jj,3},correct_event)
             RT(numTasks)=obj.event{jj,1}-obj.event{ii,1}; %#ok
             numHits=numHits+1;
+            break
+          elseif jj==length(obj.event) % reach to the end of the event array.
+            RT(numTasks)=NaN; %#ok
+            numErrors=numErrors+1;
             break
           end
         end
@@ -166,10 +170,10 @@ methods
     for ii=1:length(obj.event)-1
       if (strcmp(obj.event{ii,2}, 'Response')), numResponses=numResponses + 1; end
     end
-    
+
     eventIDs=zeros(1,length(correct_events));
     for ii=1:1:length(correct_events), eventIDs(ii)=correct_events{ii}{1}; end
-    
+
     % calculate Hit rate
     numTasks=zeros(1,length(correct_events));
     numHits=zeros(1,length(correct_events));
@@ -201,7 +205,7 @@ methods
         end % if ~isempty(idx)
       end
     end
-    
+
     % displaying the results
     disp('******************************');
     disp(['Total Tasks     : ',num2str(sum(numTasks))]);
@@ -212,12 +216,12 @@ methods
     % not use nanmedian() as it never compute median value when the number of NaN exceeds the half of the elemnts of the array.
     disp(['Median RT (Hit) : ',num2str(median(RTs(~isnan(RTs)))*1000),' ms']);
     disp('******************************');
-    
+
     % plotting the results
     figure; hold on;
     h1=plot(numHits./numTasks.*100,'ro-','LineWidth',2);  % hits
     h2=plot(numErrors./numTasks.*100,'bo-','LineWidth',1); % false alarms
-    
+
     title('Behavior detection accuracies');
     legend([h1,h2],'Hit Rate','FalseAlarm Rate');
     set(gca,'XLim',[0,length(correct_events)+1]);

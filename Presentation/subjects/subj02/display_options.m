@@ -16,8 +16,8 @@ options.start_method=0;
 % but note that the setting here is valid only when you set options.start_method=4;
 options.custom_trigger='s';
 
-% display mode, one of "mono", "dual", "cross", "parallel", "redgreen", "greenred", "redblue",
-% "bluered", "shutter", "topbottom", "bottomtop", "interleavedline", "interleavedcolumn"
+% display mode, one of "mono", "dual", "dualcross", "dualparallel", "cross", "parallel", "redgreen", "greenred",
+% "redblue", "bluered", "shutter", "topbottom", "bottomtop", "interleavedline", "interleavedcolumn".
 options.exp_mode='mono';
 
 % response key codes. [1xN] matrix in which all the keycodes to be used are stored.
@@ -33,8 +33,9 @@ options.RGBgain=[1.0,1.0,1.0; 1.0,1.0,1.0];
 % fixation parameter, {fixation type(0: non, 1: circle, 2: cross),size,color}
 options.fixation={2,24,[255,255,255]};
 
-% background parameter, {background_RGB,patch1_RGB,patch2_RGB,patch_num(row,col),patch_size(row,col),(optional)aperture_size(row,col)}
-options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
+% background parameters,
+% {type(uniform(0) or with patches(1)),background_RGB,patch1_RGB,patch2_RGB,patch_num(row,col),patch_size(row,col),(optional)aperture_size(row,col)}
+options.background={1,[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
 
 % whether masking display images using a circular aperture mask, {on_off(0|1(circular)|2(rectangular)),radius_pix(row,col),gaussian_parameters(mean,sd)}
 % if you want to put a circular aperture mask on each of the images, please set on_off to 1.
@@ -46,6 +47,13 @@ options.auto_background=0;
 
 % whether forcing to use the full-screen display, [0|1]
 options.use_fullscr=0;
+
+% whether skipping frame sync (flip) test
+option.skip_frame_sync_test=0;
+
+% whether forcing to use specific frame rate, if 0, the frame rate wil bw computed in the ImagesShowPTB function.
+% if non zero, the value is used as the screen frame rate.
+option.force_frame_rate=60;
 
 % whether forcing to use frames (vertical sync signals) as a unit of display duration instead of msec.
 % 0: none, 1: force to use the number of frames for presentation duration setting

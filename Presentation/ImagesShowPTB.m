@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2015-07-16 13:13:32 ban"
+% Last Update: "2016-08-29 12:34:56 ban"
 %
 %
 % [input]
@@ -159,6 +159,14 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 % ~/ImagesShowPTB/Generation.
 %                                            July 14 2015 H.Ban
 % Add a rectangular aperture mask option     July 14 2015 H.Ban
+% Add an option to skip frame sync test      Aug  29 2016 H.Ban
+% Add an option to use a specific frame rate Aug  29 2016 H.Ban
+% Add an option to use an uniform background Aug  29 2016 H.Ban
+% MATLAB function, as well as script, forms of protocolfile,
+% imgdbfile,viewfile, and optionfile can be accepted.
+% You can use more flexible parameter settings.
+%                                            Aug  29 2016 H.Ban
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Check input variables
@@ -220,15 +228,67 @@ try
 PTB_OK=CheckPTBversion(3); % check wether the PTB version is 3
 if ~PTB_OK, error('Wrong version of Psychtoolbox is running. ImagesShowPTB requires PTB ver.3'); end
 
-% debug level, black screen during calibration
-Screen('Preference','VisualDebuglevel', 3);
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Setup random seed
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 InitializeRandomSeed();
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Read/set viewing and displaying option parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% load size parameters
+fprintf('step 1: loading viewing size parameters...');
+if nargin<6 || isempty(viewfile)
+  vparam=readViewingParameters('default');
+else
+  cd(fullfile('subjects',subj));
+  func_flg=isfunction(viewfile);
+  cd ../../;
+  if func_flg
+    vparam=run(fullfile('subjects',subj,viewfile));
+  else
+    vparam=readViewingParameters(fullfile('subjects',subj,viewfile));
+  end
+  clear func_flg;
+end
+disp('done.');
+
+% load display options
+fprintf('step 2: loading display options...');
+if nargin<7 || isempty(optionfile)
+  dparam=readDisplayOptions('default');
+else
+  cd(fullfile('subjects',subj));
+  func_flg=isfunction(optionfile);
+  cd ../../;
+  if func_flg
+    dparam=run(fullfile('subjects',subj,optionfile));
+  else
+    dparam=readDisplayOptions(fullfile('subjects',subj,optionfile));
+  end
+  clear func_flg;
+end
+disp('done.');
+
+% set RGB gain
+if strcmpi(dparam.exp_mode,'mono') || strcmpi(dparam.exp_mode,'cross') || strcmpi(dparam.exp_mode,'parallel') || ...
+   strcmpi(dparam.exp_mode,'topbottom') || strcmpi(dparam.exp_mode,'bottomtop')
+  RGBgain=[];
+else
+  RGBgain=dparam.RGBgain;
+end
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Set debug level, black screen during calibration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Screen('Preference','VisualDebuglevel',3);
+if dparam.skip_frame_sync_test, Screen('Preference','SkipSyncTests',1); end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -244,48 +304,18 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Read/set viewing and displaying option parameters
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% load size parameters
-fprintf('step 1: loading viewing size parameters...');
-if nargin<6 || isempty(viewfile)
-  vparam=readViewingParameters('default');
-else
-  fviewfile=fullfile('subjects',subj,viewfile);
-  vparam=readViewingParameters(fviewfile);
-  clear fviewfile;
-end
-disp('done.');
-
-% load display options
-fprintf('step 2: loading display options...');
-if nargin<7 || isempty(optionfile)
-  dparam=readDisplayOptions('default');
-else
-  foptionfile=fullfile('subjects',subj,optionfile);
-  dparam=readDisplayOptions(foptionfile);
-  clear foptionfile;
-end
-disp('done.');
-
-% set RGB gain
-if strcmpi(dparam.exp_mode,'mono') || strcmpi(dparam.exp_mode,'cross') || strcmpi(dparam.exp_mode,'parallel') || ...
-   strcmpi(dparam.exp_mode,'topbottom') || strcmpi(dparam.exp_mode,'bottomtop')
-  RGBgain=[];
-else
-  RGBgain=dparam.RGBgain;
-end
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Getting temporal display refresh rate and inter-flip-interval
 %%%% (required just for protocol file setting in frame precision)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-winPtr=0; % temporal setting, will be changed later in InitializePTBDisplays
-dparam.fps=Screen('FrameRate',winPtr); dparam.ifi=1/dparam.fps;
-if dparam.fps==0, dparam.fps=1/dparam.ifi; end
+if ~dparam.force_frame_rate
+  winPtr=0; % temporal setting, will be changed later in InitializePTBDisplays
+  dparam.fps=Screen('FrameRate',winPtr); dparam.ifi=1/dparam.fps;
+  if dparam.fps==0, dparam.fps=1/dparam.ifi; end
+else
+  dparam.fps=dparam.force_frame_rate;
+  dparam.ifi=1/dparam.fps;
+end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -294,16 +324,28 @@ if dparam.fps==0, dparam.fps=1/dparam.ifi; end
 
 % load image database
 fprintf('step 3: loading image database...');
-fimgdbfile=fullfile('subjects',subj,imgdbfile);
-imgs=readImageDatabase(fimgdbfile,dparam.img_loading_mode);
-clear fimgdbfile;
+cd(fullfile('subjects',subj));
+func_flg=isfunction(imgdbfile);
+cd ../../;
+if func_flg
+  imgs=run(fullfile('subjects',subj,imgdbfile));
+else
+  imgs=readImageDatabase(fullfile('subjects',subj,imgdbfile),dparam.img_loading_mode);
+end
+clear func_flg;
 disp('done.');
 
 % load experiment protocols
 fprintf('step 4: loading protocols...');
-fprotocolfile=fullfile('subjects',subj,protocolfile);
-prt=readExpProtocols(fprotocolfile,dparam.block_rand,dparam.fps,dparam.ifi,0);
-clear fprotocolfile;
+cd(fullfile('subjects',subj));
+func_flg=isfunction(protocolfile);
+cd ../../;
+if func_flg
+  prt=run(fullfile('subjects',subj,protocolfile));
+else
+  prt=readExpProtocols(fullfile('subjects',subj,protocolfile),dparam.block_rand,dparam.fps,dparam.ifi,0);
+end
+clear func_flg;
 disp('done.');
 disp(' ');
 
@@ -330,7 +372,7 @@ if dparam.auto_background
   end
   bgcolor=double(squeeze(tmp(1,1,:))');
   if numel(bgcolor)==1, bgcolor=repmat(bgcolor,[1,3]); end
-  dparam.background{1}=bgcolor;
+  dparam.background{2}=bgcolor;
   clear tmp bgcolor;
 end
 
@@ -358,7 +400,8 @@ eval(sprintf('disp(''Image Loading Mode     : %d'');',dparam.img_loading_mode));
 eval(sprintf('disp(''Image Flipping         : %d'');',dparam.img_flip));
 eval(sprintf('disp(''Onset Punch [type,size]: [%d,%d]'');',dparam.onset_punch(1),dparam.onset_punch(2)));
 eval(sprintf('disp(''Fixation Type          : %d'');',dparam.fixation{1}));
-eval(sprintf('disp(''Background Color       : [%d,%d,%d]'');',dparam.background{1}(1),dparam.background{1}(2),dparam.background{1}(3)));
+eval(sprintf('disp(''Background Type        : %d'');',dparam.background{1}));
+eval(sprintf('disp(''Background Color       : [%d,%d,%d]'');',dparam.background{2}(1),dparam.background{2}(2),dparam.background{2}(3)));
 eval(sprintf('disp(''Ciruclar Aperture Mask : %d'');',dparam.cmask{1}));
 disp('************ The number of blocks **************');
 eval(sprintf('disp(''#conditions            : %d'');',length(prt)));
@@ -407,14 +450,14 @@ resps.initialize(event); % initialize responselogger
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [user_answer,resps]=resps.wait_to_proceed();
-if ~user_answer, clear all; close all; return; end
+if ~user_answer, close all; return; end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Initialization of Left & Right screens for binocular presenting/viewing mode
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[winPtr,winRect,nScr,dparam.fps,dparam.ifi,initDisplay_OK]=InitializePTBDisplays(dparam.exp_mode,dparam.background{1},dparam.img_flip,RGBgain);
+[winPtr,winRect,nScr,dparam.fps,dparam.ifi,initDisplay_OK]=InitializePTBDisplays(dparam.exp_mode,dparam.background{2},dparam.img_flip,RGBgain);
 if ~initDisplay_OK, error('Display initialization error. Please check your exp_run parameter.'); end
 HideCursor();
 
@@ -455,7 +498,7 @@ Screen('BlendFunction',winPtr,GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % displaying texts on the center of the screen
-DisplayMessage2('Initializing...',dparam.background{1},winPtr,nScr,'Arial',36);
+DisplayMessage2('Initializing...',dparam.background{2},winPtr,nScr,'Arial',36);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -542,37 +585,42 @@ fixRect=[0 0 fixSize]; % used to display the central fixation point
 %%%% Creating background images
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-patch_size=dparam.background{4};
-patch_num=dparam.background{5};
-%aperture_size=[500,500];
+if dparam.background{1} % using a uniform background with rectangular patches for stable fixations
+  patch_size=dparam.background{5};
+  patch_num=dparam.background{6};
+  %aperture_size=[500,500];
 
-% calculate the central aperture size of the background image
-edgeY=mod(dparam.window_size(1),patch_num(1)); % delete exceeded region
-p_height=round((dparam.window_size(1)-edgeY)/patch_num(1)); % height in pix of patch_height + interval-Y
+  % calculate the central aperture size of the background image
+  edgeY=mod(dparam.window_size(1),patch_num(1)); % delete exceeded region
+  p_height=round((dparam.window_size(1)-edgeY)/patch_num(1)); % height in pix of patch_height + interval-Y
 
-edgeX=mod(dparam.window_size(2),patch_num(2)); % delete exceeded region
-p_width=round((dparam.window_size(2)-edgeX)/patch_num(2)); % width in pix of patch_width + interval-X
+  edgeX=mod(dparam.window_size(2),patch_num(2)); % delete exceeded region
+  p_width=round((dparam.window_size(2)-edgeX)/patch_num(2)); % width in pix of patch_width + interval-X
 
-if length(dparam.background)==6
-  aperture_size=dparam.background{6};
-else
-  if ~dparam.use_original_imgsize || dparam.img_loading_mode~=1
-    aperture_size(1)=2*( p_height*ceil(imgs.presentation_size(1)/2/p_height) );
-    aperture_size(2)=2*( p_width*ceil(imgs.presentation_size(2)/2/p_width) );
+  if length(dparam.background)==7
+    aperture_size=dparam.background{7};
   else
-    if dparam.use_original_imgsize
-      tmph=imgRect(:,4); tmph=max(tmph(:));
-      tmpw=imgRect(:,3); tmpw=max(tmpw(:));
+    if ~dparam.use_original_imgsize || dparam.img_loading_mode~=1
+      aperture_size(1)=2*( p_height*ceil(imgs.presentation_size(1)/2/p_height) );
+      aperture_size(2)=2*( p_width*ceil(imgs.presentation_size(2)/2/p_width) );
     else
-      tmph=512; tmpw=512; % arbitral values, just temporally
+      if dparam.use_original_imgsize
+        tmph=imgRect(:,4); tmph=max(tmph(:));
+        tmpw=imgRect(:,3); tmpw=max(tmpw(:));
+      else
+        tmph=512; tmpw=512; % arbitral values, just temporally
+      end
+      aperture_size(1)=2*( p_height*ceil(tmph/2/p_height) );
+      aperture_size(2)=2*( p_width*ceil(tmpw/2/p_width) );
     end
-    aperture_size(1)=2*( p_height*ceil(tmph/2/p_height) );
-    aperture_size(2)=2*( p_width*ceil(tmpw/2/p_width) );
   end
+
+  bgimg=CreateBackgroundImage([dparam.window_size(1),dparam.window_size(2)],aperture_size,patch_size,...
+                              dparam.background{2},dparam.background{2},dparam.background{2},dparam.fixation{2},patch_num,0,0,0);
+else % using a uniform background
+  bgimg{1} = repmat(reshape(dparam.background{2},[1,1,3]),[dparam.window_size(1),dparam.window_size(2)]);
 end
 
-bgimg=CreateBackgroundImage([dparam.window_size(1),dparam.window_size(2)],aperture_size,patch_size,...
-                            dparam.background{1},dparam.background{2},dparam.background{3},dparam.fixation{3},patch_num,0,0,0);
 background(1)=Screen('MakeTexture',winPtr,bgimg{1});
 background(2)=background(1); %Screen('MakeTexture',winPtr,bgimg{2});
 
@@ -597,7 +645,7 @@ if dparam.cmask{1}
 
   % generate a background-colored rectangle
   maskimg=ones([size(x),4]);
-  for ii=1:1:3, maskimg(:,:,ii)=dparam.background{1}(ii)*maskimg(:,:,ii); end
+  for ii=1:1:3, maskimg(:,:,ii)=dparam.background{2}(ii)*maskimg(:,:,ii); end
   maskimg(:,:,4)=0;
 
   % mask the outside of a circular region
@@ -635,8 +683,8 @@ fixlineh=12; % line height of the central fixation
 
 if dparam.fixation{1}==1 % circular fixational dot
 
-  fix=MakeFineOval(dparam.fixation{2},dparam.fixation{3},dparam.background{1},1,8,0,0,0);
-  wait_fix=MakeFineOval(dparam.fixation{2},[0,0,0],dparam.background{1},1,8,0,0,0);
+  fix=MakeFineOval(dparam.fixation{2},dparam.fixation{3},dparam.background{2},1,8,0,0,0);
+  wait_fix=MakeFineOval(dparam.fixation{2},[0,0,0],dparam.background{2},1,8,0,0,0);
 
   wait_fcross(1)=Screen('MakeTexture',winPtr,wait_fix);
   wait_fcross(2)=Screen('MakeTexture',winPtr,wait_fix);
@@ -647,12 +695,12 @@ if dparam.fixation{1}==1 % circular fixational dot
 elseif dparam.fixation{1}==2 % fixation cross
 
   if strcmpi(dparam.exp_mode,'mono')
-    fix_L=CreateFixationImgMono(dparam.fixation{2},dparam.fixation{3},dparam.background{1},fixlinew,fixlineh,0,0);
-    wait_fix_L=CreateFixationImgMono(dparam.fixation{2},[64,64,64],dparam.background{1},fixlinew,fixlineh,0,0);
+    fix_L=CreateFixationImgMono(dparam.fixation{2},dparam.fixation{3},dparam.background{2},fixlinew,fixlineh,0,0);
+    wait_fix_L=CreateFixationImgMono(dparam.fixation{2},[64,64,64],dparam.background{2},fixlinew,fixlineh,0,0);
     fix_R=fix_L; wait_fix_R=wait_fix_L;
   else % if strcmpi(dparam.exp_mode,'mono') % binocular stimuli
-    [fix_L,fix_R]=CreateFixationImg(dparam.fixation{2},dparam.fixation{3},dparam.background{1},fixlinew,fixlineh,0,0);
-    [wait_fix_L,wait_fix_R]=CreateFixationImg(dparam.fixation{2},[0,0,0],dparam.background{1},fixlinew,fixlineh,0,0);
+    [fix_L,fix_R]=CreateFixationImg(dparam.fixation{2},dparam.fixation{3},dparam.background{2},fixlinew,fixlineh,0,0);
+    [wait_fix_L,wait_fix_R]=CreateFixationImg(dparam.fixation{2},[0,0,0],dparam.background{2},fixlinew,fixlineh,0,0);
   end
 
   wait_fcross(1)=Screen('MakeTexture',winPtr,wait_fix_L);
@@ -768,16 +816,16 @@ if dparam.task(1)==1 % luminance detection task
   dimfixcolor=task.fixdimratio.*dparam.fixation{3};
   dimfixcolor(dimfixcolor>255)=255;
   if dparam.fixation{1}==1 % circular fixational dot
-    fix=MakeFineOval(dparam.fixation{2},dimfixcolor,dparam.background{1},1,8,0,0,0);
+    fix=MakeFineOval(dparam.fixation{2},dimfixcolor,dparam.background{2},1,8,0,0,0);
     tasktex(1)=Screen('MakeTexture',winPtr,fix);
     tasktex(2)=Screen('MakeTexture',winPtr,fix);
     clear fix;
   elseif dparam.fixation{1}==2 % fixation cross
     if strcmpi(dparam.exp_mode,'mono')
-      fix_L=CreateFixationImgMono(dparam.fixation{2},dimfixcolor,dparam.background{1},fixlinew,fixlineh,0,0);
+      fix_L=CreateFixationImgMono(dparam.fixation{2},dimfixcolor,dparam.background{2},fixlinew,fixlineh,0,0);
       fix_R=fix_L;
     else % if strcmpi(dparam.exp_mode,'mono') % binocular stimuli
-      [fix_L,fix_R]=CreateFixationImg(dparam.fixation{2},dimfixcolor,dparam.background{1},fixlinew,fixlineh,0,0);
+      [fix_L,fix_R]=CreateFixationImg(dparam.fixation{2},dimfixcolor,dparam.background{2},fixlinew,fixlineh,0,0);
     end
     tasktex(1)=Screen('MakeTexture',winPtr,fix_L);
     tasktex(2)=Screen('MakeTexture',winPtr,fix_R);
@@ -787,7 +835,7 @@ if dparam.task(1)==1 % luminance detection task
 elseif dparam.task(1)==2 % vernier task
 
   % generate vertical bar for vernier task
-  vernier_bar_L=repmat(reshape(dparam.background{1},[1,1,3]),[task.vernierrect(3:4),1]);
+  vernier_bar_L=repmat(reshape(dparam.background{2},[1,1,3]),[task.vernierrect(3:4),1]);
   vernier_bar_R=repmat(reshape(dparam.fixation{3},[1,1,3]),[task.vernierrect(3:4),1]);
   tasktex(1)=Screen('MakeTexture',winPtr,vernier_bar_L);
   tasktex(2)=Screen('MakeTexture',winPtr,vernier_bar_R);
@@ -799,7 +847,7 @@ elseif dparam.task(1)==3 % text 'C' detection task
   Screen('Preference','TextAlphaBlending',1); Screen('Preference','TextRenderer',1);
   textPtr=zeros(1,length(task.chars));
   for ii=1:1:length(task.chars)
-    [textPtr(ii),task.textrect]=Screen('OpenOffscreenWindow',winPtr,[dparam.background{1},0],[0,0,4*dparam.fixation{2},4*dparam.fixation{2}]);
+    [textPtr(ii),task.textrect]=Screen('OpenOffscreenWindow',winPtr,[dparam.background{2},0],[0,0,4*dparam.fixation{2},4*dparam.fixation{2}]);
     Screen(textPtr(ii),'BlendFunction',GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     Screen('TextFont',textPtr(ii),'Arial'); Screen('TextSize',textPtr(ii),dparam.fixation{2}*2); Screen('TextStyle',textPtr(ii),1);
     DrawFormattedText(textPtr(ii),task.chars{ii},'center','center',dparam.fixation{3});
@@ -816,15 +864,15 @@ elseif dparam.task(1)==4 || dparam.task(1)==5 % 1-back task
 
   %% there is no fixation/vernier task in 1-back task sequence. Thus, just create the standard fixation as dummy PTB textures.
   %if dparam.fixation{1}==1 % circular fixational dot
-  %  fix=MakeFineOval(dparam.fixation{2},dparam.fixation{3},dparam.background{1},1,8,0,0,0);
+  %  fix=MakeFineOval(dparam.fixation{2},dparam.fixation{3},dparam.background{2},1,8,0,0,0);
   %  tasktex(1)=Screen('MakeTexture',winPtr,fix);
   %  tasktex(2)=Screen('MakeTexture',winPtr,fix);
   %elseif dparam.fixation{1}==2 % fixation cross
   %  if strcmpi(dparam.exp_mode,'mono')
-  %    fix_L=CreateFixationImgMono(dparam.fixation{2},dparam.fixation{3},dparam.background{1},fixlinew,fixlineh,0,0);
+  %    fix_L=CreateFixationImgMono(dparam.fixation{2},dparam.fixation{3},dparam.background{2},fixlinew,fixlineh,0,0);
   %    fix_R=fix_L;
   %  else % if strcmpi(dparam.exp_mode,'mono') % binocular stimuli
-  %    [fix_L,fix_R]=CreateFixationImg(dparam.fixation{2},dparam.fixation{3},dparam.background{1},fixlinew,fixlineh,0,0);
+  %    [fix_L,fix_R]=CreateFixationImg(dparam.fixation{2},dparam.fixation{3},dparam.background{2},fixlinew,fixlineh,0,0);
   %  end
   %  tasktex(1)=Screen('MakeTexture',winPtr,fix_L);
   %  tasktex(2)=Screen('MakeTexture',winPtr,fix_R);
@@ -917,7 +965,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % displaying texts on the center of the screen
-DisplayMessage2('Ready to Start',dparam.background{1},winPtr,nScr,'Arial',36);
+DisplayMessage2('Ready to Start',dparam.background{2},winPtr,nScr,'Arial',36);
 ttime=GetSecs(); while (GetSecs()-ttime < 0.5), end  % run up the clock.
 
 
@@ -1192,11 +1240,11 @@ disp('done.');
 disp(' ');
 if ~isempty(intersect(dparam.task(1),[1,3:5])) % detection/identification task
   correct_event=cell(numel(dparam.keys),1); for ii=1:1:numel(dparam.keys), correct_event{ii}=sprintf('key%d',ii); end
-  [task.numTasks,task.numHits,task.numErrors,task.numResponses,task.RT]=event.calc_accuracy(correct_event); %#ok
+  [task.numTasks,task.numHits,task.numErrors,task.numResponses,task.RT]=event.calc_accuracy(correct_event);
 elseif dparam.task(1)==2 % vernier line detection task
   correct_event{1}={-3,'key1'}; correct_event{2}={-2,'key1'}; correct_event{3}={-1,'key1'}; correct_event{4}={ 0,'key2'};
   correct_event{5}={ 1,'key2'}; correct_event{6}={ 2,'key2'}; correct_event{7}={ 3,'key2'};
-  [task.numTasks,task.numHits,task.numErrors,task.numResponses,task.RT]=event.calc_accuracies(correct_event); %#ok
+  [task.numTasks,task.numHits,task.numErrors,task.numResponses,task.RT]=event.calc_accuracies(correct_event);
 end
 event=event.get_event(); % convert an event logger object to a cell data structure
 eval(sprintf('save -append %s task event;',savefname)); % save the updated task & event structures
@@ -1212,7 +1260,7 @@ Priority(0);
 GammaResetPTB(1.0);
 rmpath(genpath(fullfile(rootDir,'..','Common')));
 rmpath(fullfile(rootDir,'..','Generation'));
-clear all; clear mex; clear global;
+clear mex; clear global;
 diary off;
 
 
@@ -1238,7 +1286,7 @@ catch lasterror
   rmpath(genpath(fullfile(rootDir,'..','Common')));
   rmpath(fullfile(rootDir,'..','Generation'));
   %psychrethrow(psychlasterror);
-  clear global; clear mex; clear all; close all;
+  clear global; clear mex; close all;
   return
 end % try..catch
 
