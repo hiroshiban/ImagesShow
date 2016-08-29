@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2016-08-29 12:34:56 ban"
+% Last Update: "2016-08-29 13:55:53 ban"
 %
 %
 % [input]
@@ -616,7 +616,7 @@ if dparam.background{1} % using a uniform background with rectangular patches fo
   end
 
   bgimg=CreateBackgroundImage([dparam.window_size(1),dparam.window_size(2)],aperture_size,patch_size,...
-                              dparam.background{2},dparam.background{2},dparam.background{2},dparam.fixation{2},patch_num,0,0,0);
+                              dparam.background{2},dparam.background{3},dparam.background{4},dparam.fixation{2},patch_num,0,0,0);
 else % using a uniform background
   bgimg{1} = repmat(reshape(dparam.background{2},[1,1,3]),[dparam.window_size(1),dparam.window_size(2)]);
 end
