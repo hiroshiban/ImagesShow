@@ -1,12 +1,14 @@
-function update_ImagesShowPTB_html_docs()
+function update_ImagesShowPTB_html_docs(style)
 
 % Updates all the HTML-based documents of ImagesShowPTB.
-% function update_ImagesShowPTB_html_docs()
+% function update_ImagesShowPTB_html_docs(style)
 %
 % This function updates html-based documents of ImagesShowPTB
 %
 % [input]
-% no input variable
+% style : (optional) if 0, a default CSS/TPL templates will be applied in
+%         generating HTML-based help documents, while Hiroshi's customized
+%         templates will be applied if this value is non-zero. 0 by default.
 %
 % [output]
 % new html-baesd documents will be generated in
@@ -14,7 +16,7 @@ function update_ImagesShowPTB_html_docs()
 %
 %
 % Created    : "2013-11-13 13:08:05 ban"
-% Last Update: "2013-12-12 13:17:04 ban (ban.hiroshi@gmail.com)"
+% Last Update: "2016-08-29 13:31:02 ban"
 
 % add path to m2html
 m2htmlpath=fullfile(fileparts(mfilename('fullpath')),'m2html');
@@ -30,7 +32,14 @@ disp(' ');
 cd('..');
 %tgt_path={'ImagesShowPTB/Common','ImagesShowPTB/Generation','ImagesShowPTB/Presentation','ImagesShowPTB/gamma_table'};
 tgt_path={'ImagesShowPTB/Common','ImagesShowPTB/Generation','ImagesShowPTB/Presentation'};
-m2html('mfiles',tgt_path,'htmldir',docpath,'recursive','on','globalHypertextLinks','on');
+
+% selecting the style of the HTML-based help documents of BVQX_hbtools.
+if style
+  m2html('mfiles',tgt_path,'htmldir',docpath,'recursive','on','globalHypertextLinks','on','template','BVQX_hbtools','index','menu');
+else
+  m2html('mfiles',tgt_path,'htmldir',docpath,'recursive','on','globalHypertextLinks','on','template','blue');
+end
+
 cd('ImagesShowPTB');
 
 disp(' ');
