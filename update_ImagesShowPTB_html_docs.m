@@ -16,7 +16,10 @@ function update_ImagesShowPTB_html_docs(style)
 %
 %
 % Created    : "2013-11-13 13:08:05 ban"
-% Last Update: "2016-08-29 13:31:02 ban"
+% Last Update: "2016-09-04 16:35:21 ban"
+
+% check the input variable
+if nargin<1 || isempty(style), style=0; end
 
 % add path to m2html
 m2htmlpath=fullfile(fileparts(mfilename('fullpath')),'m2html');

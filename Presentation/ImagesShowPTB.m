@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2016-08-29 17:56:08 ban"
+% Last Update: "2016-09-04 16:30:33 ban"
 %
 %
 % [input]
@@ -247,12 +247,12 @@ if nargin<6 || isempty(viewfile)
 else
   cd(fullfile('subjects',subj));
   func_flg=isfunction(viewfile);
-  cd ../../;
   if func_flg
-    vparam=run(fullfile('subjects',subj,viewfile));
+    vparam=eval(viewfile);
   else
-    vparam=readViewingParameters(fullfile('subjects',subj,viewfile));
+    vparam=readViewingParameters(viewfile);
   end
+  cd ../../;
   clear func_flg;
 end
 disp('done.');
@@ -264,12 +264,12 @@ if nargin<7 || isempty(optionfile)
 else
   cd(fullfile('subjects',subj));
   func_flg=isfunction(optionfile);
-  cd ../../;
   if func_flg
-    dparam=run(fullfile('subjects',subj,optionfile));
+    dparam=eval(optionfile);
   else
-    dparam=readDisplayOptions(fullfile('subjects',subj,optionfile));
+    dparam=readDisplayOptions(optionfile);
   end
+  cd ../../;
   clear func_flg;
 end
 disp('done.');
@@ -326,12 +326,12 @@ end
 fprintf('step 3: loading image database...');
 cd(fullfile('subjects',subj));
 func_flg=isfunction(imgdbfile);
-cd ../../;
 if func_flg
-  imgs=run(fullfile('subjects',subj,imgdbfile));
+  imgs=eval(imgdbfile);
 else
-  imgs=readImageDatabase(fullfile('subjects',subj,imgdbfile),dparam.img_loading_mode);
+  imgs=readImageDatabase(imgdbfile,dparam.img_loading_mode);
 end
+cd ../../;
 clear func_flg;
 disp('done.');
 
@@ -339,12 +339,12 @@ disp('done.');
 fprintf('step 4: loading protocols...');
 cd(fullfile('subjects',subj));
 func_flg=isfunction(protocolfile);
-cd ../../;
 if func_flg
-  prt=run(fullfile('subjects',subj,protocolfile));
+  prt=eval(protocolfile);
 else
-  prt=readExpProtocols(fullfile('subjects',subj,protocolfile),dparam.block_rand,dparam.fps,dparam.ifi,0);
+  prt=readExpProtocols(protocolfile,dparam.block_rand,dparam.fps,dparam.ifi,0);
 end
+cd ../../;
 clear func_flg;
 disp('done.');
 disp(' ');
@@ -1276,6 +1276,7 @@ diary off;
 catch lasterror
   % this "catch" section executes in case of an error in the "try" section
   % above.  Importantly, it closes the onscreen window if its open.
+  cd(rootDir);
   Screen('CloseAll');
   ShowCursor();
   Priority(0);
