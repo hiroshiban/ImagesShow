@@ -7,7 +7,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2016-08-29 12:40:17 ban"
+% Last Update: "2016-10-05 11:15:06 ban"
 %
 %
 % [input]
@@ -134,6 +134,9 @@ function options=readDisplayOptions(optionfile)
 %              .task ([0,1,250])
 %              .block_rand (0)
 %              .onset_punch ([0,50])
+
+%clear global; clear mex;
+global subj acq session vparam dparam prt imgs;
 
 % check input variable
 if nargin<1 || isempty(optionfile), help(mfilename()); options=[]; return; end

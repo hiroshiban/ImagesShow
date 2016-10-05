@@ -24,7 +24,10 @@ function vparams=readViewingParameters(viewfile)
 %
 %
 % Created    : "2013-11-08 15:33:56 ban"
-% Last Update: "2015-07-14 13:08:32 ban"
+% Last Update: "2016-10-05 11:14:51 ban"
+
+%clear global; clear mex;
+global subj acq session vparam dparam prt imgs;
 
 % check input variable
 if nargin<1 || isempty(viewfile), help(mfilename()); vparams=[]; return; end
