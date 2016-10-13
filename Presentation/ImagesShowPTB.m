@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2016-09-04 16:30:33 ban"
+% Last Update: "2016-10-13 09:39:25 ban"
 %
 %
 % [input]
@@ -1074,7 +1074,11 @@ for ii=1:1:length(prt) % blocks
             if cseq(1)~=0 && imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger',imgs.trigger{cseq(1)}); end
             fprintf('%03d ',cseq(1));
           end
-          if jj==size(prt{ii}.sequence,2), fprintf('\n'); end
+          if jj==size(prt{ii}.sequence,2)
+            fprintf('\n');
+          elseif ~mod(jj,50)
+            fprintf('\n%s',repmat(' ',[1,22]));
+          end
         end
 
         % add task event
