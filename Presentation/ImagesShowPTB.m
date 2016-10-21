@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2016-10-13 09:39:25 ban"
+% Last Update: "2016-10-21 16:28:28 ban"
 %
 %
 % [input]
@@ -926,6 +926,7 @@ end
 % save the current parameters
 eval(sprintf('save %s subj acq session prt vparam dparam task gamma_table;',savefname));
 disp('done.');
+fprintf('\n');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1028,7 +1029,7 @@ Screen('DrawingFinished',winPtr);
 taskcounter=1;
 
 % add time stamp (this also works to load add_event method in memory in advance of the actual displays)
-event=event.add_event('Experiment Start',strcat([strrep(datestr(now,'yy/mm/dd'),'/',''),' ',datestr(now,'HH:mm:ss')]),[]);
+event=event.add_event('Experiment Start',strcat([strrep(datestr(now,'yy/mm/dd'),'/',''),' ',datestr(now,'HH:mm:ss')]),GetSecs(),dparam.event_display_mode);
 
 % waiting for stimulus presentation
 resps.wait_stimulus_presentation(dparam.start_method,dparam.custom_trigger);
@@ -1038,13 +1039,13 @@ resps.wait_stimulus_presentation(dparam.start_method,dparam.custom_trigger);
 %%%% The Trial Loop, Stimulus Displays
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-fprintf('\nExperiment Start.\n');
+if ~dparam.event_display_mode, fprintf('Experiment Start.\n'); end
 [event,the_experiment_start]=event.set_reference_time(GetSecs());
 for ii=1:1:length(prt) % blocks
 
-  %event=event.add_event('Start block',sprintf('Cond_%03d',ii));
-  event=event.add_event(sprintf('Start block %03d',ii),prt{ii}.name);
-  fprintf('Block #%03d(% 8s): ',ii,prt{ii}.name(1:min(8,length(prt{ii}.name))));
+  %event=event.add_event('Start block',sprintf('Cond_%03d',ii),[],dparam.event_display_mode);
+  event=event.add_event(sprintf('Start block %03d',ii),prt{ii}.name,[],dparam.event_display_mode);
+  if ~dparam.event_display_mode, fprintf('Block #%03d(% 8s): ',ii,prt{ii}.name(1:min(8,length(prt{ii}.name)))); end
 
   if sum(strcmpi(prt{ii}.mode,{'frame','msec'})) % frame or msec precision
 
@@ -1065,34 +1066,34 @@ for ii=1:1:length(prt) % blocks
         % record the stimulus onset and send the stimulus trigger
         if mm==1
           if cseq(1)~=cseq(2)
-            event=event.add_event('Stim on',sprintf('%d/%d',cseq(1),cseq(2)));
-            if cseq(1)~=0 && imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger L',imgs.trigger{cseq(1)}); end
-            if cseq(2)~=0 && imgs.trigger{cseq(2)}~=0, event=event.add_event('Stim Trigger R',imgs.trigger{cseq(2)}); end
-            fprintf('%03d/%03d ',cseq(1),cseq(2));
+            event=event.add_event('Stim on',sprintf('%d/%d',cseq(1),cseq(2)),[],dparam.event_display_mode);
+            if cseq(1)~=0 && imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger L',imgs.trigger{cseq(1)},[],dparam.event_display_mode); end
+            if cseq(2)~=0 && imgs.trigger{cseq(2)}~=0, event=event.add_event('Stim Trigger R',imgs.trigger{cseq(2)},[],dparam.event_display_mode); end
+            if ~dparam.event_display_mode, fprintf('%03d/%03d ',cseq(1),cseq(2)); end
           else
-            event=event.add_event('Stim on',sprintf('%d',cseq(1)));
-            if cseq(1)~=0 && imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger',imgs.trigger{cseq(1)}); end
-            fprintf('%03d ',cseq(1));
+            event=event.add_event('Stim on',sprintf('%d',cseq(1)),[],dparam.event_display_mode);
+            if cseq(1)~=0 && imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger',imgs.trigger{cseq(1)},[],dparam.event_display_mode); end
+            if ~dparam.event_display_mode, fprintf('%03d ',cseq(1)); end
           end
           if jj==size(prt{ii}.sequence,2)
-            fprintf('\n');
+            if ~dparam.event_display_mode, fprintf('\n'); end
           elseif ~mod(jj,50)
-            fprintf('\n%s',repmat(' ',[1,22]));
+            if ~dparam.event_display_mode, fprintf('\n%s',repmat(' ',[1,22])); end
           end
         end
 
         % add task event
         if dparam.task(1)==1 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % luminance detection
-          event=event.add_event('Lum Task',1);
+          event=event.add_event('Lum Task',1,[],dparam.event_display_mode);
         elseif dparam.task(1)==2 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % vernier left/right
-          event=event.add_event('Vernier Task',task.vernierpos(taskcounter));
+          event=event.add_event('Vernier Task',task.vernierpos(taskcounter),[],dparam.event_display_mode);
         elseif dparam.task(1)==3 && task.texttype(taskcounter)==1 && task.arrays(taskcounter) && ~task.arrays(max(taskcounter-1,1)) % vernier left/right
-          event=event.add_event('Character Task',task.chars{1});
+          event=event.add_event('Character Task',task.chars{1},[],dparam.event_display_mode);
         elseif (dparam.task(1)==4 || dparam.task(1)==5) && task.arrays(taskcounter) % 1-back
-          event=event.add_event('OneBack Task',1);
+          event=event.add_event('OneBack Task',1,[],dparam.event_display_mode);
         end
 
-        [resps,event]=resps.check_responses(event);
+        [resps,event]=resps.check_responses(event,[],dparam.event_display_mode);
 
         % generate the next image after cleaning up the current texture (to save memory)
         if mm==numel(prt{ii}.subduration{jj})
@@ -1140,7 +1141,7 @@ for ii=1:1:length(prt) % blocks
           nextblockidx=ii; nextstimidx=jj;
         end % if mm==numel(prt{ii}.subduration{jj})
 
-        [resps,event]=resps.check_responses(event);
+        [resps,event]=resps.check_responses(event,[],dparam.event_display_mode);
 
         % preparing the next displays
         if nextblockidx<=length(prt)
@@ -1195,7 +1196,7 @@ for ii=1:1:length(prt) % blocks
               %Screen('DrawTexture',winPtr,tasktex(nn),[],CenterRect(fixRect,winRect)+centeroffset);
             end
 
-            [resps,event]=resps.check_responses(event);
+            [resps,event]=resps.check_responses(event,[],dparam.event_display_mode);
           end % for nn=1:1:nScr
 
           Screen('DrawingFinished',winPtr);
@@ -1206,7 +1207,9 @@ for ii=1:1:length(prt) % blocks
           Screen('Flip',winPtr,the_experiment_start+(prt{ii}.subcumduration{jj}(mm)-0.5)*dparam.ifi,[],[],1);
         else
           % wait for the current sub-duration
-          while (GetSecs()-the_experiment_start < prt{ii}.subcumduration{jj}(mm)/1000), [resps,event]=resps.check_responses(event); end
+          while (GetSecs()-the_experiment_start < prt{ii}.subcumduration{jj}(mm)/1000)
+            [resps,event]=resps.check_responses(event,[],dparam.event_display_mode);
+          end
         end
 
       end % for mm=1:1:numel(prt{ii}.subduration{jj})
@@ -1224,11 +1227,11 @@ end % for ii=1:1:length(prt) % blocks
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 experimentDuration=GetSecs()-the_experiment_start;
-event=event.add_event('End',[]);
+event=event.add_event('End',[],[],dparam.event_display_mode);
 if strcmpi(prt{ii}.mode,'frame')
-  fprintf('Experiemnt Completed: %.3f/%.3f sec.\n',experimentDuration,prt{end}.cumduration(end)*dparam.ifi);
+  fprintf('\nExperiemnt Completed: %.3f/%.3f sec.\n',experimentDuration,prt{end}.cumduration(end)*dparam.ifi);
 else
-  fprintf('Experiemnt Completed: %.3f/%.3f sec.\n',experimentDuration,prt{end}.cumduration(end)/1000);
+  fprintf('\nExperiemnt Completed: %.3f/%.3f sec.\n',experimentDuration,prt{end}.cumduration(end)/1000);
 end
 
 % clean up

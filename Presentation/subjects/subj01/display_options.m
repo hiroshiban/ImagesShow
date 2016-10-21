@@ -103,3 +103,8 @@ options.block_rand=0;
 % type, 0: none, 1: upper-left, 2: upper-right, 3: lower-left, 4: lower-right
 % onset_marker_size : pixels of the marker
 options.onset_punch=[2,50];
+
+% how to display the progress of image presentations on the MATLAB terminal window.
+% 0: displaying block and image sequences only
+% 1: displaying event details including presentation time, responses, triggers etc.
+options.event_display_mode=0;

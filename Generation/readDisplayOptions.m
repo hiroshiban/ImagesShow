@@ -7,7 +7,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2016-10-05 11:15:06 ban"
+% Last Update: "2016-10-21 15:02:34 ban"
 %
 %
 % [input]
@@ -112,6 +112,11 @@ function options=readDisplayOptions(optionfile)
 %              % onset_marker_size : pixels of the marker
 %              options.onset_punch=[0,50];
 %
+%              % how to display the progress of image presentations on the MATLAB terminal window.
+%              % 0: displaying block and image sequences only
+%              % 1: displaying event details including presentation time, responses, triggers etc.
+%              options.event_display_mode=0;
+%
 % [output]
 % options    : display options to be used in ImagesShow presentation protocol, a structure
 %              with members listed below. Values in () are the default ones.
@@ -134,6 +139,7 @@ function options=readDisplayOptions(optionfile)
 %              .task ([0,1,250])
 %              .block_rand (0)
 %              .onset_punch ([0,50])
+%              .event_display_mode (0)
 
 %clear global; clear mex;
 global subj acq session vparam dparam prt imgs;
@@ -176,6 +182,7 @@ if ~isstructmember(options,'img_flip'), options.img_flip=0; end
 if ~isstructmember(options,'task'), options.task=[0,1,250]; end
 if ~isstructmember(options,'block_rand'), options.block_rand=0; end
 if ~isstructmember(options,'onset_punch'), options.onset_punch=[0,50]; end
+if ~isstructmember(options,'event_display_mode'), options.event_display_mode=0; end
 
 % detect missing parameter values and put them by default ones
 if numel(options.window_size)==1, options.window_size=[options.window_size,options.window_size]; end
@@ -221,5 +228,6 @@ function options=setdefaultoptions()
   options.task=[0,1,250];
   options.block_rand=0;
   options.onset_punch=[0,50];
+  options.event_display_mode=0;
 
 return
