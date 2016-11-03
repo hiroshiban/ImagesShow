@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2016-10-21 16:28:28 ban"
+% Last Update: "2016-11-03 11:39:58 ban"
 %
 %
 % [input]
@@ -166,6 +166,9 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 % imgdbfile,viewfile, and optionfile can be accepted.
 % You can use more flexible parameter settings.
 %                                            Aug  29 2016 H.Ban
+% Add an option to select the way of displaying stimulus
+% presentation details from "simple" or "details" mode.
+%                                            Oct  23 2016 H.Ban
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
