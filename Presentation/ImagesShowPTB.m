@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2016-11-03 11:39:58 ban"
+% Last Update: "2017-02-10 17:57:02 ban"
 %
 %
 % [input]
@@ -638,47 +638,51 @@ background(2)=background(1); %Screen('MakeTexture',winPtr,bgimg{2});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if dparam.cmask{1}
-  fine_coefficient=4; % process a larger mask image to avoid a jaggy edge problem
-  % dissociate inner/outer region of the oval
-  step=1/fine_coefficient;
-  [x,y]=meshgrid(-aperture_size(2)/2:step:aperture_size(2)/2,-aperture_size(1)/2:step:aperture_size(1)/2);
-  if mod(size(x,1),2), x=x(1:end-1,:); y=y(1:end-1,:); end
-  if mod(size(x,2),2), x=x(:,1:end-1); y=y(:,1:end-1); end
-
-  if dparam.cmask{1}==1 % oval aperture
-    idx=logical( 1<( x.^2/(dparam.cmask{2}(2)/2).^2 + y.^2/(dparam.cmask{2}(1)/2).^2 ) );
-  elseif dparam.cmask{1}==2 % rectangular aperture
-    idx=logical( x<-dparam.cmask{2}(2)/2 | dparam.cmask{2}(2)/2<x | y<-dparam.cmask{2}(1)/2 | dparam.cmask{2}(1)/2<y );
+  if isMATLABToolBoxAvailable('Image Processing Toolbox',1)
+    fine_coefficient=4; % process a larger mask image to avoid a jaggy edge problem
+    % dissociate inner/outer region of the oval
+    step=1/fine_coefficient;
+    [x,y]=meshgrid(-aperture_size(2)/2:step:aperture_size(2)/2,-aperture_size(1)/2:step:aperture_size(1)/2);
+    if mod(size(x,1),2), x=x(1:end-1,:); y=y(1:end-1,:); end
+    if mod(size(x,2),2), x=x(:,1:end-1); y=y(:,1:end-1); end
+  
+    if dparam.cmask{1}==1 % oval aperture
+      idx=logical( 1<( x.^2/(dparam.cmask{2}(2)/2).^2 + y.^2/(dparam.cmask{2}(1)/2).^2 ) );
+    elseif dparam.cmask{1}==2 % rectangular aperture
+      idx=logical( x<-dparam.cmask{2}(2)/2 | dparam.cmask{2}(2)/2<x | y<-dparam.cmask{2}(1)/2 | dparam.cmask{2}(1)/2<y );
+    end
+  
+    % generate a background-colored rectangle
+    maskimg=ones([size(x),4]);
+    for ii=1:1:3, maskimg(:,:,ii)=dparam.background{2}(ii)*maskimg(:,:,ii); end
+    maskimg(:,:,4)=0;
+  
+    % mask the outside of a circular region
+    tmp=maskimg(:,:,4); tmp(idx)=255;
+    if dparam.cmask{3}(1)~=0 % gaussian filtering
+      % create gaussian kernel, using fspecial('gaussian',winwidth,sd);
+      h=fspecial('gaussian',dparam.cmask{3}(1),dparam.cmask{3}(2));
+      % apply gaussian filter
+      tmp=imfilter(uint8(tmp),h,'replicate'); % for speeding up;
+    end
+    maskimg(:,:,4)=tmp;
+  
+    % resizing
+    maskimg=imresize(maskimg,step,'bilinear'); % not bicubic
+  
+    circularmask(1)=Screen('MakeTexture',winPtr,maskimg);
+    circularmask(2)=circularmask(1);
+  
+    % create rect region
+    maskRect=[0,0,size(maskimg,2),size(maskimg,1)];
+    if strcmpi(dparam.exp_mode,'cross') || strcmpi(dparam.exp_mode,'parallel') || ...
+       strcmpi(dparam.exp_mode,'topbottom') || strcmpi(dparam.exp_mode,'bottomtop')
+      maskRect=maskRect./2;
+    end
+    clear fine_coefficient step idx h maskimg;
+  else
+    warning('gaussian smoothing can not be applied sicne Image Processing Toolbox is missing in the current MATLAB');
   end
-
-  % generate a background-colored rectangle
-  maskimg=ones([size(x),4]);
-  for ii=1:1:3, maskimg(:,:,ii)=dparam.background{2}(ii)*maskimg(:,:,ii); end
-  maskimg(:,:,4)=0;
-
-  % mask the outside of a circular region
-  tmp=maskimg(:,:,4); tmp(idx)=255;
-  if dparam.cmask{3}(1)~=0 % gaussian filtering
-    % create gaussian kernel, using fspecial('gaussian',winwidth,sd);
-    h=fspecial('gaussian',dparam.cmask{3}(1),dparam.cmask{3}(2));
-    % apply gaussian filter
-    tmp=imfilter(uint8(tmp),h,'replicate'); % for speeding up;
-  end
-  maskimg(:,:,4)=tmp;
-
-  % resizing
-  maskimg=imresize(maskimg,step,'bilinear'); % not bicubic
-
-  circularmask(1)=Screen('MakeTexture',winPtr,maskimg);
-  circularmask(2)=circularmask(1);
-
-  % create rect region
-  maskRect=[0,0,size(maskimg,2),size(maskimg,1)];
-  if strcmpi(dparam.exp_mode,'cross') || strcmpi(dparam.exp_mode,'parallel') || ...
-     strcmpi(dparam.exp_mode,'topbottom') || strcmpi(dparam.exp_mode,'bottomtop')
-    maskRect=maskRect./2;
-  end
-  clear fine_coefficient step idx h maskimg;
 end
 
 
@@ -691,8 +695,13 @@ fixlineh=12; % line height of the central fixation
 
 if dparam.fixation{1}==1 % circular fixational dot
 
-  fix=MakeFineOval(dparam.fixation{2},dparam.fixation{3},dparam.background{2},1,8,0,0,0);
-  wait_fix=MakeFineOval(dparam.fixation{2},[0,0,0],dparam.background{2},1,8,0,0,0);
+  if isMATLABToolBoxAvailable('Image Processing Toolbox',1)
+    fix=MakeFineOval(dparam.fixation{2},dparam.fixation{3},dparam.background{2},1,8,0,0,0);
+    wait_fix=MakeFineOval(dparam.fixation{2},[0,0,0],dparam.background{2},1,8,0,0,0);
+  else
+    fix=MakeOval(dparam.fixation{2},dparam.fixation{3},dparam.background{2},1,0,0);
+    wait_fix=MakeOval(dparam.fixation{2},[0,0,0],dparam.background{2},1,0,0);
+  end
 
   wait_fcross(1)=Screen('MakeTexture',winPtr,wait_fix);
   wait_fcross(2)=Screen('MakeTexture',winPtr,wait_fix);
@@ -824,7 +833,11 @@ if dparam.task(1)==1 % luminance detection task
   dimfixcolor=task.fixdimratio.*dparam.fixation{3};
   dimfixcolor(dimfixcolor>255)=255;
   if dparam.fixation{1}==1 % circular fixational dot
-    fix=MakeFineOval(dparam.fixation{2},dimfixcolor,dparam.background{2},1,8,0,0,0);
+    if isMATLABToolBoxAvailable('Image Processing Toolbox',1)
+      fix=MakeFineOval(dparam.fixation{2},dimfixcolor,dparam.background{2},1,8,0,0,0);
+    else
+      fix=MakeOval(dparam.fixation{2},dimfixcolor,dparam.background{2},1,0,0);
+    end
     tasktex(1)=Screen('MakeTexture',winPtr,fix);
     tasktex(2)=Screen('MakeTexture',winPtr,fix);
     clear fix;
@@ -872,7 +885,11 @@ elseif dparam.task(1)==4 || dparam.task(1)==5 % 1-back task
 
   %% there is no fixation/vernier task in 1-back task sequence. Thus, just create the standard fixation as dummy PTB textures.
   %if dparam.fixation{1}==1 % circular fixational dot
-  %  fix=MakeFineOval(dparam.fixation{2},dparam.fixation{3},dparam.background{2},1,8,0,0,0);
+  %  if isMATLABToolBoxAvailable('Image Processing Toolbox',1)
+  %    fix=MakeFineOval(dparam.fixation{2},dparam.fixation{3},dparam.background{2},1,8,0,0,0);
+  %  else
+  %    fix=MakeOval(dparam.fixation{2},dparam.fixation{3},dparam.background{2},1,0,0);
+  %  end
   %  tasktex(1)=Screen('MakeTexture',winPtr,fix);
   %  tasktex(2)=Screen('MakeTexture',winPtr,fix);
   %elseif dparam.fixation{1}==2 % fixation cross
