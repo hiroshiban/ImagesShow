@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2017-02-10 17:57:02 ban"
+% Last Update: "2018-12-20 11:07:45 ban"
 %
 %
 % [input]
@@ -180,8 +180,6 @@ global subj acq session vparam dparam prt imgs;
 
 if nargin<5, help(mfilename()); return; end
 if nargin<9 || isempty(overwrite_flg), overwrite_flg=0; end
-if nargin>9, error(['takes at most 9 arguments: ',...
-                    'ImagesShowPTB(subj,acq,session,protocolfile,imgdbfile,(:viewfile),(:optionfile),(:gamma_table)),(:overwrite_flg)']); end
 
 % set global variables (the other parameters are set later)
 subj=subj_; acq=acq_; session=session_;
@@ -206,7 +204,7 @@ addpath(fullfile(rootDir,'..','Generation'));
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % get date
-today=strrep(datestr(now,'yy/mm/dd'),'/','');
+today=datestr(now,'yymmdd');
 
 % result directry & file
 resultDir=fullfile(rootDir,'subjects',num2str(subj),'results',today);
@@ -229,7 +227,15 @@ try
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 PTB_OK=CheckPTBversion(3); % check wether the PTB version is 3
-if ~PTB_OK, error('Wrong version of Psychtoolbox is running. ImagesShowPTB requires PTB ver.3'); end
+if ~PTB_OK, error('Wrong version of Psychtoolbox is running. %s requires PTB ver.3',mfilename()); end
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Set debug level, black screen during calibration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Screen('Preference','VisualDebuglevel',3);
+if dparam.skip_frame_sync_test, Screen('Preference','SkipSyncTests',1); end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -284,14 +290,6 @@ if strcmpi(dparam.exp_mode,'mono') || strcmpi(dparam.exp_mode,'cross') || strcmp
 else
   RGBgain=dparam.RGBgain;
 end
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Set debug level, black screen during calibration
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Screen('Preference','VisualDebuglevel',3);
-if dparam.skip_frame_sync_test, Screen('Preference','SkipSyncTests',1); end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -384,58 +382,53 @@ end
 %%%% Displaying the presentation parameters you set
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-disp('The Presentation Parameters are as below.');
-fprintf('\n');
-disp('************************************************');
-disp('****** Script, Subject, Acquistion Number ******');
-eval(sprintf('disp(''Date & Time            : %s'');',strcat([strrep(datestr(now,'yy/mm/dd'),'/',''),' ',datestr(now,'HH:mm:ss')])));
-eval(sprintf('disp(''Running Script Name    : %s'');',mfilename()));
-eval(sprintf('disp(''Subject Name           : %s'');',subj));
-eval(sprintf('disp(''Acquisition Number     : %d'');',acq));
-disp('********* Run Type, Display Image Type *********');
-eval(sprintf('disp(''Stimulus Display Mode  : %s'');',dparam.exp_mode));
-eval(sprintf('disp(''Full Screen Mode       : %d'');',dparam.use_fullscr));
-disp('*********** Screen/Display Settings ************');
-eval(sprintf('disp(''Screen Height          : %d'');',dparam.window_size(1)));
-eval(sprintf('disp(''Screen Width           : %d'');',dparam.window_size(2)));
-eval(sprintf('disp(''Window Center [row,col]: [%d,%d]'');',dparam.center(1),dparam.center(2)));
-eval(sprintf('disp(''Image Loading Mode     : %d'');',dparam.img_loading_mode));
-eval(sprintf('disp(''Image Flipping         : %d'');',dparam.img_flip));
-eval(sprintf('disp(''Onset Punch [type,size]: [%d,%d]'');',dparam.onset_punch(1),dparam.onset_punch(2)));
-eval(sprintf('disp(''Fixation Type          : %d'');',dparam.fixation{1}));
-eval(sprintf('disp(''Background Type        : %d'');',dparam.background{1}));
-eval(sprintf('disp(''Background Color       : [%d,%d,%d]'');',dparam.background{2}(1),dparam.background{2}(2),dparam.background{2}(3)));
-eval(sprintf('disp(''Ciruclar Aperture Mask : %d'');',dparam.cmask{1}));
-disp('************ The number of blocks **************');
-eval(sprintf('disp(''#conditions            : %d'');',length(prt)));
+fprintf('The Presentation Parameters are as below.\n\n');
+fprintf('************************************************\n');
+fprintf('****** Script, Subject, Acquistion Number ******\n');
+fprintf('Date & Time            : %s\n',strcat([datestr(now,'yymmdd'),' ',datestr(now,'HH:mm:ss')]));
+fprintf('Running Script Name    : %s\n',mfilename());
+fprintf('Subject Name           : %s\n',subj);
+fprintf('Acquisition Number     : %d\n',acq);
+fprintf('********* Run Type, Display Image Type *********\n');
+fprintf('Stimulus Display Mode  : %s\n',dparam.exp_mode);
+fprintf('Full Screen Mode       : %d\n',dparam.use_fullscr);
+fprintf('*********** Screen/Display Settings ************\n');
+fprintf('Screen Height          : %d\n',dparam.window_size(1));
+fprintf('Screen Width           : %d\n',dparam.window_size(2));
+fprintf('Window Center [row,col]: [%d,%d]\n',dparam.center(1),dparam.center(2));
+fprintf('Image Loading Mode     : %d\n',dparam.img_loading_mode);
+fprintf('Image Flipping         : %d\n',dparam.img_flip);
+fprintf('Onset Punch [type,size]: [%d,%d]\n',dparam.onset_punch(1),dparam.onset_punch(2));
+fprintf('Fixation Type          : %d\n',dparam.fixation{1});
+fprintf('Background Type        : %d\n',dparam.background{1});
+fprintf('Background Color       : [%d,%d,%d]\n',dparam.background{2}(1),dparam.background{2}(2),dparam.background{2}(3));
+fprintf('Ciruclar Aperture Mask : %d\n',dparam.cmask{1});
+fprintf('************ The number of blocks **************\n');
+fprintf('#conditions            : %d\n',length(prt));
 if numel(dparam.block_rand)==1
-  eval(sprintf('disp(''Block Randomization    : %d'');',dparam.block_rand));
+  fprintf('Block Randomization    : %d\n',dparam.block_rand);
 else
-  tmpstr=['disp(''Block Randomization    : ',repmat('%d ',[1,numel(dparam.block_rand)]),''');'];
-  eval(sprintf(tmpstr,dparam.block_rand));
-  clear tmpstr;
+  fprintf(['Block Randomization    : ',repmat('%d ',[1,numel(dparam.block_rand)]),'\n'],dparam.block_rand);
 end
-disp('******************* Task ***********************');
-eval(sprintf('disp(''Task Type              : %d'');',dparam.task(1)));
-eval(sprintf('disp(''Task Frequency         : %d'');',dparam.task(2)));
-eval(sprintf('disp(''Task Duration          : %d'');',dparam.task(3)));
-disp('************** Experiment Time *****************');
+fprintf('******************* Task ***********************\n');
+fprintf('Task Type              : %d\n',dparam.task(1));
+fprintf('Task Frequency         : %d\n',dparam.task(2));
+fprintf('Task Duration          : %d\n',dparam.task(3));
+fprintf('************** Experiment Time *****************\n');
 if strcmpi(prt{end}.mode,'frame')
-  eval(sprintf('disp(''Estimated Exp Time     : %.2f frames'');',prt{end}.cumduration(end)));
+  fprintf('Estimated Exp Time     : %.2f frames\n',prt{end}.cumduration(end));
 else
-  eval(sprintf('disp(''Estimated Exp Time     : %.2f secs'');',prt{end}.cumduration(end)/1000));
+  fprintf('Estimated Exp Time     : %.2f secs\n',prt{end}.cumduration(end)/1000);
 end
-disp('************** The Other Settings **************');
-eval(sprintf('disp(''Start Method           : %d'');',dparam.start_method));
-eval(sprintf('disp(''Force to use frame     : %d'');',dparam.use_frame));
-disp('************ Response key settings *************');
+fprintf('************** The Other Settings **************\n');
+fprintf('Start Method           : %d\n',dparam.start_method);
+fprintf('Force to use frame     : %d\n',dparam.use_frame);
+fprintf('************ Response key settings *************\n');
 for ii=1:1:numel(dparam.keys)
-  eval(sprintf('disp(''Reponse Key #%d        : %d=%s'');',ii,dparam.keys(ii),KbName(dparam.keys(ii))));
+  fprintf('Reponse Key #%d        : %d=%s\n',ii,dparam.keys(ii),KbName(dparam.keys(ii)));
 end
-disp('************************************************');
-fprintf('\n');
-disp('Please check all the parameters above carefully before proceeding.');
-fprintf('\n');
+fprintf('************************************************\n\n');
+fprintf('Please check all the parameters above carefully before proceeding.\n\n');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -938,7 +931,7 @@ fprintf('saving the stimulus generation and presentation parameters...');
 savefname=fullfile(resultDir,[num2str(subj),'_ImagesShowPTB_results_session_',num2str(session,'%02d'),'_run_',num2str(acq,'%02d'),'.mat']);
 
 % backup the old file(s)
-if overwrite_flg
+if ~overwrite_flg
   BackUpObsoleteFiles(fullfile('subjects',num2str(subj),'results',today),...
                       [num2str(subj),'_ImagesShowPTB_results_session_',num2str(session,'%02d'),'_run_',num2str(acq,'%02d'),'.mat'],'_old');
 end
@@ -1049,7 +1042,7 @@ Screen('DrawingFinished',winPtr);
 taskcounter=1;
 
 % add time stamp (this also works to load add_event method in memory in advance of the actual displays)
-event=event.add_event('Experiment Start',strcat([strrep(datestr(now,'yy/mm/dd'),'/',''),' ',datestr(now,'HH:mm:ss')]),GetSecs(),dparam.event_display_mode);
+event=event.add_event('Experiment Start',strcat([datestr(now,'yymmdd'),' ',datestr(now,'HH:mm:ss')]),GetSecs(),dparam.event_display_mode);
 
 % waiting for stimulus presentation
 resps.wait_stimulus_presentation(dparam.start_method,dparam.custom_trigger);
