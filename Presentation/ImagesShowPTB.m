@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2018-12-20 11:07:45 ban"
+% Last Update: "2019-02-22 15:03:40 ban"
 %
 %
 % [input]
@@ -619,7 +619,7 @@ if dparam.background{1} % using a uniform background with rectangular patches fo
   bgimg=CreateBackgroundImage([dparam.window_size(1),dparam.window_size(2)],aperture_size,patch_size,...
                               dparam.background{2},dparam.background{3},dparam.background{4},dparam.fixation{2},patch_num,0,0,0);
 else % using a uniform background
-  bgimg{1} = repmat(reshape(dparam.background{2},[1,1,3]),[dparam.window_size(1),dparam.window_size(2)]);
+  bgimg{1}=repmat(reshape(dparam.background{2},[1,1,3]),[dparam.window_size(1),dparam.window_size(2)]);
 end
 
 background(1)=Screen('MakeTexture',winPtr,bgimg{1});
@@ -1042,7 +1042,7 @@ Screen('DrawingFinished',winPtr);
 taskcounter=1;
 
 % add time stamp (this also works to load add_event method in memory in advance of the actual displays)
-event=event.add_event('Experiment Start',strcat([datestr(now,'yymmdd'),' ',datestr(now,'HH:mm:ss')]),GetSecs(),dparam.event_display_mode);
+event=event.add_event('Experiment Start',strcat([datestr(now,'yymmdd'),' ',datestr(now,'HH:mm:ss')]),NaN,dparam.event_display_mode);
 
 % waiting for stimulus presentation
 resps.wait_stimulus_presentation(dparam.start_method,dparam.custom_trigger);
@@ -1229,7 +1229,7 @@ for ii=1:1:length(prt) % blocks
     end % for jj=1:1:numel(prt{ii}) % trials
 
   else
-    error('prt{%d}.mode should be ''msec'' or ''frame''. check input variable',ii);
+    error('prt{%d}.mode should be ''msec'' or ''frame''. check the input variable',ii);
   end % if sum(strcmpi(prt{ii}.mode,{'frame','msec'})) % frame or msec precision
 
 end % for ii=1:1:length(prt) % blocks
@@ -1275,6 +1275,14 @@ event=event.get_event(); % convert an event logger object to a cell data structu
 eval(sprintf('save -append %s task event;',savefname)); % save the updated task & event structures
 
 
+% tell the experimenter that the measurements are completed
+try
+  for ii=1:1:3, Snd('Play',sin(2*pi*0.2*(0:900)),8000); end
+catch
+  % do nothing
+end
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Cleaning up the PTB screen, removing path to the subfunctions, and finalizing the script
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1285,7 +1293,6 @@ Priority(0);
 GammaResetPTB(1.0);
 rmpath(genpath(fullfile(rootDir,'..','Common')));
 rmpath(fullfile(rootDir,'..','Generation'));
-clear mex; clear global;
 diary off;
 
 
@@ -1311,8 +1318,6 @@ catch lasterror
   keyboard;
   rmpath(genpath(fullfile(rootDir,'..','Common')));
   rmpath(fullfile(rootDir,'..','Generation'));
-  %psychrethrow(psychlasterror);
-  clear global; clear mex; close all;
   return
 end % try..catch
 
