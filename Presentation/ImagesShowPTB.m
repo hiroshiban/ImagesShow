@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2019-02-22 15:03:40 ban"
+% Last Update: "2019-02-28 18:34:01 ban"
 %
 %
 % [input]
@@ -175,7 +175,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %%%% Check input variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%clear global; clear mex;
+clear global; clear mex;
 global subj acq session vparam dparam prt imgs;
 
 if nargin<5, help(mfilename()); return; end
@@ -1293,6 +1293,7 @@ Priority(0);
 GammaResetPTB(1.0);
 rmpath(genpath(fullfile(rootDir,'..','Common')));
 rmpath(fullfile(rootDir,'..','Generation'));
+clear all; clear mex; clear global;
 diary off;
 
 
@@ -1318,6 +1319,7 @@ catch lasterror
   keyboard;
   rmpath(genpath(fullfile(rootDir,'..','Common')));
   rmpath(fullfile(rootDir,'..','Generation'));
+  clear all; clear mex; clear global;
   return
 end % try..catch
 

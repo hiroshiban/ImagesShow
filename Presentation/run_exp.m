@@ -16,7 +16,7 @@ function OK=run_exp(subj,acq,session)
 %
 %
 % Created:   : "2013-11-15 14:49:29 ban"
-% Last Update: "2019-02-22 15:09:52 ban"
+% Last Update: "2019-03-01 15:15:47 ban"
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,7 +51,7 @@ optionfile='display_options';
 % all condition files from DEFAULT and then this function tries to run the
 % stimulus presentation script using the DEFAULT parameters
 
-subj_dir=fullfile(pwd,'subjects',subj);
+subj_dir=fullfile(fileparts(mfilename('fullpath')),'subjects',subj);
 if ~exist(subj_dir,'dir')
 
   error('subjects directory not found. check the input variable.');
@@ -74,7 +74,7 @@ if ~exist(subj_dir,'dir')
   % end
   %
   % %mkdir(subj_dir);
-  % copyfile(fullfile(pwd,'subjects','_DEFAULT_'),subj_dir);
+  % copyfile(fullfile(fileparts(mfilename('fullpath')),'subjects','_DEFAULT_'),subj_dir);
 end
 
 
