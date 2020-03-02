@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2019-02-28 18:34:01 ban"
+% Last Update: "2020-03-02 10:38:27 ban"
 %
 %
 % [input]
@@ -231,14 +231,6 @@ if ~PTB_OK, error('Wrong version of Psychtoolbox is running. %s requires PTB ver
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Set debug level, black screen during calibration
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Screen('Preference','VisualDebuglevel',3);
-if dparam.skip_frame_sync_test, Screen('Preference','SkipSyncTests',1); end
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Setup random seed
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -301,6 +293,18 @@ if nargin<8 || isempty(gamma_table)
   GammaResetPTB(1.0);
 else
   GammaLoadPTB(gamma_table);
+end
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Set debug level, black screen during calibration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Screen('Preference','VisualDebuglevel',3);
+if dparam.skip_frame_sync_test
+  Screen('Preference','SkipSyncTests',1);
+else
+  Screen('Preference','SkipSyncTests',0);
 end
 
 
