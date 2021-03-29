@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2020-03-02 10:38:27 ban"
+% Last Update: "2021-03-29 15:48:29 ban"
 %
 %
 % [input]
@@ -426,7 +426,10 @@ else
 end
 fprintf('************** The Other Settings **************\n');
 fprintf('Start Method           : %d\n',dparam.start_method);
-fprintf('Force to use frame     : %d\n',dparam.use_frame);
+if dparam.start_method==4
+  fprintf('Custom Trigger         : %d\n',dparam.custom_trigger);
+end
+fprintf('Force to use frame Sync  : %d\n',dparam.use_frame);
 fprintf('************ Response key settings *************\n');
 for ii=1:1:numel(dparam.keys)
   fprintf('Reponse Key #%d        : %d=%s\n',ii,dparam.keys(ii),KbName(dparam.keys(ii)));
