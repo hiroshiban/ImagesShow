@@ -7,7 +7,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2021-06-03 16:27:56 ban"
+% Last Update: "2021-06-03 16:40:21 ban"
 %
 %
 % [input]
@@ -16,7 +16,7 @@ function options=readDisplayOptions(optionfile)
 %              The option file can have various parameters listed below. If some of them are not set,
 %              the default parameters are used. So you do not need to set all in your optionfile.
 %
-%              % display mode, one of "mono", "dual", "cross", "parallel", "redgreen", "greenred", "redblue",
+%              % display mode, one of "mono", "dual", "dualparallel","dualcross", "cross", "parallel", "redgreen", "greenred", "redblue",
 %              % "bluered", "shutter", "topbottom", "bottomtop", "interleavedline", "interleavedcolumn", "propixxmono", "propixxstereo"
 %              options.exp_mode='mono';
 %

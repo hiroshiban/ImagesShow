@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2021-06-03 16:31:21 ban"
+% Last Update: "2021-06-03 16:36:21 ban"
 %
 %
 % [input]
