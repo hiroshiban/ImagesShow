@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2021-06-03 16:36:21 ban"
+% Last Update: "2021-06-03 17:04:14 ban"
 %
 %
 % [input]
@@ -401,7 +401,7 @@ fprintf('********* Run Type, Display Image Type *********\n');
 fprintf('Stimulus Display Mode  : %s\n',dparam.exp_mode);
 fprintf('Full Screen Mode       : %d\n',dparam.use_fullscr);
 fprintf('*********** Screen/Display Settings ************\n');
-fprintf('Screen ID              : %d\n',dparam.ScrID);
+fprintf('Screen ID              : %d\n',dparam.scrID);
 fprintf('Screen Height          : %d\n',dparam.window_size(1));
 fprintf('Screen Width           : %d\n',dparam.window_size(2));
 fprintf('Window Center [row,col]: [%d,%d]\n',dparam.center(1),dparam.center(2));
@@ -1352,6 +1352,19 @@ catch lasterror
   % above.  Importantly, it closes the onscreen window if its open.
   cd(rootDir);
   Screen('CloseAll');
+
+  if exist('dparam','var')
+    if isstructmember(dparam,'exp_mode')
+      if strcmpi(dparam.exp_mode,'propixxmono') || strcmpi(dparam.exp_mode,'propixxstereo')
+        if Datapixx('IsViewpixx3D')
+          Datapixx('DisableVideoLcd3D60Hz');
+          Datapixx('RegWr');
+        end
+        Datapixx('Close');
+      end
+    end
+  end
+
   ShowCursor();
   Priority(0);
   GammaResetPTB(1.0);
