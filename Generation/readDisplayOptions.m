@@ -7,7 +7,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2016-10-21 15:02:34 ban"
+% Last Update: "2021-06-03 16:27:56 ban"
 %
 %
 % [input]
@@ -15,6 +15,12 @@ function options=readDisplayOptions(optionfile)
 %              The origin is the directory where this function is called.
 %              The option file can have various parameters listed below. If some of them are not set,
 %              the default parameters are used. So you do not need to set all in your optionfile.
+%
+%              % display mode, one of "mono", "dual", "cross", "parallel", "redgreen", "greenred", "redblue",
+%              % "bluered", "shutter", "topbottom", "bottomtop", "interleavedline", "interleavedcolumn", "propixxmono", "propixxstereo"
+%              options.exp_mode='mono';
+%
+%              options.scrID=1; % screen ID, generally 0 for a single display setup, 1 for dual display setup
 %
 %              % how to start the experiment
 %              % 0: press ENTER or SPACE, 1: click left-mouse button, 2: wait the first MR trigger (CiNet),
@@ -25,10 +31,6 @@ function options=readDisplayOptions(optionfile)
 %              % when you want to use your own trigger key to start the stimulus presentation, set a character here.
 %              % but note that the setting here is only valid when you set options.start_method=4;
 %              options.custom_trigger='s';
-%
-%              % display mode, one of "mono", "dual", "cross", "parallel", "redgreen", "greenred", "redblue",
-%              % "bluered", "shutter", "topbottom", "bottomtop", "interleavedline", "interleavedcolumn"
-%              options.exp_mode='mono';
 %
 %              % response key codes. [1xN] matrix in which all the keycodes to be used are stored.
 %              options.keys=[37,39]; % 37=left arrow, 39=right arrow
@@ -159,30 +161,32 @@ end
 clear optionfile;
 
 % load options and set the default values if required
+options=struct(); % initialize
 run(fullfile(pwd,run_optionfile));
-if ~exist('options','var'), options=setdefaultoptions(); end
-if ~isstructmember(options,'start_method'), options.start_method=0; end
-if ~isstructmember(options,'custom_trigger'), options.custom_trigger='s'; end
-if ~isstructmember(options,'exp_mode'), options.exp_mode='mono'; end
-if ~isstructmember(options,'keys'), options.keys=[37,39]; end
-if ~isstructmember(options,'window_size'), options.window_size=[768,1024]; end
-if ~isstructmember(options,'RGBgain'), options.RGBgain=[1,1,1;1,1,1]; end
-if ~isstructmember(options,'fixation'), options.fixation={2,24,[255,255,255]}; end
-if ~isstructmember(options,'background'), options.background={0,[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]}; end
-if ~isstructmember(options,'skip_frame_sync_test'), options.skip_frame_sync_test=0; end
-if ~isstructmember(options,'force_frame_rate'), options.force_frame_rate=0; end
-if ~isstructmember(options,'cmask'), options.cmask={0,[280,280],[20,20]}; end
-if ~isstructmember(options,'auto_background'), options.auto_background=0; end
-if ~isstructmember(options,'use_fullscr'), options.use_fullscr=0; end
-if ~isstructmember(options,'use_frame'), options.use_frame=0; end
-if ~isstructmember(options,'use_original_imgsize'), options.use_original_imgsize=0; end
-if ~isstructmember(options,'img_loading_mode'), options.img_loading_mode=2; end
-if ~isstructmember(options,'center'), options.center=[0,0]; end
-if ~isstructmember(options,'img_flip'), options.img_flip=0; end
-if ~isstructmember(options,'task'), options.task=[0,1,250]; end
-if ~isstructmember(options,'block_rand'), options.block_rand=0; end
-if ~isstructmember(options,'onset_punch'), options.onset_punch=[0,50]; end
-if ~isstructmember(options,'event_display_mode'), options.event_display_mode=0; end
+options=ValidateStructureFields(options,... % validate fields and set the default values to missing field(s)
+  'scrID',1,...
+  'exp_mode','mono',...
+  'start_method',0,...
+  'custom_trigger','s',...
+  'keys',[37,39],...
+  'window_size',[768,1024],...
+  'RGBgain',[1,1,1;1,1,1],...
+  'fixation',{2,24,[255,255,255]},...
+  'background',{0,[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]},...
+  'skip_frame_sync_test',0,...
+  'force_frame_rate',0,...
+  'cmask',{0,[280,280],[20,20]},...
+  'auto_background',0,...
+  'use_fullscr',0,...
+  'use_frame',0,...
+  'use_original_imgsize',0,...
+  'img_loading_mode',2,...
+  'center',[0,0],...
+  'img_flip',0,...
+  'task',[0,1,250],...
+  'block_rand',0,...
+  'onset_punch',[0,50],...
+  'event_display_mode',0);
 
 % detect missing parameter values and put them by default ones
 if numel(options.window_size)==1, options.window_size=[options.window_size,options.window_size]; end
@@ -200,34 +204,5 @@ if numel(options.center)==1, options.center=[options.center,options.center]; end
 if numel(options.task)==1, options.task(2)=3; end
 if numel(options.task)==2, options.task(3)=250; end
 if numel(options.onset_punch)==1, options.onset_punch(2)=50; end
-
-return
-
-
-%% subfunction
-function options=setdefaultoptions()
-
-  options.start_method=0;
-  options.custom_trigger='s';
-  options.exp_mode='mono';
-  options.keys=[37,39];
-  options.window_size=[768,1024];
-  options.RGBgain=[1,1,1;1,1,1];
-  options.fixation={2,24,[255,255,255]};
-  options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};
-  options.cmask={0,[280,280],[20,20]};
-  options.auto_background=0;
-  options.use_fullscr=0;
-  options.skip_frame_sync_test=0;
-  options.force_frame_rate=0;
-  options.use_frame=0;
-  options.use_original_imgsize=0;
-  options.img_loading_mode=2;
-  options.center=[0,0];
-  options.img_flip=0;
-  options.task=[0,1,250];
-  options.block_rand=0;
-  options.onset_punch=[0,50];
-  options.event_display_mode=0;
 
 return

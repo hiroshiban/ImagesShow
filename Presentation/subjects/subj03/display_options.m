@@ -6,6 +6,12 @@
 % for details, please see readDisplayOptions.m
 
 
+% display mode, one of "mono", "dual", "dualcross", "dualparallel", "cross", "parallel", "redgreen", "greenred",
+% "redblue", "bluered", "shutter", "topbottom", "bottomtop", "interleavedline", "interleavedcolumn", "propixxmono", "propixxstereo".
+options.exp_mode='mono';
+
+options.scrID=1; % screen ID, generally 0 for a single display setup, 1 for dual display setup
+
 % how to start the experiment
 % 0: press ENTER or SPACE, 1: click left-mouse button, 2: wait the first MR trigger (CiNet),
 % 3: waiting for a MR trigger pulse (BUIC) -- checking onset of pin #11 of the parallel port
@@ -15,10 +21,6 @@ options.start_method=0;
 % when you want to use your own trigger key to start the stimulus presentation, set a character here.
 % but note that the setting here is valid only when you set options.start_method=4;
 options.custom_trigger='s';
-
-% display mode, one of "mono", "dual", "dualcross", "dualparallel", "cross", "parallel", "redgreen", "greenred",
-% "redblue", "bluered", "shutter", "topbottom", "bottomtop", "interleavedline", "interleavedcolumn".
-options.exp_mode='mono';
 
 % response key codes. [1xN] matrix in which all the keycodes to be used are stored.
 options.keys=[37,39]; % 37=left arrow, 39=right arrow

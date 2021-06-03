@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2021-03-29 15:48:29 ban"
+% Last Update: "2021-06-03 16:31:21 ban"
 %
 %
 % [input]
@@ -169,6 +169,10 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 % Add an option to select the way of displaying stimulus
 % presentation details from "simple" or "details" mode.
 %                                            Oct  23 2016 H.Ban
+% Updated so that ImagesShowPTB can work with VPIXX PROPixx Projector
+%                                            June 03 2021 H.Ban
+% Add an option to select display ID
+%                                            June 03 2021 H.Ban
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -397,6 +401,7 @@ fprintf('********* Run Type, Display Image Type *********\n');
 fprintf('Stimulus Display Mode  : %s\n',dparam.exp_mode);
 fprintf('Full Screen Mode       : %d\n',dparam.use_fullscr);
 fprintf('*********** Screen/Display Settings ************\n');
+fprintf('Screen ID              : %d\n',dparam.ScrID);
 fprintf('Screen Height          : %d\n',dparam.window_size(1));
 fprintf('Screen Width           : %d\n',dparam.window_size(2));
 fprintf('Window Center [row,col]: [%d,%d]\n',dparam.center(1),dparam.center(2));
@@ -460,7 +465,7 @@ if ~user_answer, close all; return; end
 %%%% Initialization of Left & Right screens for binocular presenting/viewing mode
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[winPtr,winRect,nScr,dparam.fps,dparam.ifi,initDisplay_OK]=InitializePTBDisplays(dparam.exp_mode,dparam.background{2},dparam.img_flip,RGBgain);
+[winPtr,winRect,nScr,dparam.fps,dparam.ifi,initDisplay_OK]=InitializePTBDisplays(dparam.exp_mode,dparam.background{2},dparam.img_flip,RGBgain,dparam.scrID);
 if ~initDisplay_OK, error('Display initialization error. Please check your exp_run parameter.'); end
 HideCursor();
 
@@ -645,18 +650,18 @@ if dparam.cmask{1}
     [x,y]=meshgrid(-aperture_size(2)/2:step:aperture_size(2)/2,-aperture_size(1)/2:step:aperture_size(1)/2);
     if mod(size(x,1),2), x=x(1:end-1,:); y=y(1:end-1,:); end
     if mod(size(x,2),2), x=x(:,1:end-1); y=y(:,1:end-1); end
-  
+
     if dparam.cmask{1}==1 % oval aperture
       idx=logical( 1<( x.^2/(dparam.cmask{2}(2)/2).^2 + y.^2/(dparam.cmask{2}(1)/2).^2 ) );
     elseif dparam.cmask{1}==2 % rectangular aperture
       idx=logical( x<-dparam.cmask{2}(2)/2 | dparam.cmask{2}(2)/2<x | y<-dparam.cmask{2}(1)/2 | dparam.cmask{2}(1)/2<y );
     end
-  
+
     % generate a background-colored rectangle
     maskimg=ones([size(x),4]);
     for ii=1:1:3, maskimg(:,:,ii)=dparam.background{2}(ii)*maskimg(:,:,ii); end
     maskimg(:,:,4)=0;
-  
+
     % mask the outside of a circular region
     tmp=maskimg(:,:,4); tmp(idx)=255;
     if dparam.cmask{3}(1)~=0 % gaussian filtering
@@ -666,13 +671,13 @@ if dparam.cmask{1}
       tmp=imfilter(uint8(tmp),h,'replicate'); % for speeding up;
     end
     maskimg(:,:,4)=tmp;
-  
+
     % resizing
     maskimg=imresize(maskimg,step,'bilinear'); % not bicubic
-  
+
     circularmask(1)=Screen('MakeTexture',winPtr,maskimg);
     circularmask(2)=circularmask(1);
-  
+
     % create rect region
     maskRect=[0,0,size(maskimg,2),size(maskimg,1)];
     if strcmpi(dparam.exp_mode,'cross') || strcmpi(dparam.exp_mode,'parallel') || ...
@@ -925,6 +930,24 @@ if dparam.onset_punch(1)
     punchoffset=-[psize/2,psize/2,psize/2,psize/2]+[offset,offset];
   end
   clear offset;
+end
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Prepare blue lines for stereo image flip sync with VPixx PROPixx
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% There seems to be a blueline generation bug on some OpenGL systems.
+% SetStereoBlueLineSyncParameters(winPtr, winRect(4)) corrects the
+% bug on some systems, but breaks on other systems.
+% We'll just disable automatic blueline, and manually draw our own bluelines!
+
+if strcmpi(dparam.exp_mode,'propixxmono') || strcmpi(dparam.exp_mode,'propixxstereo')
+  SetStereoBlueLineSyncParameters(winPtr, winRect(4)+10);
+  blueRectOn(1,:)=[0, winRect(4)-1, winRect(3)/4, winRect(4)];
+  blueRectOn(2,:)=[0, winRect(4)-1, winRect(3)*3/4, winRect(4)];
+  blueRectOff(1,:)=[winRect(3)/4, winRect(4)-1, winRect(3), winRect(4)];
+  blueRectOff(2,:)=[winRect(3)*3/4, winRect(4)-1, winRect(3), winRect(4)];
 end
 
 
@@ -1216,6 +1239,12 @@ for ii=1:1:length(prt) % blocks
               %Screen('DrawTexture',winPtr,tasktex(nn),[],CenterRect(fixRect,winRect)+centeroffset);
             end
 
+            % blue line for stereo sync
+            if strcmpi(dparam.exp_mode,'propixxmono') || strcmpi(dparam.exp_mode,'propixxstereo')
+              Screen('FillRect',winPtr,[0,0,255],blueRectOn(nn,:));
+              Screen('FillRect',winPtr,[0,0,0],blueRectOff(nn,:));
+            end
+
             [resps,event]=resps.check_responses(event,[],dparam.event_display_mode);
           end % for nn=1:1:nScr
 
@@ -1295,6 +1324,16 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Screen('CloseAll');
+
+% closing datapixx
+if strcmpi(dparam.exp_mode,'propixxmono') || strcmpi(dparam.exp_mode,'propixxstereo')
+  if Datapixx('IsViewpixx3D')
+    Datapixx('DisableVideoLcd3D60Hz');
+    Datapixx('RegWr');
+  end
+  Datapixx('Close');
+end
+
 ShowCursor();
 Priority(0);
 GammaResetPTB(1.0);
