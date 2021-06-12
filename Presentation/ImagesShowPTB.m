@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2021-06-03 17:04:14 ban"
+% Last Update: "2021-06-09 23:39:47 ban"
 %
 %
 % [input]
@@ -942,7 +942,7 @@ end
 % bug on some systems, but breaks on other systems.
 % We'll just disable automatic blueline, and manually draw our own bluelines!
 
-if strcmpi(dparam.exp_mode,'propixxmono') || strcmpi(dparam.exp_mode,'propixxstereo')
+if strcmpi(dparam.exp_mode,'propixxstereo')
   SetStereoBlueLineSyncParameters(winPtr, winRect(4)+10);
   blueRectOn(1,:)=[0, winRect(4)-1, winRect(3)/4, winRect(4)];
   blueRectOn(2,:)=[0, winRect(4)-1, winRect(3)*3/4, winRect(4)];
@@ -1240,7 +1240,7 @@ for ii=1:1:length(prt) % blocks
             end
 
             % blue line for stereo sync
-            if strcmpi(dparam.exp_mode,'propixxmono') || strcmpi(dparam.exp_mode,'propixxstereo')
+            if strcmpi(dparam.exp_mode,'propixxstereo')
               Screen('FillRect',winPtr,[0,0,255],blueRectOn(nn,:));
               Screen('FillRect',winPtr,[0,0,0],blueRectOff(nn,:));
             end
