@@ -1,6 +1,6 @@
 function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optionfile,gamma_table,overwrite_flg)
 
-% a fully-customizable image presentation script for your fMRI(event- and block-design)/TMS/EEG/behavior experiments.
+% a fully-customizable image presentation script for your fMRI(event-related and block-design)/TMS/EEG/behavior experiments.
 % function ImagesShowPTB(subj,acq,session,protocolfile,imgdbfile,:viewfile,:optionfile,:gamma_table,:overwrite_flg)
 % (: is optional)
 %
@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2021-06-09 23:39:47 ban"
+% Last Update: "2021-11-30 14:11:17 ban"
 %
 %
 % [input]
@@ -62,7 +62,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 % [output]
 % No output variable.
 % The resutls are saved in
-% ~/ImagesShowPTB/Presentation/(subj)/results/(yymmdd(date))/(subj)_ImagesShowPTB_results_run_%02d.m
+% ~/ImagesShowPTB/Presentation/(subj)/results/(yymmdd(date))/(subj)_ImagesShowPTB_results_session_%2d_run_%02d.m
 %
 % [dependencies]
 % 1. Psychtoolbox by Denis Pelli et al. version 3.x or above. Should be installed independently.
@@ -173,6 +173,8 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %                                            June 03 2021 H.Ban
 % Add an option to select display ID
 %                                            June 03 2021 H.Ban
+% Compatible with some half-mirror stereo displays such as 3D PluraView
+%                                            Aug  03 2021 H.Ban
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -304,12 +306,13 @@ end
 %%%% Set debug level, black screen during calibration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Screen('Preference','VisualDebuglevel',3);
 if dparam.skip_frame_sync_test
   Screen('Preference','SkipSyncTests',1);
 else
   Screen('Preference','SkipSyncTests',0);
 end
+
+Screen('Preference','VisualDebuglevel',3);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

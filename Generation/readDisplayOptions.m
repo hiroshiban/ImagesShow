@@ -7,7 +7,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2021-06-03 16:40:21 ban"
+% Last Update: "2021-08-03 13:48:46 ban"
 %
 %
 % [input]
@@ -87,7 +87,9 @@ function options=readDisplayOptions(optionfile)
 %              % image offset, [row,col]. when set [0,0], images will be presented at the center of the screen
 %              options.center=[0,0];
 %
-%              % whether flipping images, 0: none, 1: x-axis, 2: y-axis, 3: x&y-axis
+%              % whether flipping images, 0: none, 1: x-axis (horizontally), 2: y-axis (vertically), 3: x&y-axis,
+%              % 4: x-axis only for the left view (the first) display,
+%              % 5: x-axis only for the right view (the second) display. (4 and 5 are for some half-mirror stereo displays such as 3D PluraView)
 %              options.img_flip=0;
 %
 %              % whether adding task during the experiment. [1x3] matrix. [type,frequency,duration]

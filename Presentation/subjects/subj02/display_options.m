@@ -51,11 +51,11 @@ options.auto_background=0;
 options.use_fullscr=0;
 
 % whether skipping frame sync (flip) test
-option.skip_frame_sync_test=0;
+options.skip_frame_sync_test=0;
 
 % whether forcing to use specific frame rate, if 0, the frame rate wil bw computed in the ImagesShowPTB function.
 % if non zero, the value is used as the screen frame rate.
-option.force_frame_rate=60;
+options.force_frame_rate=60;
 
 % whether forcing to use frames (vertical sync signals) as a unit of display duration instead of msec.
 % 0: none, 1: force to use the number of frames for presentation duration setting
@@ -77,7 +77,10 @@ options.img_loading_mode=2;
 % image offset, [row,col]. when set [0,0], images will be presented at the center of the screen
 options.center=[0,0];
 
-% whether flipping images, 0: none, 1: x-axis, 2: y-axis, 3: x&y-axis
+% whether flipping images, 0: none, 1: x-axis (horizontally), 2: y-axis (vertically), 3: x&y-axis,
+%                          4: x-axis only for the left view (the first) display,
+%                          5: x-axis only for the right view (the second) display.
+%                          (4 and 5 are for some half-mirror stereo displays such as 3D PluraView)
 options.img_flip=0;
 
 % whether adding task during the experiment. [1x3] matrix. [type,frequency,duration]

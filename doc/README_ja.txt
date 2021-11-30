@@ -1,208 +1,208 @@
-�S�����������fMRI/TMS/EEG�����p�摜�掦�\�t�g�E�F�A  ImagesShowPTB Ver. 1.0
+心理実験およびfMRI/TMS/EEG実験用画像呈示ソフトウェア  ImagesShowPTB Ver. 1.0
 
-�쐬�����F 2003�N12��24��  �ԍ_�u(BAN, Hiroshi)
-�ŏI�X�V�F 2016�N08��29��  �ԍ_�u(BAN, Hiroshi)
-�A����  �Fban.hiroshi@gmail.com
+作成日時： 2003年12月24日  番浩志(BAN, Hiroshi)
+最終更新： 2016年08月29日  番浩志(BAN, Hiroshi)
+連絡先  ：ban.hiroshi@gmail.com
 
-1. ImagesShowPTB�Ƃ�
+1. ImagesShowPTBとは
 
-�E�����̉摜�t�@�C����ǂݍ��݁A���������o�h���Ƃ��Ă��炩���ߎw�肵���Ƃ���(���邢�̓����_��)�ɐ��m�ȃ^�C�~���O�ŘA���掦����
-  �\�t�g�E�F�A�ł��B
-�EImagesShow�́A���Ƃ���Windows XP���Microsoft Visual C++.NET 2005��p���āAC++�AWin32API�����OpenGL��ʌ݊���VTK5.4.2
-  (Visualization Toolkit ver.5.4.2, Kitware, Inc. http://www.kitware.com)�̃X�^�e�B�b�N���C�u����(�\�[�X����R���p�C��)�𗘗p����
-  �v���O���~���O���ꂽ*.exe�`���̎��s�t�@�C���ł����B����A�v���b�g�z�[����I�΂��A�܂��_��ȉ��ǂɂ��Ή��ł���悤�AMATALAB��
-  Psychtoolbox�𗘗p�����X�N���v�g�Ƃ��ĐV���ɏ���������܂����B�P���Ƀv���O���~���O���ꂪ�ύX���ꂽ�����ł͂Ȃ��A����掦��g���K�[
-  �擾�ȂǁA����܂ł̃o�[�W�����ɂ͂Ȃ������V�����@�\�������ǉ�����Ă��܂��B
+・複数の画像ファイルを読み込み、それらを視覚刺激としてあらかじめ指定したとおり(あるいはランダム)に正確なタイミングで連続呈示する
+  ソフトウェアです。
+・ImagesShowは、もともとWindows XP上のMicrosoft Visual C++.NET 2005を用いて、C++、Win32APIおよびOpenGL上位互換のVTK5.4.2
+  (Visualization Toolkit ver.5.4.2, Kitware, Inc. http://www.kitware.com)のスタティックライブラリ(ソースからコンパイル)を利用して
+  プログラミングされた*.exe形式の実行ファイルでした。今回、プラットホームを選ばず、また柔軟な改良にも対応できるよう、MATALABと
+  Psychtoolboxを利用したスクリプトとして新たに書き直されました。単純にプログラミング言語が変更されただけではなく、両眼呈示やトリガー
+  取得など、これまでのバージョンにはなかった新しい機能が多く追加されています。
 
-��ȓ����͈ȉ��̂Ƃ���ł��B
-�E�摜��A���掦���Ċώ@�҂̔������Ԃ�]�������擾����悤�ȃp���_�C���̐S���s�������ATMS/EEG/fMRI�������T�|�[�g���܂��B
-�E�u���b�N�p���_�C���A�C�x���g�����C�e�b�h�p���_�C���A�ǂ����fMRI�����ɂ��g�p�\�ł��B
-  �R���f�B�V�����t�@�C����K�؂ɋL�q���邱�ƂŁA���s�̃I�u�W�F�N�g�m�o�E�F�m�֘A��fMRI�����̂قڑS�Ă̒掦�V�[�P���X���Č��ł��܂��B
-�EMATLAB�ň�����S�Ẵt�H�[�}�b�g�̉摜�𗘗p�ł��܂��B�X�N���v�g��ύX���āA�Ǝ��̉摜�ǂݍ��ݏ�����ǉ����邱�Ƃ��\�ł��B
-  �܂��A�摜��\��MATLAB��*.mat�`���ŕۑ����A����*.mat�t�@�C����ǂݍ��܂��邱�Ƃ��\�ł��B
-�E�摜�̓ǂݍ��݁A�������ւ�OpenGL�e�N�X�`���̏������݃^�C�~���O���I�v�V�����ŕύX�ł��܂��B���̋@�\�ɂ��A
-  1. �摜�掦�O�Ɉ�x�ɑS�Ẵe�N�X�`�����쐬���A��̏����Œ掦�ȊO�̊��荞�݂�����Ȃ��悤�ɂ��邱�ƂŁA�掦���Ԃ̐��m�Ȑ��䂪�\�ł��B
-  2. �摜��掦����1�����ǂݍ��ނ悤�ݒ肷�邱�Ƃ�(���[�p���[�ȃR���s���[�^�ł́A�掦���Ԃ̐��x�������]���ɂȂ邩������܂���)�A������
-     �����Ȃ��R���s���[�^��ł������̉摜��掦���邱�Ƃ��\�ł��B�����ɐ��疇�̉摜���K�v�ȏꍇ���A�K�v�ȉ摜��1�����ǂݍ���Œ掦��
-     ��΁A�������E�G���[���N���܂���B
-  �Ƃ������_��ȏ������\�ł��B�������A�e�摜�̃p�X�t���t�@�C������cell�\���̂Ƃ���MATLAB�Ƀ��[�h����K�v������̂ŁA����cell�\���̃T�C
-  �Y��MATLAB�������𒴂���(�ʏ퐔��`�������͕ێ��ł��܂�)�悤�ȏꍇ�́A�{�\�t�g�E�F�A�͎g�p�ł��܂���B
-�E�摜�t�@�C�������R�Ɋg��E�k�����Ē掦�ł��܂��B�܂��A�摜�t�@�C���̃T�C�Y��\�ߑ����Ă����K�v�͂���܂���B
-�E���Ԑ����掦���[�`���́APsychtoolbox��Screen�֐��𗘗p���Ă��܂��BPsychtoolbox�͑����̌����҂Ɏg���A�A�b�v�f�[�g����Ă���A�掦
-  ���Ԃ̐���Ȃǂ͏\���ɐM���ł��܂��B��قǂ̊��łȂ�����A�����_�����O���傫���x��邱�Ƃ͂���܂���B
-  �܂��AImagesShowPTB�́A1�̉摜�̒掦���ԂɃY�����������ۂɎ��̉摜�̒掦���Ԃ𒲐����邱�ƂŁA���掦���Ԃ𐳊m�ɕۂ@�\��������Ă��܂��B
-�E�掦���Ԃ̎w��ɂ́A���������M���̃J�E���g��msec�P�ʂ�2���I�ׂ܂�(���݂��\�ł�)�B
-�E�h���掦�V�[�P���X�APsychtoolbox�̌x���E�G���[�͖��񃍃O�t�@�C���ɏo�́E�ۑ�����܂��B
-�EParallel Port��ʂ���ImagesShowPTB�ƊO�����u�Ƃ̘A�g���\�ł� (���݁A�g���K�[�擾�̂ݑΉ��B���̘A�g�ɂ̓X�N���v�g�̕ύX���K�v�ł�)�B
-�EImagesShowPTB�̑S�Ă̏�����MATLAB�̃X�N���v�g�ɂ��L�q����Ă���̂ŁA�ꕔ�̋@�\�݂̂�ύX������A���鏈���𔲂��o���đ��̃v���O������
-  ���̋@�\���ڐA���邱�Ƃ��e�Ղł��B
+主な特徴は以下のとおりです。
+・画像を連続呈示して観察者の反応時間や脳活動を取得するようなパラダイムの心理行動実験、TMS/EEG/fMRI実験をサポートします。
+・ブロックパラダイム、イベントリレイテッドパラダイム、どちらのfMRI実験にも使用可能です。
+  コンディションファイルを適切に記述することで、現行のオブジェクト知覚・認知関連のfMRI実験のほぼ全ての呈示シーケンスを再現できます。
+・MATLABで扱える全てのフォーマットの画像を利用できます。スクリプトを変更して、独自の画像読み込み処理を追加することも可能です。
+  また、画像を予めMATLABの*.mat形式で保存し、その*.matファイルを読み込ませることも可能です。
+・画像の読み込み、メモリへのOpenGLテクスチャの書き込みタイミングをオプションで変更できます。この機能により、
+  1. 画像呈示前に一度に全てのテクスチャを作成し、後の処理で呈示以外の割り込みが入らないようにすることで、呈示時間の正確な制御が可能です。
+  2. 画像を呈示時に1枚ずつ読み込むよう設定することで(ローパワーなコンピュータでは、呈示時間の精度が少し犠牲になるかもしれません)、メモリ
+     が少ないコンピュータ上でも多くの画像を呈示することが可能です。実験に数千枚の画像が必要な場合も、必要な画像を1枚ずつ読み込んで呈示す
+     れば、メモリ・エラーが起きません。
+  といった柔軟な処理が可能です。ただし、各画像のパス付きファイル名をcell構造体としてMATLABにロードする必要があるので、そのcell構造のサイ
+  ズがMATLABメモリを超える(通常数千～数万件は保持できます)ような場合は、本ソフトウェアは使用できません。
+・画像ファイルを自由に拡大・縮小して呈示できます。また、画像ファイルのサイズを予め揃えておく必要はありません。
+・時間制御や呈示ルーチンは、PsychtoolboxのScreen関数を利用しています。Psychtoolboxは多くの研究者に使われ、アップデートされており、呈示
+  時間の制御などは十分に信頼できます。よほどの環境でない限り、レンダリングが大きく遅れることはありません。
+  また、ImagesShowPTBは、1つの画像の呈示時間にズレが生じた際に次の画像の呈示時間を調整することで、総呈示時間を正確に保つ機能が備わっています。
+・呈示時間の指定には、垂直同期信号のカウントとmsec単位の2つが選べます(混在も可能です)。
+・刺激呈示シーケンス、Psychtoolboxの警告・エラーは毎回ログファイルに出力・保存されます。
+・Parallel Portを通じたImagesShowPTBと外部装置との連携も可能です (現在、トリガー取得のみ対応。他の連携にはスクリプトの変更が必要です)。
+・ImagesShowPTBの全ての処理はMATLABのスクリプトにより記述されているので、一部の機能のみを変更したり、ある処理を抜き出して他のプログラムに
+  その機能を移植することも容易です。
 
-2. �����
+2. 動作環境
 
-�EWindows XP,7,8 (Windows9x�n�ł͖��m�F), Mac OSX, Linux
-�E������OS��œ��삷��MATLAB (http://www.mathworks.com)�A�����Psychtoolbox ver.3�ȏ� (http://psychtoolbox.org/HomePage)
-�EOpenGL Accelerator�Ή��̃O���t�B�b�N�J�[�h(Nvidia GEForce, ATI Radeon, ATI FireGL�Ȃ�)��ς񂾃R���s���[�^���]�܂����B
+・Windows XP,7,8 (Windows9x系では未確認), Mac OSX, Linux
+・それらのOS上で動作するMATLAB (http://www.mathworks.com)、およびPsychtoolbox ver.3以上 (http://psychtoolbox.org/HomePage)
+・OpenGL Accelerator対応のグラフィックカード(Nvidia GEForce, ATI Radeon, ATI FireGLなど)を積んだコンピュータが望ましい。
 
-3. ��҂̓���m�F��
+3. 作者の動作確認環境
 
-�ELenovo Thinkpad T61p (Intel Core 2 Duo 2.6GHz, 4GB(3GB) RAM, nVidia Quadro FX540 512MB VRAM, Windows XP SP3)
+・Lenovo Thinkpad T61p (Intel Core 2 Duo 2.6GHz, 4GB(3GB) RAM, nVidia Quadro FX540 512MB VRAM, Windows XP SP3)
 
-(���o�[�W�����̓���͊m�F)
-�ECOMPAQ mobile workstation N800w (Pentium4 2.2GHz, 1GB RAM, ATI Mobility FireGL 9000 64MB VRAM, Windows2000)
-�EIBM Thinkpad mobile workstation A31p (Pentium4 2.0GHz, 768MB RAM, ATI Mobility Radeon 7800 64MB VRAM, Windows2000)
-�EFUJITSU CELSIUS 600 (Pentium3 1GHz, ATI FireGL 2, Windows2000)
-�ETOSHIBA G5 (Pentium*, WindowsXP home)
+(旧バージョンの動作は確認)
+・COMPAQ mobile workstation N800w (Pentium4 2.2GHz, 1GB RAM, ATI Mobility FireGL 9000 64MB VRAM, Windows2000)
+・IBM Thinkpad mobile workstation A31p (Pentium4 2.0GHz, 768MB RAM, ATI Mobility Radeon 7800 64MB VRAM, Windows2000)
+・FUJITSU CELSIUS 600 (Pentium3 1GHz, ATI FireGL 2, Windows2000)
+・TOSHIBA G5 (Pentium*, WindowsXP home)
 
-4. ��҂̊J����
+4. 作者の開発環境
 
-�EWindows XP SP3��ŁAEmacs (24.2.91)�AEmEditor (ver.13.0.6)��p���ăX�N���v�g�������AMATLAB 7.8.0.347 (R2009a)��œ���m�F���Ă��܂��B
-�E�قƂ�ǑS�Ẵt�@�C���́AMATLAB�X�N���v�g�`���ł��̂ŁA�ύX�͎��R�ɂł��܂��B
-�E�ꕔ�ACommon�f�B���N�g������C++�\�[�X��MEX�t�@�C�����܂܂�Ă��܂��B���������g���̊��ɍ����悤�ɃR���p�C������ɂ́A���g����OS��
-  �Ή�����C/C++�̃R���p�C��(gcc�Ȃ�)���K�v�ł��B�R���p�C���ɂ́AMATLAB�R�}���h�E�B���h�E��ŁA
+・Windows XP SP3上で、Emacs (24.2.91)、EmEditor (ver.13.0.6)を用いてスクリプトを書き、MATLAB 7.8.0.347 (R2009a)上で動作確認しています。
+・ほとんど全てのファイルは、MATLABスクリプト形式ですので、変更は自由にできます。
+・一部、Commonディレクトリ内にC++ソースとMEXファイルが含まれています。これらをお使いの環境に合うようにコンパイルするには、お使いのOSに
+  対応したC/C++のコンパイラ(gccなど)が必要です。コンパイルには、MATLABコマンドウィンドウ上で、
   >> mex -setup [RETURN]
-  �����ăR���p�C�����w�肵����ACommon�f�B���N�g���Ɉړ����A
+  をしてコンパイラを指定した後、Commonディレクトリに移動し、
   >> CompileMEXs [RETURN]
-  �Ƃ��Ă��������B
+  としてください。
 
-5. ImagesShowPTB�f�B���N�g���̍\��
+5. ImagesShowPTBディレクトリの構成
 
-ImagesShowPTB�f�B���N�g�������ɂ́A�ȉ���8�̃T�u�f�B���N�g����2�̃t�@�C��������܂��B���ꂼ��̏ڍׂ͈ȉ��̒ʂ�ł��B
-.git ------------ Git�ɂ��o�[�W�����Ǘ��ɕK�v�ȃt�@�C���Q�ł��B
-Common ---------- ImagesShowPTB�̓���ɕK�v�ȃT�u�֐�����щ摜�����A���̃v���O�����ɂ����ʂ��ė��p�ł���֐��������Ă��܂�
-doc ------------- ImagesShowPTB�̃h�L�������g�������Ă��܂��B����README�t�@�C���̑��ɁA~/ImagesShowPTB/doc/html/index.html
-                  ���u���E�U�ŊJ���Ă����������ƂŁAImagesShowPTB�̑S�Ẵ\�[�X�E�R�[�h�̒��g�Ɗ֌W�����{���ł��܂��B
-gamma_table ----- ImagesShowPTB�Ŏg�p�ł���f�B�X�v���C�E�K���}�E�e�[�u���̃T���v���������Ă��܂��B�K���}�E�e�[�u���͎��R��
-                  �쐬���Ă��������܂��B�ڍׂ͉��L�̎g�p���@���������������B
-Generation ------ ImagesShowPTB�ł̉摜�掦�ɕK�v��4�̃R���f�B�V�����E�t�@�C����ǂݍ��ނ��߂̃T�u�֐��������Ă��܂��B
-images ---------- �f���X�N���v�g�ŗ��p����摜�t�@�C���������Ă��܂��Bimgdbfile�̋L�q��ύX����΁A�摜�t�@�C���͂ǂ��ɂł�
-                  �u�����Ƃ��ł��܂��B
-                  (!����!) ���̃f�B���N�g���ɂ����h���́A�����擾�ς݂̎h�����������������Ďg�p���Ă��܂��B
-                  ���̌������ł̃f���p�r�ȊO�ɂ͌����Ďg�p���Ȃ��ł��������B
-m2html ---------- ImagesShowPTB��HTML�`���w���v�E�h�L�������g���쐬���邽�߂ɕK�v�ȃc�[���ł��B
-Presentation ---- ImagesShowPTB�{�́A�팱�Җ��̃R���f�B�V�����E�t�@�C���������Ă��܂��B�����ɕK�v�ȃR���f�B�V�����E�t�@�C����
-                  ~/ImagesShowPTB/Presentation/subjects/(�팱�Җ�)�ȉ��֕ۑ����Ă��������B
-                  �f�t�H���g�ł́A�f���p�R���f�B�V�����E�t�@�C���Ɖ摜�t�@�C���������Ă��܂��B
-                  �܂��A�������ʂ�~/ImagesShowPTB/subjects/(�팱�Җ�)�f�B���N�g���ȉ��ɕۑ�����܂��B
-Update_ImagesShowPTB_Docs.m --- ImagesShowPTB��HTML�`���w���v�E�h�L�������g���A�b�v�f�[�g���邽�߂̃X�N���v�g�ł��B
-readme_for_testing.txt -------- Presentation/subjects/�ȉ��ɂ���f���p�X�N���v�g�̎g�������������t�@�C���ł��B
+ImagesShowPTBディレクトリ直下には、以下の8つのサブディレクトリと2つのファイルがあります。それぞれの詳細は以下の通りです。
+.git ------------ Gitによるバージョン管理に必要なファイル群です。
+Common ---------- ImagesShowPTBの動作に必要なサブ関数および画像処理、他のプログラムにも共通して利用できる関数が入っています
+doc ------------- ImagesShowPTBのドキュメントが入っています。このREADMEファイルの他に、~/ImagesShowPTB/doc/html/index.html
+                  をブラウザで開いていただくことで、ImagesShowPTBの全てのソース・コードの中身と関係性を閲覧できます。
+gamma_table ----- ImagesShowPTBで使用できるディスプレイ・ガンマ・テーブルのサンプルが入っています。ガンマ・テーブルは自由に
+                  作成していただけます。詳細は下記の使用方法をご覧ください。
+Generation ------ ImagesShowPTBでの画像呈示に必要な4つのコンディション・ファイルを読み込むためのサブ関数が入っています。
+images ---------- デモスクリプトで利用する画像ファイルが入っています。imgdbfileの記述を変更すれば、画像ファイルはどこにでも
+                  置くことができます。
+                  (!注意!) このディレクトリにある顔刺激は、特許取得済みの刺激を許可をいただいて使用しています。
+                  この研究室でのデモ用途以外には決して使用しないでください。
+m2html ---------- ImagesShowPTBのHTML形式ヘルプ・ドキュメントを作成するために必要なツールです。
+Presentation ---- ImagesShowPTB本体、被験者毎のコンディション・ファイルが入っています。実験に必要なコンディション・ファイルは
+                  ~/ImagesShowPTB/Presentation/subjects/(被験者名)以下へ保存してください。
+                  デフォルトでは、デモ用コンディション・ファイルと画像ファイルが入っています。
+                  また、実験結果は~/ImagesShowPTB/subjects/(被験者名)ディレクトリ以下に保存されます。
+Update_ImagesShowPTB_Docs.m --- ImagesShowPTBのHTML形式ヘルプ・ドキュメントをアップデートするためのスクリプトです。
+readme_for_testing.txt -------- Presentation/subjects/以下にあるデモ用スクリプトの使い方を示したファイルです。
 
-6. �g�p���@����ђ��ӓ_
+6. 使用方法および注意点
 
-�EMATLAB�R�}���h�E�B���h�E��ŃR���f�B�V�����E�t�@�C���𒼐ڎw�肵��ImagesShowPTB�𑖂点�邷�邩�A���b�p�[�E�t�@�C�����쐬���Ă��������B
-�E~/ImagesShowPTB/Presentation/run_exp.m�����b�p�[�E�t�@�C���̃T���v���ł��B
+・MATLABコマンドウィンドウ上でコンディション・ファイルを直接指定してImagesShowPTBを走らせるするか、ラッパー・ファイルを作成してください。
+・~/ImagesShowPTB/Presentation/run_exp.mがラッパー・ファイルのサンプルです。
 
-�E�ڍׂȎg�p���@
+・詳細な使用方法
 
- * �w���v��\������ɂ́A
+ * ヘルプを表示するには、
  >> ImagesShow.exe [RETURN]
 
- * ���ۂɉ摜�掦���s���ɂ́A
+ * 実際に画像呈示を行うには、
  >> ImagesShowPTB(subj,acq,protocolfile,imgdbfile,:viewfile,:optionfile,:gamma_table,:overwrite_flg)
-    (: �̓I�v�V�����A�ȗ���)
+    (: はオプション、省略可)
 
-[�����̏ڍ�]
-  subj         : �팱�҂̖��O�A'HB'��'test01'. ~/ImagesShowPTB/Presentation/subjects/�ȉ��ɓ������O�̃f�B���N�g�����쐬���A
-                 ������4�̃R���f�B�V�����E�t�@�C���������ɒu���Ă��������B����ȊO�̏ꏊ�̃R���f�B�V�����E�t�@�C���͓ǂݍ�
-                 �߂܂���B
-  acq          : ����(�Z�b�V����)�E�i���o�[�A1,2,3,...��1�������w�肵�Ă��������B
-  protocolfile : �����v���g�R���t�@�C���B
-                 �摜�掦�u���b�N�A�V�[�P���X���w�肵�A�����h�}�C�Y�E�I�v�V���������킹�Ďw�肵�܂��B
-                 �܂��A�t�@�C���́A./subjects/(subj)/�ȉ��ɐݒu���Ă��������B
-                 ���̃t�@�C���̋L�q��ς��邱�ƂŁA�u���b�N�E�f�U�C����C�x���g�E�����C�e�b�h�E�f�U�C���̎������쐬�ł��܂��B
-                 �ڍׂ́A../Generation/readExpProtocols.m���������������B
-                 ../Generation/readExpProtocols.m�̖߂�l�Ɠ����\���̂�Ԃ�MATLAB�֐����쐬���A���̊֐����w�肷�邱�Ƃ��ł��܂��B
-                 ���_��Ȑ��䂪�\�ł��B
-  imgdbfile    : �摜�f�[�^�x�[�X�t�@�C���B
-                 �����Ŏg�p����摜�̃f�[�^�x�[�X��MATLAB cell�\���̂ō쐬���A�I�v�V�������w�肵�܂��B
-                 �܂��A�t�@�C���́A./subjects/(subj)/�ȉ��ɐݒu���Ă��������B
-                 �ڍׂ́A../Generation/readImageDatabase.m���������������B
-                 ../Generation/readImageDatabase.m�̖߂�l�Ɠ����\���̂�Ԃ�MATLAB�֐����쐬���A���̊֐����w�肷�邱�Ƃ��ł��܂��B
-                 ���_��Ȑ��䂪�\�ł��B
-  viewfile     : (�ȗ���) �������Ȃǂ̊ώ@�����t�@�C���B
-                 ���݁A���̃t�@�C���̒��g�͎g�p���Ă���܂��񂪁A�������𑼂̃f�[�^�Ƌ��ɕۑ����Ă������߂ɁA�w�肵�Ă��������B
-                 �����摜�T�C�Y�����p�ŕ\�����邽�߂Ɏg�p���邩������܂���B
-                 �܂��A�t�@�C���́A./subjects/(subj)/�ȉ��ɐݒu���Ă��������B
-                 �ڍׂ́A../Generation/readViewingParameters.m���������������B
-                 ../Generation/readViewingParameters.m�̖߂�l�Ɠ����\���̂�Ԃ�MATLAB�֐����쐬���A���̊֐����w�肷�邱�Ƃ��ł��܂��B
-                 ���_��Ȑ��䂪�\�ł��B
-  optionfile   : (�ȗ���) �掦�I�v�V�����w��t�@�C���B
-                 �h����掦����ۂ̃I�v�V�������w��ł��܂��B
-                 �ȗ��\�ł����A�E�B���h�E�T�C�Y�̕ύX�ȂǁA�d�v�ȃI�v�V�����������܂܂�Ă���̂ŁA�ł������������ɂ�������
-                 �Ǝw�肵�Ă��������B
-                 �܂��A�t�@�C���́A./subjects/(subj)/�ȉ��ɐݒu���Ă��������B
-                 �ڍׂ́A../Generation/readDisplayOptions.m���������������B
-                 ../Generation/readDisplayOptions.m�̖߂�l�Ɠ����\���̂�Ԃ�MATLAB�֐����쐬���A���̊֐����w�肷�邱�Ƃ��ł��܂��B
-                 ���_��Ȑ��䂪�\�ł��B
-  gamma_table  : (�ȗ���) �f�B�X�v���C�E�K���}�E�e�[�u��
-                 256(8-bits) x 3(RGB) x 1(or 2,3,... when using multiple displays) ��MATLAB matrix�f�[�^���A����matrix��gamma_table
-                 �Ƃ������O�̕ϐ��Ŋ܂�ł���*.mat�t�@�C�����w�肵�Ă��������B
-                 *.mat�t�@�C�����w�肷��ꍇ�́A���΃p�X�Ńt�@�C�����L�q���Ă��������B�N�_�́A~/Presentaion�ł��B
-                 ���������̃f�B�X�v���C�Œ掦���s���ۂɁA256x3x1��gamma_table���ǂݍ��܂ꂽ�ꍇ�A�����e�[�u�����S�Ẵf�B�X�v���C
-                 �ɓK�p����܂��B�܂��A�f�B�X�v���C�̐���gamma_table�̐��ƍ���Ȃ��ꍇ�́A�Ō�̃e�[�u�����c��̃f�B�X�v���C�S�Ă�
-                 �K�p����܂��B���̓��͈������ȗ������ꍇ�A�P���Ȑ��`�e�[�u��(repmat(linspace(0.0,1.0,256),3,1))���S�Ẵf�B�X�v���C
-                 �ɓK�p����܂��B
-  overwrite_flg: (�ȗ���) ���ł�~/Presentaion/subjects/(subj)�ȉ��ɑ��݂��錋�ʂ̃t�@�C�����㏑�����邩�ǂ��������߂�t���O�ł��B
-                 0���w�肷��ƁA�����̌��ʃt�@�C�������łɑ��݂���ꍇ�A���̃t�@�C����'_old'�Ƃ����v���t�B�b�N�X�������ăo�b�N�A�b
-                 �v����܂��B1���w�肷��ƁA�����̃t�@�C���͏㏑������܂��B�f�t�H���g��0�ł��B
+[引数の詳細]
+  subj         : 被験者の名前、'HB'や'test01'. ~/ImagesShowPTB/Presentation/subjects/以下に同じ名前のディレクトリを作成し、
+                 書きの4つのコンディション・ファイルをそこに置いてください。それ以外の場所のコンディション・ファイルは読み込
+                 めません。
+  acq          : ラン(セッション)・ナンバー、1,2,3,...と1つ数字を指定してください。
+  protocolfile : 実験プロトコルファイル。
+                 画像呈示ブロック、シーケンスを指定し、ランドマイズ・オプションも合わせて指定します。
+                 また、ファイルは、./subjects/(subj)/以下に設置してください。
+                 このファイルの記述を変えることで、ブロック・デザインやイベント・リレイテッド・デザインの実験を作成できます。
+                 詳細は、../Generation/readExpProtocols.mをご覧ください。
+                 ../Generation/readExpProtocols.mの戻り値と同じ構造体を返すMATLAB関数を作成し、その関数を指定することもできます。
+                 より柔軟な制御が可能です。
+  imgdbfile    : 画像データベースファイル。
+                 実験で使用する画像のデータベースをMATLAB cell構造体で作成し、オプションを指定します。
+                 また、ファイルは、./subjects/(subj)/以下に設置してください。
+                 詳細は、../Generation/readImageDatabase.mをご覧ください。
+                 ../Generation/readImageDatabase.mの戻り値と同じ構造体を返すMATLAB関数を作成し、その関数を指定することもできます。
+                 より柔軟な制御が可能です。
+  viewfile     : (省略可) 視距離などの観察条件ファイル。
+                 現在、このファイルの中身は使用しておりませんが、実験環境を他のデータと共に保存しておくために、指定してください。
+                 将来画像サイズを視角で表現するために使用するかもしれません。
+                 また、ファイルは、./subjects/(subj)/以下に設置してください。
+                 詳細は、../Generation/readViewingParameters.mをご覧ください。
+                 ../Generation/readViewingParameters.mの戻り値と同じ構造体を返すMATLAB関数を作成し、その関数を指定することもできます。
+                 より柔軟な制御が可能です。
+  optionfile   : (省略可) 呈示オプション指定ファイル。
+                 刺激を呈示する際のオプションを指定できます。
+                 省略可能ですが、ウィンドウサイズの変更など、重要なオプションも多く含まれているので、できる限り実験毎にしっかり
+                 と指定してください。
+                 また、ファイルは、./subjects/(subj)/以下に設置してください。
+                 詳細は、../Generation/readDisplayOptions.mをご覧ください。
+                 ../Generation/readDisplayOptions.mの戻り値と同じ構造体を返すMATLAB関数を作成し、その関数を指定することもできます。
+                 より柔軟な制御が可能です。
+  gamma_table  : (省略可) ディスプレイ・ガンマ・テーブル
+                 256(8-bits) x 3(RGB) x 1(or 2,3,... when using multiple displays) のMATLAB matrixデータか、このmatrixをgamma_table
+                 という名前の変数で含んでいる*.matファイルを指定してください。
+                 *.matファイルを指定する場合は、相対パスでファイルを記述してください。起点は、~/Presentaionです。
+                 もし複数のディスプレイで呈示を行う際に、256x3x1のgamma_tableが読み込まれた場合、同じテーブルが全てのディスプレイ
+                 に適用されます。また、ディスプレイの数とgamma_tableの数と合わない場合は、最後のテーブルが残りのディスプレイ全てに
+                 適用されます。この入力引数を省略した場合、単純な線形テーブル(repmat(linspace(0.0,1.0,256),3,1))が全てのディスプレイ
+                 に適用されます。
+  overwrite_flg: (省略可) すでに~/Presentaion/subjects/(subj)以下に存在する結果のファイルを上書きするかどうかを決めるフラグです。
+                 0を指定すると、同名の結果ファイルがすでに存在する場合、そのファイルが'_old'というプレフィックスがつけられてバックアッ
+                 プされます。1を指定すると、同名のファイルは上書きされます。デフォルトは0です。
 
-[���͈����Ŏw�肷��e�R���f�B�V�����E�t�@�C���̋L�q���@]
-�E~/Presentation/subjects/{subj01|subj02|subj03}�f�B���N�g���̒��ɋL�q�Ⴊ����܂��̂ŁA�L�q�̍ۂɂ͂��Q�Ƃ��������B
-�E�e�t�@�C���̋L�q�ɂ̓e�L�X�g�G�f�B�^�������p���������B
+[入力引数で指定する各コンディション・ファイルの記述方法]
+・~/Presentation/subjects/{subj01|subj02|subj03}ディレクトリの中に記述例がありますので、記述の際にはご参照ください。
+・各ファイルの記述にはテキストエディタをご利用ください。
 
- 1) protocolfile (*.m) �ɂ���
+ 1) protocolfile (*.m) について
 
-    blocks{N}�Ƃ����Z���\���̂�Ԃ��֐����쐬���Ă��������B���邢�́A���L�̒ʂ�matlab�X�N���v�g���g�����Ƃ��ł��܂��B�X�N���v�g����
-    blocks{N}�Ƃ����Z���\���̂��쐬���Ă��������B�e�Z�����e�u���b�N�ɑΉ����܂��B�e�Z���͉��L��6�̃����o�������܂��B
-    1. blocks{n}.randomization : ���̃u���b�N�̒��̉摜�掦��(.sequence�Ŏw�肵������)�������_���ɂ��邩�̃I�v�V�����ł��B
-                                 0 = OFF (�����h�}�C�Y�����ɂ��̂܂ܒ掦)
-                                 1 = �S�Ẳ摜���Ԃ������h�}�C�Y
-                                 2 = �����Ԗڂ̉摜�̏��Ԃ������h�}�C�Y
-                                 3 = ��Ԗڂ̉摜�̏��Ԃ������h�}�C�Y
-                                 4 = �O��1/2�̉摜�̏��Ԃ������h�}�C�Y
-                                 5 = �㔼1/2�̉摜�̏��Ԃ������h�}�C�Y
-                                 6 = 2�Ԗڂ���(�Ō�-1)�Ԗڂ܂ł̉摜�̏��Ԃ������h�}�C�Y
-                                 matrix�ŕ���(2�ȏ�)�w�� = sequence�̒���matrix�Ԗڂɓ�����摜�̏��Ԃ������h�}�C�Y���܂��Be.g. [2,4,6,8]
-                                 ����掦���[�h���g�p���č��E��̉摜���ʂɃ����h�}�C�Y��������(���쓬�������Ȃ�)�́A�Z���\����2��
-                                 �̒l(���ꂼ�ꍶ��A�E��摜�p)���w�肵�Ă��������B1�̂ݎw�肵���ꍇ�́A����̉摜�̃y�A�֌W��ۂ�
-                                 ���܂܂��A�����h�}�C�Y����܂��B
-    2. blocks{n}.sequence      : �摜�̒掦�����w�肵�܂��B�Ⴆ�΁Ablocks{n}.sequence=[10 1 11 1 12 1 13 1 14 1 15 1 16 1]�̂Ƃ��A
-                                 imagedbfile�̒���10~16�Ɏw�肳�ꂽ�摜���A1�Ԗڂ̉摜�ƌ��݂ɒ掦����܂��B���randomization
-                                 �I�v�V�����Œ掦�����������ɈقȂ�悤�Ƀ����h�}�C�Y�\�ł��B
-                                 �܂��A����matrix��1xN�̃T�C�Y�Ŏw�肷��ƁA1��ʂ�1�̉摜���邢�͗��Ⴛ�ꂼ��̉�ʂɓ����摜��
-                                 �掦����܂��B2xN�̃T�C�Y�Ŏw�肷��ƁA����掦���[�h�ƂȂ�A���E��p�̃f�B�X�v���C�ɕʁX�̉摜��
-                                 �掦���邱�Ƃ��\�ł��B���ᗧ�̎��⎋�쓬�������ɕ֗��ȋ@�\�ł��B
-                                 sequence��0�Ԃ��w�肷��ƁA���̓��Y�V�[�P���X�ł͉摜�掦���s���܂���B���X�g���ԂƂ��āA�w�i�摜
-                                 �݂̂�掦�������ꍇ�Ȃǂ́A0�����w�肭�������B
-    3. blocks{n}.msec (frame)  : �e�摜�̒掦���Ԃ��w�肵�܂��B.msec�̍ۂɂ�msec�P�ʂŁA.frame�̍ۂɂ͐��������M���̐���P�ʂƂ���
-                                 �L�q���Ă��������B.msec��.frame�̂ǂ��炩������w�肷��Ζ�肠��܂���B���҂������Ɏw�肳�ꂽ��
-                                 ���ɂ́A.frame�̋L�q���D�悵�Ďg�p����܂��B
-                                 size(blocks{n}.sequence,2)��size(blocks{n}.msec(frame),2)�Ɠ����ɂȂ�悤�A�L�q�̍ۂɂ͂����ӂ���
-                                 �����B�قȂ�ꍇ�AImagesShowPTB�̓G���[��Ԃ��܂��B
-                                 �܂��A�����h�}�C�Y�̍ۂɂ́Asequence��msec�̃y�A�֌W���ێ�����܂��B
-    4. blocks{n}.slicing       : (�ȗ���) �掦��ʂ��X�V����ۂ̍ŏ��P�ʁBImagesShowPTB�́A�����Ŏw�肳�ꂽ���Ԃ���ɉ�ʍX�V���s��
-                                 �܂��B�Ⴆ�΁Ablocks{n}.msec��500���L�q����Ă����ۂɂ́A�Ή�����摜��500ms�掦����܂����A���̍ہA
-                                 500ms�̒掦���Ԃ�slicing�̒l�ɉ����ĕ����̃T�u�掦���Ԃɕ�������A�e�T�u�掦���Ԃ��Ƃɉ�ʂ̍X�V���s
-                                 ���܂��B���Ȃ킿�Ablocks{n}.slicing=100�̍ۂɂ́A500��[100,100,100,100,100]�ɕ�������A5��̉�ʍX
-                                 �V���s���܂��B����́A��ʂ̒掦���ԂƂ͔񓯊��Ƀ^�X�N��t�^���邽�߂ɕK�v�ȋ@�\�ł��B
-                                 �܂��Aoptionfile�Ŋe�^�X�N�̒掦���Ԃ�250ms�Ǝw�肵�Aslicing��100�̏ꍇ�A250ms��100ms�ŕ����ł��Ȃ���
-                                 �߁A�l���ۂ߂��ă^�X�N�̒掦���Ԃ�200ms�ƂȂ�܂��B�܂��A.msec(frame)�̒[���͂��̑傫��(�T�u�掦��
-                                 �Ԃ̔����Ƃ̑召)�ɂ���đO�̃T�u�掦���ԂɊ܂܂�邩�A�ǉ��̃T�u�掦���ԂƂ��đg�ݍ��܂�܂��B
-                                 �Ⴆ�΁A.msec��550ms���w�肳��A.slicing��100�̍ہA550ms��[100,100,100,100,150]�ƕ�������܂��B
-                                 .msec��590ms�A.slicing��100�̍ۂɂ́A590ms��[100,100,100,100,100,90]�ƕ�������܂��B�����ӂ��������B
-                                 ���̒l���ȗ������ꍇ�A�f�t�H���g�l�Ƃ���.msec�w��̍ۂ�100�A.frame�w��̍ۂ�6���g���܂��B
-    5. blocks{n}.repetitions   : (�ȗ���) ���̃u���b�N�̌J��Ԃ��񐔁B�f�t�H���g�͂P�ł��B�J��Ԃ�����2�ȏ�Ɏw�肵�A�����h�}�C�Y��
-                                 ���ꍇ�A���ꂼ��ʂɃ����h�}�C�Y���ꂽ�u���b�N��������J��Ԃ��Ē掦����܂��B�J��Ԃ����ׂ��ł�
-                                 �����h�}�C�Y�͍s���܂���B�J��Ԃ����ׂ��Ń����h�}�C�Y�������ۂɂ́A�J��Ԃ����ƑΉ����镪����
-                                 sequence�����msec(frame)�𕡐���L�q������Arandomization�I�v�V���������g�����������B
-                                 �ȗ������ꍇ��1�ƂȂ�܂��B
-    6. blocks{n}.name          : (�ȗ���) ���̃u���b�N�̖��O���L�q���܂��B�ȗ������ꍇ�Ablocks{n}.name=sprintf('block %02d',n)�ƂȂ�
-                                 �܂��B
+    blocks{N}というセル構造体を返す関数を作成してください。あるいは、下記の通りmatlabスクリプトを使うこともできます。スクリプト内に
+    blocks{N}というセル構造体を作成してください。各セルが各ブロックに対応します。各セルは下記の6つのメンバを持ちます。
+    1. blocks{n}.randomization : このブロックの中の画像呈示順(.sequenceで指定したもの)をランダムにするかのオプションです。
+                                 0 = OFF (ランドマイズせずにそのまま呈示)
+                                 1 = 全ての画像順番をランドマイズ
+                                 2 = 偶数番目の画像の順番をランドマイズ
+                                 3 = 奇数番目の画像の順番をランドマイズ
+                                 4 = 前半1/2の画像の順番をランドマイズ
+                                 5 = 後半1/2の画像の順番をランドマイズ
+                                 6 = 2番目から(最後-1)番目までの画像の順番をランドマイズ
+                                 matrixで複数(2つ以上)指定 = sequenceの中でmatrix番目に当たる画像の順番をランドマイズします。e.g. [2,4,6,8]
+                                 両眼呈示モードを使用して左右眼の画像を個別にランドマイズしたい時(視野闘争実験など)は、セル構造で2つ
+                                 の値(それぞれ左眼、右眼画像用)を指定してください。1つのみ指定した場合は、両眼の画像のペア関係を保っ
+                                 たままた、ランドマイズされます。
+    2. blocks{n}.sequence      : 画像の呈示順を指定します。例えば、blocks{n}.sequence=[10 1 11 1 12 1 13 1 14 1 15 1 16 1]のとき、
+                                 imagedbfileの中で10~16に指定された画像が、1番目の画像と交互に呈示されます。上のrandomization
+                                 オプションで呈示順を実験毎に異なるようにランドマイズ可能です。
+                                 また、このmatrixを1xNのサイズで指定すると、1画面に1つの画像あるいは両眼それぞれの画面に同じ画像が
+                                 呈示されます。2xNのサイズで指定すると、両眼呈示モードとなり、左右眼用のディスプレイに別々の画像を
+                                 呈示することが可能です。両眼立体視や視野闘争実験に便利な機能です。
+                                 sequenceに0番を指定すると、その当該シーケンスでは画像呈示を行いません。レスト期間として、背景画像
+                                 のみを呈示したい場合などは、0をご指定ください。
+    3. blocks{n}.msec (frame)  : 各画像の呈示時間を指定します。.msecの際にはmsec単位で、.frameの際には垂直同期信号の数を単位として
+                                 記述してください。.msecと.frameのどちらか一方を指定すれば問題ありません。両者が同時に指定された場
+                                 合には、.frameの記述が優先して使用されます。
+                                 size(blocks{n}.sequence,2)はsize(blocks{n}.msec(frame),2)と同じになるよう、記述の際にはご注意くだ
+                                 さい。異なる場合、ImagesShowPTBはエラーを返します。
+                                 また、ランドマイズの際には、sequenceとmsecのペア関係が保持されます。
+    4. blocks{n}.slicing       : (省略可) 呈示画面を更新する際の最小単位。ImagesShowPTBは、ここで指定された時間を基準に画面更新を行い
+                                 ます。例えば、blocks{n}.msecに500が記述されていた際には、対応する画像が500ms呈示されますが、その際、
+                                 500msの呈示時間はslicingの値に応じて複数のサブ呈示時間に分割され、各サブ呈示時間ごとに画面の更新が行
+                                 われます。すなわち、blocks{n}.slicing=100の際には、500が[100,100,100,100,100]に分割され、5回の画面更
+                                 新が行われます。これは、画面の呈示時間とは非同期にタスクを付与するために必要な機能です。
+                                 また、optionfileで各タスクの呈示時間を250msと指定し、slicingが100の場合、250msは100msで分割できないた
+                                 め、値が丸められてタスクの呈示時間は200msとなります。また、.msec(frame)の端数はその大きさ(サブ呈示時
+                                 間の半分との大小)によって前のサブ呈示時間に含まれるか、追加のサブ呈示時間として組み込まれます。
+                                 例えば、.msecに550msが指定され、.slicingが100の際、550msは[100,100,100,100,150]と分割されます。
+                                 .msecが590ms、.slicingが100の際には、590msは[100,100,100,100,100,90]と分割されます。ご注意ください。
+                                 この値を省略した場合、デフォルト値として.msec指定の際は100、.frame指定の際は6が使われます。
+    5. blocks{n}.repetitions   : (省略可) このブロックの繰り返し回数。デフォルトは１です。繰り返し数を2以上に指定し、ランドマイズし
+                                 た場合、それぞれ個別にランドマイズされたブロックが複数回繰り返して呈示されます。繰り返しを跨いでの
+                                 ランドマイズは行われません。繰り返しを跨いでランドマイズしたい際には、繰り返し数と対応する分だけ
+                                 sequenceおよびmsec(frame)を複数回記述した後、randomizationオプションをお使いください。
+                                 省略した場合は1となります。
+    6. blocks{n}.name          : (省略可) このブロックの名前を記述します。省略した場合、blocks{n}.name=sprintf('block %02d',n)となり
+                                 ます。
 
-    �܂��A~/ImagesShowPTB/Generation/getGlobalParameters.m���g�p����ƁA�����t�@�C��������Asubj, acq, session, vparam, dparam, imgs,
-    prt, imgs��8�̃O���[�o���ϐ��̒��g���Q�Ƃł��܂��B���_��ȏ����t�@�C���̍쐬���\�ł��B�O���[�o���ϐ��͍��̂Ƃ���ǂݎ��̂�
-    �\�ŁA�������݂͂ł��܂���B
+    また、~/ImagesShowPTB/Generation/getGlobalParameters.mを使用すると、条件ファイル内から、subj, acq, session, vparam, dparam, imgs,
+    prt, imgsの8つのグローバル変数の中身を参照できます。より柔軟な条件ファイルの作成が可能です。グローバル変数は今のところ読み取りのみ
+    可能で、書き込みはできません。
 
-    �L�q��F
+    記述例：
 
     blocks{1}.randomization=0;
     blocks{1}.sequence=[7 5 1 2 3 4 6 5 1 2 3 4 6 5 1 2 3 4 6 7];
@@ -220,9 +220,9 @@ readme_for_testing.txt -------- Presentation/subjects/�ȉ��ɂ���f���p�X�N���v�g
     blocks{n}.repetitions=1;
     blocks{n}.name='images N';
 
-    �܂��A���̃t�@�C����MATLAB�X�N���v�g�Ȃ̂ŁA������֐����܂܂��ău���b�N�����_��ɋL�q���邱�Ƃ��\�ł��B�Ⴆ�΁A
+    また、このファイルはMATLABスクリプトなので、数式や関数を含ませてブロックをより柔軟に記述することも可能です。例えば、
 
-    ����1�̋L�q��F
+    もう1つの記述例：
 
     blocks{1}.randomization=0;
     blocks{1}.sequence=201;
@@ -262,31 +262,31 @@ readme_for_testing.txt -------- Presentation/subjects/�ȉ��ɂ���f���p�X�N���v�g
     blocks{block_counter}.repetitions=1;
     blocks{block_counter}.name='The Final Fixation';
 
- 2) imgdbfile (image database file) (*.m) �ɂ���
+ 2) imgdbfile (image database file) (*.m) について
 
-    imgdb�Ƃ����\���̂�Ԃ��֐����쐬���Ă��������B���邢�́A���L�̒ʂ�matlab�X�N���v�g���g�����Ƃ��ł��܂��B�X�N���v�g����
-    imgdb�Ƃ����\���̂��쐬���Ă��������B���̍\���͉̂��L��5�̃����o�������܂��B
-    1. imgdb.type               : �摜�t�@�C���̃^�C�v�A'image'��'matlab'��2���炨�I�т��������B
-    2. imgdb.directory          : �摜�t�@�C�����܂܂��f�B���N�g��(�t���p�X�`��)���w�肵�Ă��������B
-    3. imgdb.presentation_size  : �摜�̒掦�T�C�Y [row,col]�B�S�摜�́A�����Ŏw�肵���傫���Ƀ��T�C�Y����܂��B
-                                  ���T�C�Y�������Ȃ��ꍇ�́A���ۂ̉摜�T�C�Y�����w�肭�������B
-                                  �܂��A�I���W�i���̉摜�T�C�Y�Œ掦�������ꍇ�ɂ́Aoptionfile��use_original_imgsize��1�ɂ��Ă��������B
-    4. imgdb.num                : �����Ŏg�p����摜�̖������L�q���Ă��������B
-    5. imgdb.img                : �Z���\���́B���ꂼ��̃Z���́A���L3��ϐ��Ƃ��Ď����܂��B
-                                  imgdb.img{n}={'�摜�t�@�C���{�̂ւ̃p�X����уt�@�C����', '�摜�t�@�C���̐���', '�g���K�[�̗L��'}
-                                  �摜�t�@�C���{�̂ւ̃p�X����уt�@�C����(string) = imgdb.directory����̑��΃p�X�ł��w�肭�������B
-                                                                                     directory�����ɉ摜������ꍇ�́A�t�@�C�����̂�
-                                                                                     �̋L�q�ƂȂ�܂��B
-                                  �摜�t�@�C���̐���(string) = ���̉摜�t�@�C�������ł��邩�̊ȒP�Ȑ������L�q���Ă��������B
-                                  �g���K�[�̗L��(integer or string) = 0���w�肷��ƃg���K�[�����A0�ȊO�̐������邢�͕������w�肷��ƁA
-                                                                      �g���K�[�L��Ɣ��f����A���̉摜�̒掦���Ɍʂ̏������\�ł��B
-                                                                      �܂��A���̉摜�̒掦���Ԃ����O�ɋL�^����܂��B
+    imgdbという構造体を返す関数を作成してください。あるいは、下記の通りmatlabスクリプトを使うこともできます。スクリプト内に
+    imgdbという構造体を作成してください。この構造体は下記の5つのメンバを持ちます。
+    1. imgdb.type               : 画像ファイルのタイプ、'image'か'matlab'の2つからお選びください。
+    2. imgdb.directory          : 画像ファイルが含まれるディレクトリ(フルパス形式)を指定してください。
+    3. imgdb.presentation_size  : 画像の呈示サイズ [row,col]。全画像は、ここで指定した大きさにリサイズされます。
+                                  リサイズしたくない場合は、実際の画像サイズをご指定ください。
+                                  また、オリジナルの画像サイズで呈示したい場合には、optionfileのuse_original_imgsizeを1にしてください。
+    4. imgdb.num                : 実験で使用する画像の枚数を記述してください。
+    5. imgdb.img                : セル構造体。それぞれのセルは、下記3つを変数として持ちます。
+                                  imgdb.img{n}={'画像ファイル本体へのパスおよびファイル名', '画像ファイルの説明', 'トリガーの有無'}
+                                  画像ファイル本体へのパスおよびファイル名(string) = imgdb.directoryからの相対パスでご指定ください。
+                                                                                     directory直下に画像がある場合は、ファイル名のみ
+                                                                                     の記述となります。
+                                  画像ファイルの説明(string) = この画像ファイルが何であるかの簡単な説明を記述してください。
+                                  トリガーの有無(integer or string) = 0を指定するとトリガー無し、0以外の数字あるいは文字を指定すると、
+                                                                      トリガー有りと判断され、その画像の呈示時に個別の処理が可能です。
+                                                                      また、その画像の呈示時間がログに記録されます。
 
-    �܂��A~/ImagesShowPTB/Generation/getGlobalParameters.m���g�p����ƁA�����t�@�C��������Asubj, acq, session, vparam, dparam, imgs,
-    prt, imgs��8�̃O���[�o���ϐ��̒��g���Q�Ƃł��܂��B���_��ȏ����t�@�C���̍쐬���\�ł��B�O���[�o���ϐ��͍��̂Ƃ���ǂݎ��̂�
-    �\�ŁA�������݂͂ł��܂���B
+    また、~/ImagesShowPTB/Generation/getGlobalParameters.mを使用すると、条件ファイル内から、subj, acq, session, vparam, dparam, imgs,
+    prt, imgsの8つのグローバル変数の中身を参照できます。より柔軟な条件ファイルの作成が可能です。グローバル変数は今のところ読み取りのみ
+    可能で、書き込みはできません。
 
-    �L�q��F
+    記述例：
 
     imgdb.type='image';
     imgdb.directory=fullfile(fileparts(mfilename('fullpath')),'images');
@@ -308,9 +308,9 @@ readme_for_testing.txt -------- Presentation/subjects/�ȉ��ɂ���f���p�X�N���v�g
     imgdb.img{320}={'/HandMosaic/Hands_0039.jpg','Hands',0};
     imgdb.img{321}={'/HandMosaic/Hands_0040.jpg','Hands',0};
 
-    protocolfile�Ɠ������A���̃t�@�C����MATLAB�X�N���v�g�Ȃ̂ŁA������֐����܂܂��Ă��_��ɉ摜���w�肷�邱�Ƃ��\�ł��B�Ⴆ�΁A
+    protocolfileと同じく、このファイルはMATLABスクリプトなので、数式や関数を含ませてより柔軟に画像を指定することも可能です。例えば、
 
-    ����1�̋L�q��F
+    もう1つの記述例：
 
     % an example of image database for monocular display
     imgdb.type='image'; % database type, 'image' (image file) or 'matlab'(matlab .mat file).
@@ -332,165 +332,165 @@ readme_for_testing.txt -------- Presentation/subjects/�ȉ��ɂ���f���p�X�N���v�g
     % background image
     imgdb.img{201}={'background.png','background',0}; % {'file_name','comment','trigger(off=0, on=1, or on=string)'}
 
- 3) viewfile (*.m) �ɂ���
+ 3) viewfile (*.m) について
 
-    vparam�Ƃ����\���̂�Ԃ��֐����쐬���Ă��������B���邢�́A���L�̒ʂ�matlab�X�N���v�g���g�����Ƃ��ł��܂��B�X�N���v�g����
-    vparam�Ƃ����\���̂��쐬���Ă��������B���̍\���̂́A���L��3�̃����o�������܂��B
-    1. ipd        : ��ԋ��� (inter pupil distance) ��cm�P�ʂŋL�q���Ă��������B
-    2. pix_per_cm : �掦��ʂ̉�f�T�C�Y��pixels/cm�P�ʂŋL�q���Ă��������B
-    3. vdist      : ������ (viewing distance) ��cm�P�ʂŋL�q���Ă��������B
+    vparamという構造体を返す関数を作成してください。あるいは、下記の通りmatlabスクリプトを使うこともできます。スクリプト内に
+    vparamという構造体を作成してください。この構造体は、下記の3つのメンバを持ちます。
+    1. ipd        : 眼間距離 (inter pupil distance) をcm単位で記述してください。
+    2. pix_per_cm : 呈示画面の画素サイズをpixels/cm単位で記述してください。
+    3. vdist      : 視距離 (viewing distance) をcm単位で記述してください。
 
-    �܂��A~/ImagesShowPTB/Generation/getGlobalParameters.m���g�p����ƁA�����t�@�C��������Asubj, acq, session, vparam, dparam, imgs,
-    prt, imgs��8�̃O���[�o���ϐ��̒��g���Q�Ƃł��܂��B���_��ȏ����t�@�C���̍쐬���\�ł��B�O���[�o���ϐ��͍��̂Ƃ���ǂݎ��̂�
-    �\�ŁA�������݂͂ł��܂���B
+    また、~/ImagesShowPTB/Generation/getGlobalParameters.mを使用すると、条件ファイル内から、subj, acq, session, vparam, dparam, imgs,
+    prt, imgsの8つのグローバル変数の中身を参照できます。より柔軟な条件ファイルの作成が可能です。グローバル変数は今のところ読み取りのみ
+    可能で、書き込みはできません。
 
-    �L�q��F
+    記述例：
 
     vparams.ipd=6.4;
     vparams.pix_per_cm=57.1429;
     vparams.vdist=65;
 
- 4) optionfile (*.m) �ɂ���
+ 4) optionfile (*.m) について
 
-    options�Ƃ����\���̂�Ԃ��֐����쐬���Ă��������B���邢�́A���L�̒ʂ�matlab�X�N���v�g���g�����Ƃ��ł��܂��B�X�N���v�g����
-    options�Ƃ����\���̂��쐬���Ă��������B���̍\���͉̂��L��19�̃����o�������܂��B�K�v�ȃI�v�V�����̂݋L�q����΂悭�A�ȗ����ꂽ�����o
-    �ɂ̓f�t�H���g�l���g���܂��B
-     1. options.exp_mode             : �h���掦���[�h���w�肵�܂��B
-                                       mono = �P��f�B�X�v���C�掦
-                                       dual = �f���A���f�B�X�v���C�掦�B���ᗧ�̎��⎋�쓬���̌����ɗL���ł��B
-                                       dualcross = �f���A���f�B�X�v���C�掦�B�����@�ŗ��̎����ł���掦���[�h�ł��B
-                                       cross = 1�̉�ʂ����E��2�������A�����@�ŗ��̎����ł���掦���[�h�ł��B
-                                       parallel = 1�̉�ʂ����E��2�������A���s�@�ŗ��̎����ł���掦���[�h�ł��B
-                                       dualparallel = �f���A���f�B�X�v���C�掦�B���s�@�ŗ��̎����ł���掦���[�h�ł��B
-                                       redgreen = 1�̉�ʂɐԗ΃��K�l���g�p���ė���掦���s�����[�h�ł��B
-                                       greenred = 1�̉�ʂɗΐԃ��K�l���g�p���ė���掦���s�����[�h�ł��B
-                                       redblue = 1�̉�ʂɐԐ��K�l���g�p���ė���掦���s�����[�h�ł��B
-                                       bluered = 1�̉�ʂɐԃ��K�l���g�p���ė���掦���s�����[�h�ł��B
-                                       shutter = 1�̉�ʂɐ����������ɈقȂ�摜��掦���܂��B
-                                                 �V���b�^�[�S�[�O�����g�p�����ۂɗ���掦���ł��郂�[�h�ł��B
-                                       topbottom = 1�̉�ʂ��㉺�ɕ������āA����掦���s�����[�h�ł��B��ɍ���摜�����܂��B
-                                       bottomtop = 1�̉�ʂ��㉺�ɕ������āA����掦���s�����[�h�ł��B���ɍ���摜�����܂��B
-                                       interleavedline = �����s�N�Z���ɉ�����2�̈قȂ�摜���C���^�[���[�X�掦���ė��ᎋ���s�����[�h�ł��B
-                                                         ���ᎋ�ɂ͓���ȃS�[�O���⑕�u���K�v�ł��B
-                                       interleavedcolumn = �����s�N�Z���ɉ�����2�̈قȂ�摜���C���^�[���[�X�掦���ė��ᎋ���s�����[�h�ł��B
-                                                           ���ᎋ�ɂ͓���ȃS�[�O���⑕�u���K�v�ł��B
-                                       propixxmono = �J�i�_VPIXX�Ђ�PROPixx Projector��2D�h����掦���郂�[�h�ł��B
-                                       propixxstereo = �J�i�_VPIXX�Ђ�PROPixx Projector��DepthQ�̉~�Ό��V���b�^�[���g�p����3D�h����掦���郂�[�h�ł��B
-                                       �f�t�H���g�l��'mono'�ł��B
-     2. options.start_method         : �h���摜�掦�̃X�^�[�g���@���w�肵�܂��B
-                                       0 = ENTER�ASPACE�L�[������
-                                       1 = �}�E�X���N���b�N
-                                       2 = �O�����u(MR�Ȃ�)����̃g���K�[�҂�(CiNET�ŁA�L�[�{�[�h��"t"�L�[�ɑ���)
-                                       3 = �O�����u(MR�Ȃ�)����̃g���K�[�҂�(Birmingham BUIC�ŁA�p�������|�[�g��11�Ԗڂ̃s����ON���Ď�)
-                                       4 = �J�X�^���E�L�[(MR����̃g���K�[���L�[���͂Ƃ��Ď󂯂�ꍇ�ɗL���A����custom_trigger�Őݒ肵���L�[)
-                                       �f�t�H���g��0�ł��B
-     3. options.custom_trigger       : start_method��4���w�肵���ꍇ�ɂ̂ݗL���ƂȂ�܂��B�g���K�[���͂ɑ������鉼�z�L�[���w�肵�܂��B
-                                       �f�t�H���g��"s"�ł��B
-     4. options.keys                 : �팱�҂̉����擾�ɗp����L�[���A�L�[�R�[�h�ŋL�q���܂��B�Ⴆ�΁A"A"�L�[�������{�^���Ƃ��Ďg�p����
-                                       �ꍇ�Aoptions.keys=KbName('A')=65�ƂȂ�܂��B�����̃L�[���x�N�g���Ŏw��ł��܂��B
-                                       ��Foptions.keys=[37,39]; �f�t�H���g�l��[37,39]�ł��B
-     5. options.window_size          : �掦�͈�(�E�B���h�E�E�T�C�Y)��[row,col]�ŋL�q���܂��B�f�t�H���g�l��[768,1024]�ł��B
-     6. options.RGBgain              : �f�B�X�v���C��RGB�t�H�X�t�@�[�̃Q�C�����w�肵�܂��B���ᎋ���[�h(�ԗ΃��K�l�p�掦�Ȃ�)�̍ۂɗL���ł��B
-                                       2(left/right)x3(RGB)��matrix���w�肵�Ă��������B�f�t�H���g�͋�s��ŁA���̍ہA�P��f�B�X�v���C��������
-                                       ����ۂɂ́ARGBgain=[1.0,1.0,1.0;1.0,1.0,1.0];(RGB�t�H�X�t�@�[�Q�C����S�čő�ɐݒ�)�ƂȂ�܂��B����
-                                       ���̎����[�h�ł�RGB�̃Q�C�������[�h�ɉ����ēK�؂�(�ԗ΃��K�l�p�掦�Ȃ�ARG�t�H�X�t�@�[�̃Q�C����)����
-                                       ����܂��B
-     7. options.fixation             : �����_�̗L���A�^�C�v�A�T�C�Y�A�F���w�肵�܂��B�Z���\���̂ŁA���L��3�̃����o�������܂��B
-                                       options.fixation={�^�C�v, �s�N�Z���E�T�C�Y, �F(RGB,0-255)};�ł��B�w��ł���^�C�v�́A
-                                       0 = �����_�Ȃ�
-                                       1 = �N���X�^�̒����_�B��̃^�X�N�E�I�v�V�����Ńo�[�j�G�E�^�X�N���w�肷��ۂɂ͂��̌`���������߂ł��B
-                                       2 = �~�`�̒����_
-                                       �f�t�H���g�l�́Afixation={2,24,[255,255,255]};�ł��B
-     8. options.background           : �w�i�Ɋւ���ݒ�l�����Z���\���̂ł��B���L��6�̃����o�������܂��B6�Ԗڂ̃����o(���T�C�Y)�́A
-                                       �ʏ�ImagesShowPTB�������̒��Ŏ����Ōv�Z����̂ŁA�w�肷��K�v�͂Ȃ��A�ȗ����܂��B
-                                       options.background={�^�C�v(0:�P��F�A1:�p�b�`�t���̔w�i), �w�i�F(RGB), �p�b�`��1�߂̐F(RGB),
-                                                           �p�b�`��2�߂̐F(RGB), �p�b�`�̐�[row,col], �p�b�`�̃s�N�Z���E�T�C�Y[row,col],...
-                                                           ���T�C�Y(���S�̉摜�掦��)[row,col]};
-                                       �f�t�H���g�l�́Aoptions.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};�ł��B
-                                       �w�i�Ƀp�b�`��̗���Z���K�C�h��\���������Ȃ��ꍇ�́A�p�b�`1�C2�̐F��w�i�F�Ɠ����ɂ��Ă��������B
-     9. options.cmask                : �掦�摜�ɉ~�E�l�p�`���}�X�N��������I�v�V�����ł��B3�̃����o�����Z���\���̂����L�̒ʂ�w�肵�Ă��������B
-                                       options.cmask={�}�X�N����E�Ȃ�(0|1(�~�`)|2(�l�p)), �~�E�l�p�`�}�X�N�̃s�N�Z���E�T�C�Y[row,col],...
-                                                      �}�X�N�̃G�b�W�������K�E�V�A���E�t�B���^�ŃX���[�W���O����ۂ̃p�����[�^[mean,sd]};
-                                       �}�X�N�̃G�b�W���X���[�W���O�������Ȃ��ꍇ�́Amean��0�ɐݒ肵�Ă��������B�f�t�H���g�l�́A
-                                       options.cmask={0,[280,280],[20,20]};�ł��B
-    10. options.auto_background      : �C���[�W�E�f�[�^�x�[�X�E�t�@�C��(imgdbfile)�ɋL�ڂ���imgdb.img{1}�̍���[1,1]�s�N�Z���̐F��������
-                                       �擾���A���̐F��options.background{1}�ɕt�^���郂�[�h�ł��B�w�i�Ɖ摜�Ƃ̋��E�����������ꍇ�Ȃ�
-                                       �L���ł��B�g�p�������ꍇ��1���w�肵�Ă��������B�f�t�H���g��0�ł��B
-    11. options.use_fullscr          : �E�B���h�E�E�T�C�Y�̎w��𖳎����āA�f�B�X�v���C�𑜓x�ɂ�����炸��Ƀt���E�X�N���[���ŉ摜��
-                                       �掦���܂��B�g�p�������ꍇ��1���w�肵�Ă��������B�f�t�H���g��0�ł��B
-    12. option.skip_frame_sync_test  : 1���w�肷��ƁAPsychtoolbox3�̃X�N���[�������e�X�g���X�L�b�v���܂��B�f�t�H���g��0�ł��B
-    13. option.force_frame_rate      : Psychtoolbox3�ɐ��������̃t���[�����[�g���擾�������A�w�肵���t���[�����[�g�ɌŒ肵�Ē掦���s���܂��B
-                                       �f�t�H���g��0�ŁA���������̌v����Psychtoolbox3�ɔC���܂��B0�ȊO���w�肷��Ƃ��̃t���[�����[�g���g�p����܂��B
-    14. options.use_frame            : �v���g�R���E�t�@�C��(protocolfile)�Ŏw�肵��blocks{n}.msec�̋L�q�𖳎����Ablocks{n}.frame������
-                                       ���������A�����I�ɒ掦���Ԃ𐂒������M���̐��Ő��䂷�郂�[�h�ł��B�g�p�������ꍇ��1���w�肵�Ă�
-                                       �������B�f�t�H���g�l��0�ł��B
-    15. options.use_original_imgsize : �C���[�W�E�f�[�^�x�[�X�E�t�@�C��(imgdbfile)�ɋL�ڂ���presentation_size�w��𖳎����āA�摜���I��
-                                       �W�i���̃s�N�Z���E�T�C�Y�Œ掦���郂�[�h�ł��B�g�p�������ꍇ��1���w�肵�Ă��������B�f�t�H���g��0�ł��B
-    16. options.img_loading_mode     : �C���[�W�E�f�[�^�x�[�X�E�t�@�C��(imgdbfile)�ɋL�ڂ���imgdb.img��ǂݍ��ޕ��@���w�肵�܂��B
-                                       1 = �摜�̃p�X���݂̂�ێ����Ă����A�K�v�ȍۂ�1��1���摜���������֓ǂݍ��񂾌�A�����Psychtoolbox
-                                           �̃e�N�X�`�����쐬���Ē掦���郂�[�h�ł��B�掦��̓���������摜���폜���܂��B3�̃��[�h�̂���
-                                           �ł����Ȃ��������ʂŒ掦���s���܂��B���疇�̉摜���g�p�����������\�ł��B����ŁA�ǂݍ��݂Ȃ�
-                                           �Ɏ��Ԃ������邽�߁ACPU�p���[�̏��Ȃ��A���邢�̓n�[�h�f�B�X�N�ǂݍ��݂̒x���R���s���[�^�ł͒�
-                                           �����x��邩������܂���B
-                                       2 = �摜����������Ɉ�x�ɑS�ēǂݍ���ł����A�K�v�ȍۂ�1��1��Psychtoolbox�̃e�N�X�`�����쐬����
-                                           �掦���s�����[�h�ł��B�掦��̓���������摜���폜���܂��B�摜�̓ǂݍ��݂��ς܂��Ă���̂ŁA
-                                           1�̃��[�h���͑����ł����A���̕��掦���͑����̃������K�v�Ƃ��܂��B
-                                       3 = �摜����������Ɉ�x�ɑS�ēǂݍ��݁A�����Psychtoolbox�̃e�N�X�`����S�Ĉ�x�ɍ쐬���Ă���
-                                           ���[�h�ł��B�掦���͊��Ƀ�������ɂ���e�N�X�`���̐؂�ւ��݂̂��s�����߁A�ł������ɉ摜�掦
-                                           ���\�ł��B����A�掦����3�̃��[�h�̂����ōł���������K�v�Ƃ��܂��B
-                                       �f�t�H���g�l��2�ł��B�ŏ���2�Ŏ����Ă݂āA�摜�����Ȃ��ꍇ�ɂ�3���w�肷�邱�Ƃ��������߂��܂��B
-    17. options.center               : �掦��ʂ̒��S��[row,col]�Ńs�N�Z���P�ʂŎw�肵�܂��B[0,0](�f�t�H���g�l)�����S�������܂��B
-                                       �E�B���h�E�����炵�ĉ摜�掦���邱�Ƃ��\�ł��B
-    18. options.img_flip             : �掦��ʂ𔽓]���܂��B���ˋ��Ȃǂ���Ďh�����ώ@����ہA�摜�̔��]��h�����߂ɕK�v�ȃI�v�V����
-                                       �ł��B0�����]�����A1�����E���]�A2���㉺���]�A3�����E�㉺���]�ł��B�f�t�H���g�l��0�ł��B
-    19. options.task                 : �h���掦���ɔ팱�҂��s���^�X�N��ǉ����܂��B�Z���\���̂ŁA���L�̃����o�������܂��B
-                                       options.task={�^�X�N�E���[�h, �^�X�N�̕p�x, �^�X�N�̒掦����};
-                                       �^�X�N�E���[�h�͉��L5����I�ׂ܂��B
-                                       0 = �^�X�N�Ȃ�
-                                       1 = �����_�̋P�x�ω��^�X�N(��P�x�̒����_���掦���ꂽ��{�^������)
-                                       2 = �o�[�j�G�E�o�[�̍��E���ʃ^�X�N(Ban et al., 2012 Nat Neurosci.�̃^�X�N�ł�)
-                                           ���̃^�X�N�ł́A�����_�ߕӂɒ掦���ꂽ�����̃o�[�����S���猩�č��ƉE�̂ǂ���ɏo������
-                                           ���f���܂��B���Ȃ�options.keys(1)���A�E�Ȃ�options.keys(2)�������܂��B���ᎋ���[�h
-                                           (options.exp_mode='dual')�ŁA�����_���N���X�^options.fixation{1}=2�ɂ����ۂɐ��������삵�܂��B
-                                       3 = �����ω����o�^�X�N(�����_�ʒu��"C"���掦���ꂽ��{�^������)
-                                       4 = 1-back�摜�L���^�X�N(��Ԗڂ̉摜�ɑ΂���)�A�����摜���A���Œ掦���ꂽ��{�^������
-                                       5 = 1-back�摜�L���^�X�N(�����Ԋ�̉摜�ɑ΂���)�A�����摜���A���Œ掦���ꂽ��{�^������
-                                       �^�X�N�̕p�x�́A�����Ŏw�肵�Ă��������B1���w�肷��ƁAprotocolfile��blocks{n}.slicing�̒l��
-                                       �l������options.task{3}�Őݒ肳���T�u�掦���Ԗ��ɖ���^�X�N���}������܂��B�ړI�ɂ����܂�
-                                       ���A�ʏ�3-5�ӂ���w�肵�Ă����Ζ�肠��܂���B�^�X�N�̒掦���Ԃ́Ablocks{n}.slicing�̐����{��
-                                       msec��frame�P�ʂł��w�肭�������B����؂�Ȃ��ꍇ�A�Ⴆ�΁Aoptionfile�Ŋe�^�X�N�̒掦���Ԃ�250ms
-                                       �Ǝw�肵�Aslicing��100�̏ꍇ�A250ms��100ms�ŕ����ł��Ȃ����߁A�l���ۂ߂��ă^�X�N�̒掦���Ԃ�
-                                       200ms�ƂȂ�܂��B�����ӂ��������B�f�t�H���g�l�́Aoptions.task=[0,1,250];�ł��B
-    20. options.block_rand           : protocolfile�ɋL�q���ꂽblocks{n}�������h�}�C�Y����I�v�V�����ł��B
-                                       0 = OFF (�����h�}�C�Y�����ɂ��̂܂ܒ掦)
-                                       1 = �S�Ẵu���b�N�̏��Ԃ������h�}�C�Y
-                                       2 = �����Ԗڂ̃u���b�N�̏��Ԃ������h�}�C�Y
-                                       3 = ��Ԗڂ̃u���b�N�̏��Ԃ������h�}�C�Y
-                                       4 = �O��1/2�̃u���b�N�̏��Ԃ������h�}�C�Y
-                                       5 = �㔼1/2�̃u���b�N�̏��Ԃ������h�}�C�Y
-                                       6 = 2�Ԗڂ���(�Ō�-1)�Ԗڂ܂ł̃u���b�N�̏��Ԃ������h�}�C�Y
-                                       matrix�ŕ���(2�ȏ�)�w�� = matrix�Ԗڂɓ�����u���b�N�̏��Ԃ������h�}�C�Y���܂��Be.g. [2,4,6,8]
-                                       �f�t�H���g�l��0�ł��B
-    21. options.onset_punch          : �C���[�W�E�f�[�^�x�[�X�E�t�@�C��(imgdbfile)�̒���imgdb.img{n}{3}�Ɏw�肵���g���K�[ON�̉摜���掦
-                                       ���ꂽ�ۂɁA��ʒ[�Ƀp���`�h����掦���郂�[�h�ł��BEEG�����Ŏh���掦�̃g���K�[���L�^����ۂ�v��
-                                       �Ǝh���掦�𓯊�������ۂɕ֗��ȃI�v�V�����ł��B
-                                       options.onset_punch=[���[�h, �p���`�h���̃s�N�Z���E�T�C�Y];
-                                       �Ǝw�肵�Ă��������B���[�h�́A
-                                       0 = �p���`�h���Ȃ�
-                                       1 = ����[�Ƀp���`�h��
-                                       2 = �E��[�Ƀp���`�h��
-                                       3 = �E���[�Ƀp���`�h��
-                                       4 = �E���[�Ƀp���`�h��
-                                       �f�t�H���g�l��options.onset_punch=[0,50];�ł��B
-    22. options.event_display_mode   : �h���掦���AMATLAB�R���\�[���E�B���h�E�ɂǂ̂悤�ȏ���\�����邩�����߂�I�v�V�����ł��B
-                                       0 = MATLAB�E�B���h�E�Ɍ��݂̃u���b�N�A�掦�C���[�WID�݂̂�\�����܂��B
-                                       1 = MATLAB�E�B���h�E�ɒ掦�C�x���g(�u���b�N�A�{�^�������Ȃǂ̎��ԁA��ށA�g���K�[�Ȃ�)�̑S�Ă̏���\�����܂��B
+    optionsという構造体を返す関数を作成してください。あるいは、下記の通りmatlabスクリプトを使うこともできます。スクリプト内に
+    optionsという構造体を作成してください。この構造体は下記の19のメンバを持ちます。必要なオプションのみ記述すればよく、省略されたメンバ
+    にはデフォルト値が使われます。
+     1. options.exp_mode             : 刺激呈示モードを指定します。
+                                       mono = 単一ディスプレイ呈示
+                                       dual = デュアルディスプレイ呈示。両眼立体視や視野闘争の研究に有効です。
+                                       dualcross = デュアルディスプレイ呈示。交差法で立体視ができる呈示モードです。
+                                       cross = 1つの画面を左右に2分割し、交差法で立体視ができる呈示モードです。
+                                       parallel = 1つの画面を左右に2分割し、平行法で立体視ができる呈示モードです。
+                                       dualparallel = デュアルディスプレイ呈示。平行法で立体視ができる呈示モードです。
+                                       redgreen = 1つの画面に赤緑メガネを使用して両眼呈示を行うモードです。
+                                       greenred = 1つの画面に緑赤メガネを使用して両眼呈示を行うモードです。
+                                       redblue = 1つの画面に赤青メガネを使用して両眼呈示を行うモードです。
+                                       bluered = 1つの画面に青赤メガネを使用して両眼呈示を行うモードです。
+                                       shutter = 1つの画面に垂直同期毎に異なる画像を呈示します。
+                                                 シャッターゴーグルを使用した際に両眼呈示ができるモードです。
+                                       topbottom = 1つの画面を上下に分割して、両眼呈示を行うモードです。上に左眼画像がきます。
+                                       bottomtop = 1つの画面を上下に分割して、両眼呈示を行うモードです。下に左眼画像がきます。
+                                       interleavedline = 水平ピクセルに沿って2つの異なる画像をインターレース呈示して両眼視を行うモードです。
+                                                         両眼視には特殊なゴーグルや装置が必要です。
+                                       interleavedcolumn = 垂直ピクセルに沿って2つの異なる画像をインターレース呈示して両眼視を行うモードです。
+                                                           両眼視には特殊なゴーグルや装置が必要です。
+                                       propixxmono = カナダVPIXX社のPROPixx Projectorに2D刺激を呈示するモードです。
+                                       propixxstereo = カナダVPIXX社のPROPixx ProjectorとDepthQの円偏光シャッターを使用して3D刺激を呈示するモードです。
+                                       デフォルト値は'mono'です。
+     2. options.start_method         : 刺激画像呈示のスタート方法を指定します。
+                                       0 = ENTER、SPACEキーを押下
+                                       1 = マウス左クリック
+                                       2 = 外部装置(MRなど)からのトリガー待ち(CiNET版、キーボードの"t"キーに相当)
+                                       3 = 外部装置(MRなど)からのトリガー待ち(Birmingham BUIC版、パラレルポートの11番目のピンのONを監視)
+                                       4 = カスタム・キー(MRからのトリガーをキー入力として受ける場合に有効、下のcustom_triggerで設定したキー)
+                                       デフォルトは0です。
+     3. options.custom_trigger       : start_methodで4を指定した場合にのみ有効となります。トリガー入力に相当する仮想キーを指定します。
+                                       デフォルトは"s"です。
+     4. options.keys                 : 被験者の応答取得に用いるキーを、キーコードで記述します。例えば、"A"キーを応答ボタンとして使用する
+                                       場合、options.keys=KbName('A')=65となります。複数のキーをベクトルで指定できます。
+                                       例：options.keys=[37,39]; デフォルト値は[37,39]です。
+     5. options.window_size          : 呈示範囲(ウィンドウ・サイズ)を[row,col]で記述します。デフォルト値は[768,1024]です。
+     6. options.RGBgain              : ディスプレイのRGBフォスファーのゲインを指定します。両眼視モード(赤緑メガネ用呈示など)の際に有効です。
+                                       2(left/right)x3(RGB)のmatrixを指定してください。デフォルトは空行列で、その際、単一ディスプレイを初期化
+                                       する際には、RGBgain=[1.0,1.0,1.0;1.0,1.0,1.0];(RGBフォスファーゲインを全て最大に設定)となります。両眼
+                                       立体視モードではRGBのゲインがモードに応じて適切に(赤緑メガネ用呈示なら、RGフォスファーのゲインを)調整
+                                       されます。
+     7. options.fixation             : 注視点の有無、タイプ、サイズ、色を指定します。セル構造体で、下記の3つのメンバを持ちます。
+                                       options.fixation={タイプ, ピクセル・サイズ, 色(RGB,0-255)};です。指定できるタイプは、
+                                       0 = 注視点なし
+                                       1 = クロス型の注視点。後のタスク・オプションでバーニエ・タスクを指定する際にはこの形がおすすめです。
+                                       2 = 円形の注視点
+                                       デフォルト値は、fixation={2,24,[255,255,255]};です。
+     8. options.background           : 背景に関する設定値を持つセル構造体です。下記の6つのメンバを持ちます。6番目のメンバ(窓サイズ)は、
+                                       通常ImagesShowPTBが処理の中で自動で計算するので、指定する必要はなく、省略します。
+                                       options.background={タイプ(0:単一色、1:パッチ付きの背景), 背景色(RGB), パッチの1つめの色(RGB),
+                                                           パッチの2つめの色(RGB), パッチの数[row,col], パッチのピクセル・サイズ[row,col],...
+                                                           窓サイズ(中心の画像呈示窓)[row,col]};
+                                       デフォルト値は、options.background={[127,127,127],[255,255,255],[0,0,0],[30,30],[20,20]};です。
+                                       背景にパッチ状の両眼融合ガイドを表示したくない場合は、パッチ1，2の色を背景色と同じにしてください。
+     9. options.cmask                : 呈示画像に円・四角形窓マスクをかけるオプションです。3つのメンバを持つセル構造体を下記の通り指定してください。
+                                       options.cmask={マスクあり・なし(0|1(円形)|2(四角)), 円・四角形マスクのピクセル・サイズ[row,col],...
+                                                      マスクのエッジ部分をガウシアン・フィルタでスムージングする際のパラメータ[mean,sd]};
+                                       マスクのエッジをスムージングしたくない場合は、meanを0に設定してください。デフォルト値は、
+                                       options.cmask={0,[280,280],[20,20]};です。
+    10. options.auto_background      : イメージ・データベース・ファイル(imgdbfile)に記載したimgdb.img{1}の左上[1,1]ピクセルの色を自動で
+                                       取得し、その色をoptions.background{1}に付与するモードです。背景と画像との境界を消したい場合など
+                                       有効です。使用したい場合は1を指定してください。デフォルトは0です。
+    11. options.use_fullscr          : ウィンドウ・サイズの指定を無視して、ディスプレイ解像度にかかわらず常にフル・スクリーンで画像を
+                                       呈示します。使用したい場合は1を指定してください。デフォルトは0です。
+    12. option.skip_frame_sync_test  : 1を指定すると、Psychtoolbox3のスクリーン同期テストをスキップします。デフォルトは0です。
+    13. option.force_frame_rate      : Psychtoolbox3に垂直同期のフレームレートを取得させず、指定したフレームレートに固定して呈示を行います。
+                                       デフォルトは0で、垂直同期の計測をPsychtoolbox3に任せます。0以外を指定するとそのフレームレートが使用されます。
+    14. options.use_frame            : プロトコル・ファイル(protocolfile)で指定したblocks{n}.msecの記述を無視し、blocks{n}.frame処理に
+                                       書き換え、強制的に呈示時間を垂直同期信号の数で制御するモードです。使用したい場合は1を指定してく
+                                       ださい。デフォルト値は0です。
+    15. options.use_original_imgsize : イメージ・データベース・ファイル(imgdbfile)に記載したpresentation_size指定を無視して、画像をオリ
+                                       ジナルのピクセル・サイズで呈示するモードです。使用したい場合は1を指定してください。デフォルトは0です。
+    16. options.img_loading_mode     : イメージ・データベース・ファイル(imgdbfile)に記載したimgdb.imgを読み込む方法を指定します。
+                                       1 = 画像のパス名のみを保持しておき、必要な際に1枚1枚画像をメモリへ読み込んだ後、さらにPsychtoolbox
+                                           のテクスチャを作成して呈示するモードです。呈示後はメモリから画像を削除します。3つのモードのうち
+                                           最も少ないメモリ量で呈示を行えます。数千枚の画像を使用した実験も可能です。一方で、読み込みなど
+                                           に時間がかかるため、CPUパワーの少ない、あるいはハードディスク読み込みの遅いコンピュータでは呈
+                                           示が遅れるかもしれません。
+                                       2 = 画像をメモリ上に一度に全て読み込んでおき、必要な際に1枚1枚Psychtoolboxのテクスチャを作成して
+                                           呈示を行うモードです。呈示後はメモリから画像を削除します。画像の読み込みを済ませてあるので、
+                                           1のモードよりは速いですが、その分呈示中は多くのメモリ必要とします。
+                                       3 = 画像をメモリ上に一度に全て読み込み、さらにPsychtoolboxのテクスチャを全て一度に作成しておく
+                                           モードです。呈示中は既にメモリ上にあるテクスチャの切り替えのみを行うため、最も高速に画像呈示
+                                           が可能です。一方、呈示中は3つのモードのうちで最もメモリを必要とします。
+                                       デフォルト値は2です。最初は2で試してみて、画像が少ない場合には3を指定することをおすすめします。
+    17. options.center               : 呈示画面の中心を[row,col]でピクセル単位で指定します。[0,0](デフォルト値)が中心を示します。
+                                       ウィンドウをずらして画像呈示することが可能です。
+    18. options.img_flip             : 呈示画面を反転します。反射鏡などを介して刺激を観察する際、画像の反転を防ぐために必要なオプション
+                                       です。0が反転無し、1が左右反転、2が上下反転、3が左右上下反転です。デフォルト値は0です。
+    19. options.task                 : 刺激呈示中に被験者が行うタスクを追加します。セル構造体で、下記のメンバを持ちます。
+                                       options.task={タスク・モード, タスクの頻度, タスクの呈示時間};
+                                       タスク・モードは下記5つから選べます。
+                                       0 = タスクなし
+                                       1 = 注視点の輝度変化タスク(低輝度の注視点が呈示されたらボタン押し)
+                                       2 = バーニエ・バーの左右判別タスク(Ban et al., 2012 Nat Neurosci.のタスクです)
+                                           このタスクでは、注視点近辺に呈示された垂直のバーが中心から見て左と右のどちらに出たかを
+                                           判断します。左ならoptions.keys(1)を、右ならoptions.keys(2)を押します。両眼視モード
+                                           (options.exp_mode='dual')で、注視点をクロス型options.fixation{1}=2にした際に正しく動作します。
+                                       3 = 文字変化検出タスク(注視点位置に"C"が呈示されたらボタン押し)
+                                       4 = 1-back画像記憶タスク(奇数番目の画像に対して)、同じ画像が連続で呈示されたらボタン押し
+                                       5 = 1-back画像記憶タスク(偶数番眼の画像に対して)、同じ画像が連続で呈示されたらボタン押し
+                                       タスクの頻度は、整数で指定してください。1を指定すると、protocolfileのblocks{n}.slicingの値を
+                                       考慮してoptions.task{3}で設定されるサブ呈示時間毎に毎回タスクが挿入されます。目的にもよります
+                                       が、通常3-5辺りを指定しておけば問題ありません。タスクの呈示時間は、blocks{n}.slicingの整数倍で
+                                       msecかframe単位でご指定ください。割り切れない場合、例えば、optionfileで各タスクの呈示時間を250ms
+                                       と指定し、slicingが100の場合、250msは100msで分割できないため、値が丸められてタスクの呈示時間は
+                                       200msとなります。ご注意ください。デフォルト値は、options.task=[0,1,250];です。
+    20. options.block_rand           : protocolfileに記述されたblocks{n}をランドマイズするオプションです。
+                                       0 = OFF (ランドマイズせずにそのまま呈示)
+                                       1 = 全てのブロックの順番をランドマイズ
+                                       2 = 偶数番目のブロックの順番をランドマイズ
+                                       3 = 奇数番目のブロックの順番をランドマイズ
+                                       4 = 前半1/2のブロックの順番をランドマイズ
+                                       5 = 後半1/2のブロックの順番をランドマイズ
+                                       6 = 2番目から(最後-1)番目までのブロックの順番をランドマイズ
+                                       matrixで複数(2つ以上)指定 = matrix番目に当たるブロックの順番をランドマイズします。e.g. [2,4,6,8]
+                                       デフォルト値は0です。
+    21. options.onset_punch          : イメージ・データベース・ファイル(imgdbfile)の中でimgdb.img{n}{3}に指定したトリガーONの画像が呈示
+                                       された際に、画面端にパンチ刺激を呈示するモードです。EEG実験で刺激呈示のトリガーを記録する際や計測
+                                       と刺激呈示を同期させる際に便利なオプションです。
+                                       options.onset_punch=[モード, パンチ刺激のピクセル・サイズ];
+                                       と指定してください。モードは、
+                                       0 = パンチ刺激なし
+                                       1 = 左上端にパンチ刺激
+                                       2 = 右上端にパンチ刺激
+                                       3 = 右下端にパンチ刺激
+                                       4 = 右下端にパンチ刺激
+                                       デフォルト値はoptions.onset_punch=[0,50];です。
+    22. options.event_display_mode   : 刺激呈示中、MATLABコンソールウィンドウにどのような情報を表示するかを決めるオプションです。
+                                       0 = MATLABウィンドウに現在のブロック、呈示イメージIDのみを表示します。
+                                       1 = MATLABウィンドウに呈示イベント(ブロック、ボタン押しなどの時間、種類、トリガーなど)の全ての情報を表示します。
 
-    �܂��A~/ImagesShowPTB/Generation/getGlobalParameters.m���g�p����ƁA�����t�@�C��������Asubj, acq, session, vparam, dparam, imgs,
-    prt, imgs��8�̃O���[�o���ϐ��̒��g���Q�Ƃł��܂��B���_��ȏ����t�@�C���̍쐬���\�ł��B�O���[�o���ϐ��͍��̂Ƃ���ǂݎ��̂�
-    �\�ŁA�������݂͂ł��܂���B
+    また、~/ImagesShowPTB/Generation/getGlobalParameters.mを使用すると、条件ファイル内から、subj, acq, session, vparam, dparam, imgs,
+    prt, imgsの8つのグローバル変数の中身を参照できます。より柔軟な条件ファイルの作成が可能です。グローバル変数は今のところ読み取りのみ
+    可能で、書き込みはできません。
 
-    �L�q��F
+    記述例：
 
     % display mode, one of "mono", "dual", "dualparallel","dualcross", "cross", "parallel", "redgreen", "greenred", "redblue",
     % "bluered", "shutter", "topbottom", "bottomtop", "interleavedline", "interleavedcolumn", "propixxmono", "propixxstereo"
@@ -599,17 +599,17 @@ readme_for_testing.txt -------- Presentation/subjects/�ȉ��ɂ���f���p�X�N���v�g
     options.event_display_mode=0;
 
 
- [�o�̓t�@�C��(�������ʂ̋L�^�t�@�C��)�ɂ���]
- * �������ʂ�~/ImagesShowPTB/subjects/(�팱�Җ�)�f�B���N�g���ȉ��ɕۑ�����܂��B
+ [出力ファイル(実験結果の記録ファイル)について]
+ * 実験結果は~/ImagesShowPTB/subjects/(被験者名)ディレクトリ以下に保存されます。
 
- 1) MATLAB�R�}���h�E�B���h�E�̃��O
-    �h���掦���AMATLAB�R�}���h�E�B���h�E�ɂ͒掦�h����Psychtoolbox�̌x���A�G���[���\������܂��B�����̏��́Adiary()�֐��ɂ��
-    ~/ImagesShowPTB/subjects/(�팱�Җ�)/results/(YYMMDD)/(�팱�Җ�)_ImagesShowPTB_results_run_%02d.log
-    �Ƃ����e�L�X�g�t�@�C���ɕۑ�����Ă����܂��B���O�t�@�C����append���[�h�Ŏ���������(ImagesShowPTB��acq�����Ŏw�肵�܂�)��1��
-    �t�@�C���ɒǉ��ۑ�����Ă����܂��B���̃��O�t�@�C�����m�F���邱�ƂŁAPsychtoolbox�̉摜�掦�Ɋւ���x����G���[�A�掦���Ԃ̒x��
-    ��ǐՂł��܂��B
+ 1) MATLABコマンドウィンドウのログ
+    刺激呈示中、MATLABコマンドウィンドウには呈示刺激やPsychtoolboxの警告、エラーが表示されます。これらの情報は、diary()関数により
+    ~/ImagesShowPTB/subjects/(被験者名)/results/(YYMMDD)/(被験者名)_ImagesShowPTB_results_run_%02d.log
+    というテキストファイルに保存されていきます。ログファイルはappendモードで実験ラン毎(ImagesShowPTBのacq引数で指定します)に1つの
+    ファイルに追加保存されていきます。このログファイルを確認することで、Psychtoolboxの画像呈示に関する警告やエラー、呈示時間の遅れ
+    を追跡できます。
 
-    ���O�t�@�C���̏o�͗�F
+    ログファイルの出力例：
 
     Using Psychtoolbox 3.0.9 - make sure this is correct before you continue
     step 1: loading viewing size parameters...done.
@@ -741,28 +741,28 @@ readme_for_testing.txt -------- Presentation/subjects/�ȉ��ɂ���f���p�X�N���v�g
     INFO: deserve your closer attention. Cfe. 'help SyncTrouble', the FAQ section at www.psychtoolbox.org and the
     INFO: examples in the PDF presentation in PsychDocumentation/Psychtoolbox3-Slides.pdf for more info and timing tips.
 
- 2) �摜�掦���ԁA�g���K�[�A�팱�҂̉����̃��O
-    �g�p�����摜�A�掦�I�v�V�����A�����v���g�R���A�팱�҂̉�����
-    ~/ImagesShowPTB/subjects/(�팱�Җ�)/results/(YYMMDD)/(�팱�Җ�)_ImagesShowPTB_results_run_%02d.mat
-    �Ƃ���MATLAB�`���̃t�@�C���ɕۑ�����Ă����܂��B���̍ہAImagesShowPTB��overwrite_flg��1�ɐݒ肵�Ă����ƁA�Ώۃf�B���N�g���ȉ���
-    ���łɓ����̃t�@�C�������݂���ꍇ(�Ⴆ�΁A�������ɉ����̖�肪�����A2�Ԗڂ̎���(acq=2)��2�x�s�����ۂȂ�)�ɁA�Â��t�@�C����
-    ~/ImagesShowPTB/subjects/(�팱�Җ�)/results/(YYMMDD)/(�팱�Җ�)_ImagesShowPTB_results_run_%02d_old.mat
-    ��'_old'�Ƃ����v���t�B�b�N�X�����ăo�b�N�A�b�v���܂�(�r���Œ��f�����f�[�^����͂ł���悤��)�B�o�b�N�A�b�v���K�v�Ȃ��ꍇ�́A
-    overwrite_flg��0�ɐݒ肵�Ă��������B
-    ���̃t�@�C���ɂ́A���L�̕ϐ����L�^����Ă��܂��B���ɁAevent�ϐ�����̉�͂ɏd�v�ł��B
-    subj        : �팱�Җ�
-    acq         : �����ԍ�
-    prt         : �����v���g�R�� (protocolfile�Ŏw�肵��blocks{n}��������������)
-    vparam      : �������Ȃǂ̏�� (viewfile�Ŏw�肵��vparam)
-    dparam      : �f�B�X�v���C�E�p�����[�^ (optionfile�Ŏw�肵��options�\���̂�������������)
-    task        : �^�X�N�̎�ށA�掦�^�C�~���O�A����(�����A�G���[�Afalse alarm)�A�������ԂȂ�
-    gamma_table : �g�p�����K���}�E�e�[�u�� (ImagesShowPTB��gamma_table�ɋ�s����w�肵���ꍇ�́Arepmat(linspace(0.0,1.0,256),3,1))
-    event       : �C�x���g���O�B�����X�^�[�g���ԁA�h���̃I���Z�b�g�A�팱�҂̉����A�g���K�[�Ȃǂ��L�^���ꂽ�Z���\����
-                  event{n}={�C�x���g�̎���(sec�P�ʁA�����J�n��0), �C�x���g�̖��O(Stim ON�Ȃ�), �p�����[�^};
-                  ���L�^����Ă��܂��B
-    imgs        : imgdbfile�ŋL�q����imgs�Z���\����
+ 2) 画像呈示時間、トリガー、被験者の応答のログ
+    使用した画像、呈示オプション、実験プロトコル、被験者の応答は
+    ~/ImagesShowPTB/subjects/(被験者名)/results/(YYMMDD)/(被験者名)_ImagesShowPTB_results_run_%02d.mat
+    というMATLAB形式のファイルに保存されていきます。この際、ImagesShowPTBのoverwrite_flgを1に設定しておくと、対象ディレクトリ以下に
+    すでに同名のファイルが存在する場合(例えば、実験中に何かの問題が生じ、2番目の実験(acq=2)を2度行った際など)に、古いファイルを
+    ~/ImagesShowPTB/subjects/(被験者名)/results/(YYMMDD)/(被験者名)_ImagesShowPTB_results_run_%02d_old.mat
+    と'_old'というプレフィックスをつけてバックアップします(途中で中断したデータも解析できるように)。バックアップが必要ない場合は、
+    overwrite_flgを0に設定してください。
+    このファイルには、下記の変数が記録されています。特に、event変数が後の解析に重要です。
+    subj        : 被験者名
+    acq         : ラン番号
+    prt         : 実験プロトコル (protocolfileで指定したblocks{n}を処理したもの)
+    vparam      : 視距離などの情報 (viewfileで指定したvparam)
+    dparam      : ディスプレイ・パラメータ (optionfileで指定したoptions構造体を処理したもの)
+    task        : タスクの種類、呈示タイミング、成績(正答、エラー、false alarm)、反応時間など
+    gamma_table : 使用したガンマ・テーブル (ImagesShowPTBのgamma_tableに空行列を指定した場合は、repmat(linspace(0.0,1.0,256),3,1))
+    event       : イベントログ。実験スタート時間、刺激のオンセット、被験者の応答、トリガーなどが記録されたセル構造体
+                  event{n}={イベントの時間(sec単位、実験開始が0), イベントの名前(Stim ONなど), パラメータ};
+                  が記録されています。
+    imgs        : imgdbfileで記述したimgsセル構造体
 
-    event�Z���\���̂̒��g�̗�F
+    eventセル構造体の中身の例：
 
             []    'Experiment Start'    '131129 13:11:25'
     [  0.0033]    'Start block 001'     'Fixation 1'
@@ -825,153 +825,153 @@ readme_for_testing.txt -------- Presentation/subjects/�ȉ��ɂ���f���p�X�N���v�g
     [335.4320]    'Response'            'key1'
     [336.0025]    'End'                                  []
 
-7. ���̑��̒��ӓ_
+7. その他の注意点
 
- *����ImagesShowPTB�v���O�����͉摜�����ɒ掦���邾���ŕ��ׂ��y���̂ŁA�ŋ߂̍�����CPU��ς񂾃R���s���[�^�����g���̍ۂɂ́A�������ԁA
-  �掦���Ԃ�����邱�Ƃ͂Ȃ��Ǝv���܂��B����ǂ��ꍇ�ɂ́A��ʂ̕\�����[�h�i�𑜓x�A�F���Ȃǁj�A�d���Ǘ��A���z�L���ȂǂɋN������G���[
-  �⊄�荞�ݏ������ւ���Ă���\��������܂��B�C�x���g�E���O�ȂǂŒ掦�̖W���ƂȂ��Ă��鏈�����Ȃ����A�m�F���Ă��������B�܂��A����
-  �v���O�����͑S�ďI�����Ă���A���s���ĉ������B
+ *このImagesShowPTBプログラムは画像を順に呈示するだけで負荷が軽いので、最近の高速なCPUを積んだコンピュータをお使いの際には、処理時間、
+  呈示時間がずれることはないと思います。きわどい場合には、画面の表示モード（解像度、色数など）、電源管理、仮想記憶などに起因するエラー
+  や割り込み処理が関わっている可能性があります。イベント・ログなどで呈示の妨げとなっている処理がないか、確認してください。また、他の
+  プログラムは全て終了してから、実行して下さい。
 
- *�v���W�F�N�^�[�Ƃ̑���
-  �c�݂̃`�F�b�N���␳���s���ĉ������B�����`����ʒ��S�ɕ`���āA��ʂ̃v���p�e�B�̏ڍ׃��j���[�ȂǂŒ������ĉ������B�����̕��@�́A
-  �R���s���[�^�̃O���t�B�b�N�X�E�h���C�o�[�Ɉˑ����܂��B�ڍׂ͊e���[�J�̃z�[���y�[�W�𒲂ׂĉ������B�܂��A�ł������������Ɠ��l��
-  �P�[�u���\��(�`���A�����A����)�ɂ��ĉ������B�M���̌����̂����ŕ\���ł��Ȃ��Ȃ�ꍇ������܂��B
+ *プロジェクターとの相性
+  歪みのチェック＆補正を行って下さい。正方形を画面中心に描いて、画面のプロパティの詳細メニューなどで調整して下さい。調整の方法は、
+  コンピュータのグラフィックス・ドライバーに依存します。詳細は各メーカのホームページを調べて下さい。また、できる限り実験時と同様の
+  ケーブル構成(形式、長さ、延長)にして下さい。信号の減衰のせいで表示できなくなる場合もあります。
 
- *ImagesShowPTB�̉���
-  MATLAB(MathWorks, http://www.mathworks.com)��Psychtoolbox���K�v�ł��BPsychtoolbox�̏ڍׂ́Ahttp://psychtoolbox.org/HomePage���������������B
-  ImagesShowPTB�̃��C���E�X�N���v�g�́A
+ *ImagesShowPTBの改良
+  MATLAB(MathWorks, http://www.mathworks.com)とPsychtoolboxが必要です。Psychtoolboxの詳細は、http://psychtoolbox.org/HomePageをご覧ください。
+  ImagesShowPTBのメイン・スクリプトは、
   ~/ImagesShowPTB/Presentation/ImagesShowPTB.m
-  �ł��B�����f�B���N�g���ɂ���run_exp.m�́AImagesShowPTB.m���Ăяo�����߂̊ȒP�ȃ��b�p�[�E�X�N���v�g�̗�ł��B�掦�葱�����̑��ɕύX
-  ���K�v�ȏꍇ�́A�����̃X�N���v�g���C�����Ă��������B�܂��AImagesShowPTB.m�͏����̒��ŁA
+  です。同じディレクトリにあるrun_exp.mは、ImagesShowPTB.mを呼び出すための簡単なラッパー・スクリプトの例です。呈示手続きその他に変更
+  が必要な場合は、これらのスクリプトを修正してください。また、ImagesShowPTB.mは処理の中で、
   ~/ImagesShowPTB/Generation
   ~/ImagesShowPTB/Common
-  �ɂ���T�u�֐����Ă�ł��܂��B�K�v�ɉ����Ă����̊֐����C�����Ă��������B
+  にあるサブ関数を呼んでいます。必要に応じてこれらの関数も修正してください。
 
-  ���������₪�������܂�����A�ԍ_�u(�΂�Ђ낵)�܂ł��A�����������B
+  もしご質問がございましたら、番浩志(ばんひろし)までご連絡ください。
   ban.hiroshi@gmail.com
 
-8. ���ꂩ�炷�ׂ�����
+8. これからすべきこと
 
- 1) Movie��ImagesShow.exe(*.mpeg�t�@�C���ւ̑Ή�)
- 2) �C���[�W�Ƀ}�X�N�t�B���^�������Ē掦
+ 1) Movie版ImagesShow.exe(*.mpegファイルへの対応)
+ 2) イメージにマスクフィルタをかけて呈示
 
- �ȉ��A�ߋ��̃o�[�W�����őΉ���
- 1) fMRI�����ɂ�����MR���u����̃g���K�[���͂��󂯂Ďh���𓯊��X�^�[�g(CONTEC�ł͑Ή��ρBKV�ł͖��Ή�) COMPLETED! July 16 2007 H.Ban
- 2) �f���A���f�B�X�v���C���[�h(���ᓬ���◼�ᗧ�̎�����) COMPLETED! Nov 15 2013 H.Ban
- 3) �掦���Ԃ̃��A���^�C���␳(*.cond�t�@�C������rest�u���b�N�ŕ␳��������d�g�݂��쐬) COMPLETED! July 14 2007 H.Ban
- 4) ��ʒ[�Ɏh���掦�I���Z�b�g��m�点��p���`�h����掦���郂�[�h��ǉ� COMPLETED! July 17 2007 H.Ban
+ 以下、過去のバージョンで対応済
+ 1) fMRI実験においてMR装置からのトリガー入力を受けて刺激を同期スタート(CONTEC版は対応済。KV版は未対応) COMPLETED! July 16 2007 H.Ban
+ 2) デュアルディスプレイモード(両眼闘争や両眼立体視向け) COMPLETED! Nov 15 2013 H.Ban
+ 3) 呈示時間のリアルタイム補正(*.condファイル内のrestブロックで補正をかける仕組みを作成) COMPLETED! July 14 2007 H.Ban
+ 4) 画面端に刺激呈示オンセットを知らせるパンチ刺激を呈示するモードを追加 COMPLETED! July 17 2007 H.Ban
 
-9. �v���O�����X�V����
+9. プログラム更新履歴
 
-�E����PresentImage.tcl  tcl version         1999 H.Yamamoto
-�E����PresentImage.cpp  Cxx version         2002 H.Yamamoto
+・初代PresentImage.tcl  tcl version         1999 H.Yamamoto
+・初代PresentImage.cpp  Cxx version         2002 H.Yamamoto
 
-�EC++�N���X�ɂ��L�q                       Dec. 24 2003 H.Ban (T_T)/~~
-�ECONTEC digital I/O�Ƃ̓���                Dec. 24 2003 H.Ban
-�E�����Œ����_�ǉ����[�h                    Dec. 25 2003 H.Ban (o^-')b
-�Etime.h --> Win32API multimedia timer      Jan. 20 2004 H.Ban
-�E�A�j���[�V�����p�t�H�[�}���X���P          Jan. 24 2004 H.Ban
-�EDynamic Storage Allocation
-  (�ǂݍ��߂�u���b�N�A�C���[�W�����������̋������薳����)
+・C++クラスによる記述                       Dec. 24 2003 H.Ban (T_T)/~~
+・CONTEC digital I/Oとの同期                Dec. 24 2003 H.Ban
+・自動で注視点追加モード                    Dec. 25 2003 H.Ban (o^-')b
+・time.h --> Win32API multimedia timer      Jan. 20 2004 H.Ban
+・アニメーションパフォーマンス改善          Jan. 24 2004 H.Ban
+・Dynamic Storage Allocation
+  (読み込めるブロック、イメージ数がメモリの許す限り無限に)
                                             Jan. 24 2004 H.Ban
-�E���s����multimedia timer�������ŏ�����    Jan. 25 2004 H.Ban
-�EPresentImages ���� ImagesShow��           Mar. 06 2005 H.Ban
-�E�C���[�W�V�[�P���X�̃����h�}�C�Y�@�\      Mar. 06 2005 H.Ban
-�E�t���X�N���[�������_�����O                Mar. 10 2005 H.Ban
-�EKeyence KV Controller�Ƃ̓���             Mar. 11 2005 H.Ban
-�Evtk3.2 -> vtk4.2 static library           Mar. 12 2005 H.Ban
-�E�����_�[�E�B���h�E�̋��E�Ȃ���            Mar. 12 2005 H.Ban
-�E*.jpg, *.png, *.tiff�`���ɑΉ�            Mar. 14 2005 H.Ban
-�E�����_�[�E�B�h�E��Ń}�E�X�N���b�N�X�^�[�g    Mar. 14 2005 H.Ban
-�E*.pnm�`���ɑΉ�                           Mar. 15 2005 H.Ban
-�E�ǂݍ��݃t�@�C���̋L�q���e�ύX            Mar. 16 2005 H.Ban
-�EViewPort (xmin, ymin, xmax, ymax) -> IMAGE-CENTER (x,y)
+・実行時にmultimedia timerを自動で初期化    Jan. 25 2004 H.Ban
+・PresentImages 改め ImagesShowへ           Mar. 06 2005 H.Ban
+・イメージシーケンスのランドマイズ機能      Mar. 06 2005 H.Ban
+・フルスクリーンレンダリング                Mar. 10 2005 H.Ban
+・Keyence KV Controllerとの同期             Mar. 11 2005 H.Ban
+・vtk3.2 -> vtk4.2 static library           Mar. 12 2005 H.Ban
+・レンダーウィンドウの境界なくす            Mar. 12 2005 H.Ban
+・*.jpg, *.png, *.tiff形式に対応            Mar. 14 2005 H.Ban
+・レンダーウィドウ上でマウスクリックスタート    Mar. 14 2005 H.Ban
+・*.pnm形式に対応                           Mar. 15 2005 H.Ban
+・読み込みファイルの記述内容変更            Mar. 16 2005 H.Ban
+・ViewPort (xmin, ymin, xmax, ymax) -> IMAGE-CENTER (x,y)
                                             Mar. 16 2005 H.Ban
-�EInterface GPC (General Pulse Counter)�Ƃ̘A�g
+・Interface GPC (General Pulse Counter)との連携
                                             Mar. 16 2007 H.Ban
-�E���O�t�@�C���̏o�� (PresentedLog*.txt)    Mar. 16 2005 H.Ban
-�E���O�t�@�C���̏o�� (KVSwitchLog*.txt)     Mar. 16 2005 H.Ban
-�E�ŏ��ɉ摜��掦�����A��������ɂ̂݃����_�����O
+・ログファイルの出力 (PresentedLog*.txt)    Mar. 16 2005 H.Ban
+・ログファイルの出力 (KVSwitchLog*.txt)     Mar. 16 2005 H.Ban
+・最初に画像を呈示せず、メモリ上にのみレンダリング
                                             July 05 2007 H.Ban
-�Ex&y���ɉ����ĉ摜�𔽓]                   July 05 2007 H.Ban
-�EVC++6.0����VC++.NET 2003�փR���p�C����ύX  July 07 2007 H.Ban
-�Evtk4.2 static library -> vtk5.0.3 static library
+・x&y軸に沿って画像を反転                   July 05 2007 H.Ban
+・VC++6.0からVC++.NET 2003へコンパイラを変更  July 07 2007 H.Ban
+・vtk4.2 static library -> vtk5.0.3 static library
                                             July 07 2007 H.Ban
-�E�����_�[�E�B���h�E�ォ��}�E�X�J�[�\��������  July 07 2007 H.Ban
-�E�E�}�E�X�N���b�N�Œ掦�X�^�[�g -> ���}�E�X�N���b�N
+・レンダーウィンドウ上からマウスカーソルを消去  July 07 2007 H.Ban
+・右マウスクリックで呈示スタート -> 左マウスクリック
                                             July 07 2007 H.Ban
-�EImagesShow.exe�̃A�C�R���ύX              July 08 2007 H.Ban
-�E�掦�摜��bilinear��Ԃɂ��g��/�k�����\   July 09 2007 H.Ban
-�EFFA(Fusiform Face Area) & PPA(Parahipocampal Place Area) &
-  EBA(Extrastriate Body Area)�𓯒肷�邽�߂̃R���f�B�V������
-  ���炩���ߗp��
+・ImagesShow.exeのアイコン変更              July 08 2007 H.Ban
+・呈示画像のbilinear補間による拡大/縮小が可能   July 09 2007 H.Ban
+・FFA(Fusiform Face Area) & PPA(Parahipocampal Place Area) &
+  EBA(Extrastriate Body Area)を同定するためのコンディションを
+  あらかじめ用意
                                             July 09 2007 H.Ban
-�E�掦���Ԃ̌덷�����A���^�C���ŕ␳����@�\��ǉ�
+・呈示時間の誤差をリアルタイムで補正する機能を追加
                                             July 14 2007 H.Ban
-�ENew�o�[�W�����FInterface GPC (General Pulse Counter)�Ƃ̘A�g
+・Newバージョン：Interface GPC (General Pulse Counter)との連携
                                             July 16 2007 H.Ban
-�ENew�o�[�W�����FLog file (GPCSwitchTriggerLog*.txt)�̏o��
+・Newバージョン：Log file (GPCSwitchTriggerLog*.txt)の出力
                                             July 16 2007 H.Ban
-�ENew�o�[�W����: ImageDatabase�t�@�C��        July 17 2007 H.Ban
-�E��ʒ[�Ɏh���掦�̃I���Z�b�g��m�点��p���`�h����掦���郂�[�h
+・Newバージョン: ImageDatabaseファイル        July 17 2007 H.Ban
+・画面端に刺激呈示のオンセットを知らせるパンチ刺激を呈示するモード
                                             July 17 2007 H.Ban
-�EInterface GPC�ƘA�g���āA�f�B�X�v���C�̐��������M�����擾�A
-  �w�肵���t���[���������掦���郂�[�h�̒ǉ�
+・Interface GPCと連携して、ディスプレイの垂直同期信号を取得、
+  指定したフレーム数だけ呈示するモードの追加
                                             July 17 2007 H.Ban
-�EVTK5.4.2���C�u�����փA�b�v�f�[�g
+・VTK5.4.2ライブラリへアップデート
                                             June 05 2009 H.Ban
-�EVC++.NET 2003����VC++.NET 2005�փR���p�C����ύX�A���s���x�A�b�v
+・VC++.NET 2003からVC++.NET 2005へコンパイラを変更、実行速度アップ
                                             June 05 2009 H.Ban
-�EMatlab_imageprocessing��ǉ��A�l�X�ȉ摜�������\
+・Matlab_imageprocessingを追加、様々な画像処理が可能
                                             June 05 2009 H.Ban
-�Evtk5.4.2��boost C++ 1.38��g�ݍ���ŃR���p�C��
+・vtk5.4.2をboost C++ 1.38を組み込んでコンパイル
                                             July 26 2009 H.Ban
-�ERunTEST()��CONTEC digital I/O, KV digital I/O, GPC digital I/O�ƘA�g�\��
+・RunTEST()をCONTEC digital I/O, KV digital I/O, GPC digital I/Oと連携可能に
                                             July 26 2009 H.Ban
-�E*.display�t�@�C����START-METHOD��0(RETURN Key start)��I�񂾍ہA
-  �R���\�[����łȂ��A�����_�[�E�B���h�E��Ń��^�[���L�[���������ƂŎh���掦�X�^�[�g
+・*.displayファイルのSTART-METHODで0(RETURN Key start)を選んだ際、
+  コンソール上でなく、レンダーウィンドウ上でリターンキーを押すことで刺激呈示スタート
                                             July 26 2009 H.Ban
-�ECONTEC digital I/O�ƘA�g����digital I/O�֎h���̎�ނ̃g���K�[�𑗏o�\��
+・CONTEC digital I/Oと連携中にdigital I/Oへ刺激の種類のトリガーを送出可能に
                                             July 26 2009 H.Ban
-�EC++�\�[�X�����ƂɁAMATLAB & Psychtoolbox�o�[�W�������쐬
-  �����̉摜��������ђ掦�葱���V�������̂ɕύX
-  ����掦�ɑΉ��A�^�X�N�̎����ǉ����[�h
+・C++ソースをもとに、MATLAB & Psychtoolboxバージョンを作成
+  内部の画像処理および呈示手続き新しいものに変更
+  両眼呈示に対応、タスクの自動追加モード
                                             Nov  15 2013 H.Ban
-�E�������o�^�X�N�̒ǉ�                      Nov  18 2013 H.Ban
-�E���E��摜�ɈقȂ�p�����[�^��ݒ�\��
+・文字検出タスクの追加                      Nov  18 2013 H.Ban
+・左右眼画像に異なるパラメータを設定可能に
                                            Nov  21 2013 H.Ban
-�E�o�O�C���A���������g�������Ȃ��悤�ɓ���������ύX
+・バグ修正、メモリを使いすぎないように内部処理を変更
                                            Nov  23 2013 H.Ban
-�E�o�O�C���A�o�[�W����1.0 �ŏI�ł��쐬
+・バグ修正、バージョン1.0 最終版を作成
                                            Nov  25 2013 H.Ban
-�E���E��摜�̏����������I�ɂ��邽�߁A�ϐ��̍\����ύX
+・左右眼画像の処理を効率的にするため、変数の構造を変更
                                            Nov  28 2013 H.Ban
-�E�~�`���}�X�N��ǉ�����I�v�V����         Nov  29 2013 H.Ban
-�E�V�[�P���X��0�Ԃ��w�肷�邱�ƂŁA�摜�掦���s��Ȃ�(�w�i�̂ݒ掦)
-  �I�v�V������ǉ�                         July 13 2015 H.Ban
-�E���̓p�����[�^��"session"��ǉ�(���t�̈Ⴂ�ȂǂŃt�@�C������ʂ���ۂɗ��p�\)
+・円形窓マスクを追加するオプション         Nov  29 2013 H.Ban
+・シーケンスに0番を指定することで、画像呈示を行わない(背景のみ呈示)
+  オプションを追加                         July 13 2015 H.Ban
+・入力パラメータに"session"を追加(日付の違いなどでファイルを区別する際に利用可能)
                                             July 14 1014 H.Ban
-�Esubj, acq, session, vparam, dparam, imgs, prt, imgs��8�ϐ���
-  �O���[�o���ϐ��Ƃ����B�ϐ��֊O������̃A�N�Z�X��������̂�
-  �댯��������Ȃ����A���_��ȏ����t�@�C���쐬�̂��߂ɕύX��
-  ���߂��B�O���[�o���ϐ��̒��g�́A���̂Ƃ���ǂݎ��̂݉\�ŁA
-  �������݂͕s�B�ϐ��̒��g���擾���邽�߂ɂ́A
+・subj, acq, session, vparam, dparam, imgs, prt, imgsの8変数を
+  グローバル変数とした。変数へ外部からのアクセスを許可するのは
+  危険かもしれないが、より柔軟な条件ファイル作成のために変更を
+  決めた。グローバル変数の中身は、今のところ読み取りのみ可能で、
+  書き込みは不可。変数の中身を取得するためには、
   ~/ImagesShowPTB/Generation/getGlobalParameters.m
-  ���g�p����
+  を使用する
                                             July 14 2014 H.Ban
-�E�l�p�`���}�X�N��ǉ�����I�v�V����        July 14 2014 H.Ban
-�E�t���[���̓����e�X�g���X�L�b�v����I�v�V�����̒ǉ�
+・四角形窓マスクを追加するオプション        July 14 2014 H.Ban
+・フレームの同期テストをスキップするオプションの追加
                                             Aug  29 2016 H.Ban
-�E����̃t���[�����[�g���w�肵�Ē掦���s���I�v�V�����̒ǉ�
+・特定のフレームレートを指定して呈示を行うオプションの追加
                                             Aug  29 2016 H.Ban
-�E�P��w�i�A�p�b�`�t���w�i�̑I�����\��    Aug  29 2016 H.Ban
-�Eprotocolfile�Aimgdbfile�Aviewfile�Aoptionfile��4�̃t�@�C��
-  ���L�q����ۂɃX�N���v�g�`���݂̂ł͂Ȃ��AMATLAB�֐��`���ɂ�
-  �Ή��������B���_��Ȑ��䂪�\�ƂȂ����BAug  29 2016 H.Ban
-�EMATLAB�R���\�[���E�B���h�E�ɕ\������h���掦���̎�ނ�
-  �I�v�V�����őI���\��(�ȈՂ��邢�͏ڍ׃��[�h)
+・単一背景、パッチ付き背景の選択が可能に    Aug  29 2016 H.Ban
+・protocolfile、imgdbfile、viewfile、optionfileの4つのファイル
+  を記述する際にスクリプト形式のみではなく、MATLAB関数形式にも
+  対応させた。より柔軟な制御が可能となった。Aug  29 2016 H.Ban
+・MATLABコンソールウィンドウに表示する刺激呈示情報の種類を
+  オプションで選択可能に(簡易あるいは詳細モード)
                                             Oct  23 2016 H.Ban
-�E�J�i�_VPIXX��PROPixx�v���W�F�N�^��ւ̎h���掦�ɑΉ�(2D/3D�掦�Ƃ��ɉ�)
+・カナダVPIXX社PROPixxプロジェクタ上への刺激呈示に対応(2D/3D呈示ともに可)
                                             June 03 2021 H.Ban
-�E�h����掦����X�N���[����ID��I������I�v�V�����̒ǉ�
+・刺激を呈示するスクリーンのIDを選択するオプションの追加
                                             June 03 2021 H.Ban
