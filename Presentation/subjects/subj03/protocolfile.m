@@ -36,22 +36,24 @@
 % blocks{n}.sequence=(2xN matrix);
 % Then, the same randomization parameter (0) will be applied to both sequences. Please be careful.
 
+nimg=50; % constant, the number of voronoi images to be presented.
+
 blocks{1}.randomization=0;
 blocks{1}.sequence=201;
-blocks{1}.msec=16000;
+blocks{1}.msec=5000;
 blocks{1}.slicing=100;
 blocks{1}.repetitions=1;
 blocks{1}.name='The First Fixation';
 
-block_counter=1; n_each=20;
-for ii=1:1:100/n_each
+block_counter=1; n_each=10;
+for ii=1:1:nimg/n_each
   block_counter=block_counter+1;
   stim_array=n_each*(ii-1)+1:n_each*ii;
   stim_array=[stim_array;stim_array+100;stim_array;stim_array+100];
   stim_array=stim_array(:)';
 
   blocks{block_counter}.randomization=0;
-  blocks{block_counter}.sequence=Pad2Array(stim_array,201,0);
+  blocks{block_counter}.sequence=Pad2Array(stim_array,nimg+1,0);
   blocks{block_counter}.msec=repmat([200,100],1,numel(stim_array));
   blocks{block_counter}.slicing=100;
   blocks{block_counter}.repetitions=3;
@@ -60,7 +62,7 @@ for ii=1:1:100/n_each
   block_counter=block_counter+1;
   blocks{block_counter}.randomization=0;
   blocks{block_counter}.sequence=201;
-  blocks{block_counter}.msec=6000;
+  blocks{block_counter}.msec=3000;
   blocks{block_counter}.slicing=100;
   blocks{block_counter}.repetitions=1;
   blocks{block_counter}.name='Fixation Rest';
@@ -69,7 +71,7 @@ end
 % replace the final fixation rest as below.
 blocks{block_counter}.randomization=0;
 blocks{block_counter}.sequence=201;
-blocks{block_counter}.msec=16000;
+blocks{block_counter}.msec=5000;
 blocks{block_counter}.slicing=100;
 blocks{block_counter}.repetitions=1;
 blocks{block_counter}.name='The Final Fixation';
