@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2021-11-30 14:11:17 ban"
+% Last Update: "2021-12-01 07:09:20 ban"
 %
 %
 % [input]
@@ -726,6 +726,25 @@ elseif dparam.fixation{1}==2 % fixation cross
   else % if strcmpi(dparam.exp_mode,'mono') % binocular stimuli
     [fix_L,fix_R]=CreateFixationImg(dparam.fixation{2},dparam.fixation{3},dparam.background{2},fixlinew,fixlineh,0,0);
     [wait_fix_L,wait_fix_R]=CreateFixationImg(dparam.fixation{2},[0,0,0],dparam.background{2},fixlinew,fixlineh,0,0);
+  end
+
+  wait_fcross(1)=Screen('MakeTexture',winPtr,wait_fix_L);
+  wait_fcross(2)=Screen('MakeTexture',winPtr,wait_fix_R);
+  fcross(1)=Screen('MakeTexture',winPtr,fix_L);
+  fcross(2)=Screen('MakeTexture',winPtr,fix_R);
+  clear wait_fix_L wait_fix_R fix_L fix_R;
+
+elseif dparam.fixation{1}==3 % concentrate fixaton
+
+  if strcmpi(dparam.exp_mode,'mono')
+    fix_L=CreateFixationImgConcentrateMono(4*dparam.fixation{2},dparam.fixation{3},dparam.background{2},4*[2,0.8*dparam.fixation{2}],0,0,0);
+    wait_fix_L=CreateFixationImgConcentrateMono(4*dparam.fixation{2},[64,64,64],dparam.background{2},4*[2,0.8*dparam.fixation{2}],0,0,0);
+    fix_R=fix_L; wait_fix_R=wait_fix_L;
+  else % if strcmpi(dparam.exp_mode,'mono') % binocular stimuli
+    fix=CreateFixationImgConcentrate(4*dparam.fixation{2},dparam.fixation{3},dparam.background{2},4*[2,0.8*dparam.fixation{2}],0,0,0);
+    fix_L=fix{1}; fix_R=fix{2}; clear fix;
+    wait_fix=CreateFixationImgConcentrate(4*dparam.fixation{2},[0,0,0],dparam.background{2},4*[2,0.8*dparam.fixation{2}],0,0,0);
+    wait_fix_L=wait_fix{1}; wait_fix_R=wait_fix{2}; clear wait_fix;
   end
 
   wait_fcross(1)=Screen('MakeTexture',winPtr,wait_fix_L);

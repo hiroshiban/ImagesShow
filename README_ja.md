@@ -1,7 +1,7 @@
 # **README on ImagesShow**
 
 <div>Created    : "2003-12-24 10:25:05 ban"</div>
-<diLast>Last Update: "2021-12-01 05:54:37 ban"
+<diLast>Last Update: "2021-12-01 07:17:30 ban"
 </div>
 
 ***
@@ -65,7 +65,7 @@ ImagesShowのより詳細な使用方法は本ドキュメント下部をご覧�
 
 # <a name = "System"> **動作環境** </a>
 
-- **OS: Windows 7/8/10, Mac OSX, or Linux**  
+- **OS: Windows 7/8/10、Mac OSX、or Linux**  
   - note 1: Linux上でご利用の際には、プログラムの一部(音声(ビープ)処理など)を修正する必要があるかもしれません。  
   - note 2: MacOsやLinux上でご利用の際には、MEXファイル(C/C++ codes)を再コンパイルする必要があります。ご自身の環境で~/ImagesShow/Common/CompileMEXs.mを走らせていただけば、MEXファイルのコンパイルが可能です。  
 
@@ -395,6 +395,9 @@ options構造体は下記に示す22個のメンバを持ちます。これら�
                                    0 = 注視点なし
                                    1 = クロス型の注視点。後のタスク・オプションでバーニエ・タスクを指定する際にはこの形がおすすめです。
                                    2 = 円形の注視点
+                                   3 = 集中注視点。他の形状の注視点よりも中止が持続することが示されています。ただし、サイズが多少大きくなります。
+                                       ref: Thaler et al., 2013. Vision Research, 76, 31-42.
+                                            https://www.sciencedirect.com/science/article/pii/S0042698912003380
                                    デフォルト値は、fixation={2,24,[255,255,255]};です。
  8. options.background           : 背景に関する設定値を持つセル構造体です。下記の6つのメンバを持ちます。6番目のメンバ(窓サイズ)は、
                                    通常ImagesShowPTBが処理の中で自動で計算するので、指定する必要はなく、省略します。
@@ -496,7 +499,7 @@ ImagesShowを実行すると、下記に示す2つのログファイルに実験
 MATLABコンソール・ウィンドウに出力される情報のログの例: [logfile.log](doc/markdowns/logfile.md)  
 
 刺激呈示中、MATLABコンソール・ウィンドウに表示された情報は、次の場所  
-*~/ImagesShowPTB/Presentation/(subj)/results/(yymmdd(date))/*,  
+*~/ImagesShowPTB/Presentation/(subj)/results/(yymmdd(date))/*  
 に下記の名前のテキストファイルで保存されます。  
 *(subj)\_ImagesShowPTB_results_session_%02d_run_%02d.log*  
 

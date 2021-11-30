@@ -32,7 +32,7 @@ options.window_size=[768,1024];
 % please set these values [2(left/right) x 3(RGB)]. Valid only when options.exp_mode is 'redgreen', 'greenred', 'redblue', or 'bluered'.
 options.RGBgain=[1.0,1.0,1.0; 1.0,1.0,1.0];
 
-% fixation parameter, {fixation type(0: non, 1: circle, 2: cross),size,color}
+% fixation parameter, {fixation type(0: non, 1: circle, 2: cross, 3: concentrate),size,color}
 options.fixation={2,24,[255,255,255]};
 
 % background parameters,

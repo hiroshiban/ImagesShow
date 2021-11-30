@@ -7,7 +7,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2021-08-03 13:48:46 ban"
+% Last Update: "2021-12-01 07:03:40 ban"
 %
 %
 % [input]
@@ -42,7 +42,7 @@ function options=readDisplayOptions(optionfile)
 %              % please set these values [2(left/right) x 3(RGB)]. Valid only when ~strcmpi(options.exp_mode,'mono')
 %              options.RGBgain=[1.0,1.0,1.0; 1.0,1.0,1.0];
 %
-%              % fixation parameter, {fixation type(0: non, 1: circle, 2: cross),size,color}
+%              % fixation parameter, {fixation type(0: non, 1: circle, 2: cross, 3: concentrate),size,color}
 %              options.fixation={2,24,[255,255,255]};
 %
 %              % background parameters,

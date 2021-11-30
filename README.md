@@ -1,7 +1,7 @@
 # **README on ImagesShow**
 
 <div>Created    : "2003-12-24 10:25:05 ban"</div>
-<diLast>Last Update: "2021-12-01 05:55:01 ban"
+<diLast>Last Update: "2021-12-01 07:12:36 ban"
 </div>
 
 ***
@@ -456,6 +456,9 @@ The options structure should have 22 members (you don't need to set all the opti
         1 = cross-shaped fixation. recommended for applying the vernier task described in
             the task session.
         2 = circular fication.
+        3 = concentrate fixation, that is reported to be able to get more stable and sustained.
+            ref: Thaler et al., 2013. Vision Research, 76, 31-42.
+                 https://www.sciencedirect.com/science/article/pii/S0042698912003380
       option.fixation={2,24,[255,255,255]}; by default.
 
 8. options.background           : background image parameter, a cell structure with six members below.
