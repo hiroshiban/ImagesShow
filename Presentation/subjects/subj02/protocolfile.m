@@ -47,15 +47,15 @@ blocks{1}.repetitions=1;     % the number of repetitions of this block
 blocks{1}.name='cond 1';     % (optional) name of the conditions, empty if not specified
 
 blocks{2}.randomization=0;
-blocks{2}.sequence=[7 5 1 2 3 4 6 5 1 2 3 4 6 5 1 2 3 4 6 7];
-blocks{2}.msec=[500 200 100 200 100 200 100 200 100 200 100 200 100 200 100 200 100 200 100 500];
+blocks{2}.sequence=[1 2 1 3 1 4 1 5 1 6 1 2 1 3 1 4 1 5 1 6 1 2 1 3 1 4 1 5 1 6 1];
+blocks{2}.msec=[300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300];
 blocks{2}.slicing=100;
 blocks{2}.repetitions=1;
 blocks{2}.name='images 1';
 
-blocks{3}.randomization=3;
-blocks{3}.sequence=[7 5 1 2 3 4 6 5 1 2 3 4 6 5 1 2 3 4 6 7];
-blocks{3}.msec=[500 200 100 200 100 200 100 200 100 200 100 200 100 200 100 200 100 200 100 500];
+blocks{3}.randomization=2;
+blocks{3}.sequence=[1 2 1 3 1 4 1 5 1 6 1 2 1 3 1 4 1 5 1 6 1 2 1 3 1 4 1 5 1 6 1];
+blocks{2}.msec=[300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300];
 blocks{3}.slicing=100;
 blocks{3}.repetitions=2;
 blocks{3}.name='images 2';
@@ -70,15 +70,15 @@ blocks{3}.name='images 2';
 %blocks{1}.name='cond 1';
 %
 %blocks{2}.randomization=0;
-%blocks{2}.sequence=[7 5 1 2 3 4 6 5 1 2 3 4 6 5 1 2 3 4 6 7];
-%blocks{2}.frame=[30 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 30]; % you can alternatively set display durations in frames of each image
+%blocks{2}.sequence=[1 2 1 3 1 4 1 5 1 6 1 2 1 3 1 4 1 5 1 6 1 2 1 3 1 4 1 5 1 6 1];
+%blocks{2}.frame=[6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6]; % you can alternatively set display durations in frames of each image
 %blocks{2}.slicing=10;
 %blocks{2}.repetitions=1;
 %blocks{2}.name='images 1';
 %
-%blocks{3}.randomization=3;
-%blocks{3}.sequence=[7 5 1 2 3 4 6 5 1 2 3 4 6 5 1 2 3 4 6 7];
-%blocks{3}.frame=[30 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 30];
+%blocks{3}.randomization=2;
+%blocks{3}.sequence=[1 2 1 3 1 4 1 5 1 6 1 2 1 3 1 4 1 5 1 6 1 2 1 3 1 4 1 5 1 6 1];
+%blocks{3}.frame=[6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6 12 6];
 %blocks{3}.slicing=10;
 %blocks{3}.repetitions=2;
 %blocks{3}.name='images 2';
