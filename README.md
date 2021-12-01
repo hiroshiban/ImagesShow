@@ -1,7 +1,7 @@
 # **README on ImagesShow**
 
 <div>Created    : "2003-12-24 10:25:05 ban"</div>
-<diLast>Last Update: "2021-12-01 07:12:36 ban"
+<diLast>Last Update: "2021-12-01 17:34:40 ban"
 </div>
 
 ***
@@ -44,7 +44,7 @@ Japanese version of README.md is available from [here.](README_ja.md)
 2. It can be used for both block-paradigm and event-related-paradigm fMRI experiments. By properly customizing the configuration files, it can even replicate any stimulus presentation sequences of almost all the current vision-related fMRI experiments.  
 3. It can handle images in all formats that can be loaded into MATLAB. The image data stored in MATLAB *.mat files can be also used as stimulus images seamlessly. With some small modifications, it is also possible to add your own image loading process.  
 4. It is based on MATLAB Psychtoolbox, one of the de facto standard libraries in building vision science experiments. The customization will be thus easy for researchers. It is also easy to add some external functions to the ImagesShow pacakge and to export some functions to the other software packages.  
-5. It provides a flexible option on selecting how to load images online. By properly selecting this option, it can handle experiments with tons of images on a PC with a limited amount of memory. Or you can put more weight for precise timing/duration of image presentations by selecting some other option. For details, please see the descriptions of "optionfile" below.  
+5. It provides a flexible option on selecting how to load images online. By properly selecting this option, it can handle experiments with tons of images on a PC with a limited amount of memory. Or you can put more weights on precise timing/duration of image presentations, without worrying about memory size, by selecting some other option. For details, please see the descriptions of "optionfile" below.  
 6. It implements an important presentation option to compensate delays of the presentation periods strictly online by accumulating pieces of presentation periods from the beginning to the end (timing can be set by "msec" or "the number of frames of sync signals").  
 7. It can provide flexible options of online modifications of image presentation sizes, positions, and masks etc on memory without overwriting the original images during the actual presentation. Therefore, even without sorting image formats out (e.g. converting image type from bmp/png to jpg or adjusting sizes/resolutions across images), all the input images of different formats can be handled without any errors once the image database and the image option files are properly configured.  
 8. It can record almost all the events during the experiment into log files per run (MATLAB warnings/errors, Psychtoolbox warning/errors displayed on the MATLAB console, stimulus presentation timings, image types, and participant responses etc).  
@@ -811,6 +811,7 @@ presentation details from "simple" or "details" mode.
 Updated so that ImagesShowPTB can work with VPIXX PROPixx Projector
                                            June 03 2021 H.Ban
 Add an option to select display ID         June 03 2021 H.Ban
+Add a new type of fixation point           Dec  01 2021 H.Ban
 </pre>
 
 [back to the menu](#Menu)
