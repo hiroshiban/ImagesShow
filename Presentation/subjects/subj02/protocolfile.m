@@ -37,7 +37,7 @@
 % Then, the same randomization parameter (0) will be applied to both sequences. Please be careful.
 
 % if you want to set display duration in msec
-blocks{1}.randomization=5;   % 0:OFF, 1:ALL, 2:Even seq. only, 3:Odd seq. only, 4:first half seq. only, 5:last half seq. only.
+blocks{1}.randomization=0;   % 0:OFF, 1:ALL, 2:Even seq. only, 3:Odd seq. only, 4:first half seq. only, 5:last half seq. only.
                              % 6:2-N-1 blocks are randomized whereas the first and the last sequences are fixed.
                              % or "matrix":randomize specific sequences you set. e.g. blocks{n}.randomization=1:3:ceil(N/2);
 blocks{1}.sequence=1;        % image numbers to be used, 1xN (monocular) or 2xN (binocular) vector
@@ -55,7 +55,7 @@ blocks{2}.name='images 1';
 
 blocks{3}.randomization=2;
 blocks{3}.sequence=[1 2 1 3 1 4 1 5 1 6 1 2 1 3 1 4 1 5 1 6 1 2 1 3 1 4 1 5 1 6 1];
-blocks{2}.msec=[300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300];
+blocks{3}.msec=[300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300 500 300];
 blocks{3}.slicing=100;
 blocks{3}.repetitions=2;
 blocks{3}.name='images 2';
