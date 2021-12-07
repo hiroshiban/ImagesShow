@@ -1,7 +1,7 @@
 # **README on ImagesShow**
 
 <div>Created    : "2003-12-24 10:25:05 ban"</div>
-<diLast>Last Update: "2021-12-01 17:34:40 ban"
+<diLast>Last Update: "2021-12-08 04:38:34 ban"
 </div>
 
 ***
@@ -34,6 +34,8 @@ Japanese version of README.md is available from [here.](README_ja.md)
 ![ImagesShow](doc/images/00_ImagesShow.gif)  
 
 **ImagesShow** is a ***MATLAB***-based **"Digital Kamishibai"** (Kamishibai, 紙芝居 in Japanese, means "picture-story show") package for visual stimulus presentations in psychophysics and neuroimaging studies. The ImagesShow package enables researchers to present/control visual stimuli flexibly with precise timing, by loading user-pre-defined parameters. Specifically, as a basic feature, the package loads multiple images onto memory and presents them in a pre-defined or random order with various options. The package is compatible with a variety of standard visual stimulus presentation protocols. To set these designs, researchers only have to prepare and adjust simple configuration files, such as image databases, presentation protocols, and presentation options carefully implemented to meat the conventional requirements and criteria of psychophysics and neuroimaging experiments. The package is also compatible with dual-display (stereo, binocular rivalry, and so on) as well as single-display setups.  
+
+***The package is made publicly available in the hope of keeping our research group being transparent and open. Furthermore, the package is made open also for people who want to know our group's research activities, who want to join our group in the near future, and who want to learn how to create visual stimuli for vision science. Please feel free to contact us if you are interested in our research projects.***  
 
 (Matlab is a registered trademark of [***The Mathworks Inc.*** ](https://www.mathworks.com/) )  
 
@@ -655,7 +657,7 @@ In this MAT log file, nine variables below will be stored. The "event" variable 
 
 # <a name = "Acknowledgments"> **Acknowledgments** </a>
 
-The ImagesShow package uses **Psychtoolboox** library for generating/presenting/controlling stimuli described below. I would like to express our sincere gratitude to the authors for sharing this great toolbox.  
+The ImagesShow package uses **Psychtoolboox** library for generating/presenting/controlling stimuli described below. I would like to express our sincere gratitude to the authors for sharing the great toolbox.  
 
 **Psychtoolbox** : The individual Psychtoolbox core developers,  
             (c) 1996-2011, David Brainard  
