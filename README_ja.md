@@ -1,8 +1,20 @@
 # **README on ImagesShow**
 
-<div>Created    : "2003-12-24 10:25:05 ban"</div>
-<diLast>Last Update: "2021-12-08 01:13:09 ban"
+<div align="right">
+Created    : "2003-12-24 10:25:05 ban"<br>
+Last Update: "2021-12-13 05:06:38 ban"
 </div>
+
+<br>
+<div align="center">
+<img src="https://img.shields.io/badge/LANGUAGE-MATLAB-brightgreen" />
+<img src="https://img.shields.io/badge/DEPENDENCY-Psychtoolbox3-green" />
+<img src="https://img.shields.io/badge/EDITED%20BY-EmEditor%20&%20VS%20Code-blue" />
+<img src="https://img.shields.io/badge/LICENSE-BSD-red" /><br>
+<img src="https://img.shields.io/badge/KEYWORDS-Vision%20Science,%203D,%20stereo,%20binocular,%20Perception,%20Receognition,%20fMRI,%20MEG,%20EEG,%20&%20Psychphysics-blue?style=social&logo=webauthn" /><br>
+<img src="https://img.shields.io/badge/CONTACT-lightgrey" /> <img src="doc/images/ban_hiroshi_address.png" />
+</div>
+<br>
 
 ***
 
@@ -319,7 +331,7 @@ imgdb構造体は下記に示す5個のメンバを持ちます。
 [メニューへ戻る](#Menu)
 
 
-# <a name = "Viewfile"> **About viewfile** </a>
+# <a name = "Viewfile"> **viewfileについて** </a>
 
 viewfileの記述例: [viewfile.m](doc/markdowns/viewfile.md)  
 
@@ -341,7 +353,7 @@ vparams構造体は下記に示す3個のメンバを持ちます。
 [メニューへ戻る](#Menu)
 
 
-# <a name = "Optionfile"> **About optionfile** </a>
+# <a name = "Optionfile"> **optionfileについて** </a>
 
 optionfileの記述例: [optionfile.m](doc/markdowns/optionfile.md)  
 
@@ -562,19 +574,24 @@ ImagesShowは、MATLAB言語と**Psychtoolbox**を用いて記述されていま
 
 # <a name = "License"> **ライセンス** </a>
 
-ライセンスは下記のとおりです。
+<img src="https://img.shields.io/badge/LICENSE-BSD-red" /><br>
 
-ImagesShow --- A MATLAB-based "Digital Kamishibai" (Kamishibai, 紙芝居 in Japanese, means "picture-story show") package for flexible visual stimulus presentations in psychophysics and neuroimaging studies. Copyright (c) 2021, Hiroshi Ban. All rights reserved.  
+ライセンスの詳細は下記のとおりです。
 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:  
+ImagesShow --- A MATLAB-based "Digital Kamishibai" (Kamishibai, 紙芝居 in Japanese, means "picture-story show") package for flexible visual stimulus presentations in psychophysics and neuroimaging studies.  
+Copyright (c) 2021, Hiroshi Ban. All rights reserved.  
 
-    * Redistributions of source code must retain the above copyright  
-      notice, this list of conditions and the following disclaimer.  
-    * Redistributions in binary form must reproduce the above copyright  
-      notice, this list of conditions and the following disclaimer in  
-      the documentation and/or other materials provided with the distribution  
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in
+      the documentation and/or other materials provided with the distribution
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
+
+The views and conclusions contained in the software and documentation are those of the authors and should not be interpreted as representing official policies, either expressed or implied, of the FreeBSD Project.  
 
 [メニューへ戻る](#Menu)
 
