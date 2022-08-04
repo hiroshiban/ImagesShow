@@ -80,8 +80,12 @@ options.center=[0,0];
 
 % whether flipping images, 0: none, 1: x-axis (horizontally), 2: y-axis (vertically), 3: x&y-axis,
 %                          4: x-axis only for the left view (the first) display,
-%                          5: x-axis only for the right view (the second) display.
-%                          (4 and 5 are for some half-mirror stereo displays such as 3D PluraView)
+%                          5: y-axis only for the left view (the first) display,
+%                          6: x&y-axis for the left view (the first) display,
+%                          7: x-axis only for the right view (the second) display,
+%                          8: y-axis only for the right view (the second) display,
+%                          9: y-axis only for the right view (the second) display,
+%                          (4-9 th options are for some half-mirror stereo displays such as 3D PluraView)
 options.img_flip=0;
 
 % whether adding task during the experiment. [1x3] matrix. [type,frequency,duration]

@@ -31,11 +31,18 @@ function [winPtr,winRect,nScr,fps,ifi,initDisplay_OK]=InitializePTBDisplays(disp
 %             "propixxmono", "propixxstereo", "3Dpixx".
 %             "mono" by default.
 % bgcolor   : background color, [r,g,b]. [127,127,127] by default.
-% flipping  : whether flipping displays, 0:none, 1:horizontal, 2:vertical,
-%             3: both horizontal & vertical,
-%             4: horizontal only for the left view (the first) display,
-%             5: horizontal only for the right view (the second) display.
-%             The 4th and 5th options are for some half-mirror-type stereo displays.
+% flipping  : whether flipping displays,
+%             0: none
+%             1: all displays, flipping horizontally,
+%             2: all displays, flipping vertically,
+%             3: all displays, flipping horizontally & vertically,
+%             4: left display alone, flipping horizontally,
+%             5: left display alone, flipping vertically,
+%             6: left display alone, flipping horizontally & vertically,
+%             7: right display alone, flipping horizontally,
+%             8: right display alone, flipping vertically,
+%             9: right display alone, flipping horizontally & vertically,
+%             The 4-9 th options are for some half-mirror-type stereo displays.
 %             0 by default.
 % rgb_gains : RGB phosphor gains, [2(left/right)x3(r,g,b)] matrix. [1,1,1;1,1,1] by default.
 %             if empty, the default parameters will be set. For details, see the codes below.
@@ -60,7 +67,7 @@ function [winPtr,winRect,nScr,fps,ifi,initDisplay_OK]=InitializePTBDisplays(disp
 %
 %
 % Created : Feb 04 2010 Hiroshi Ban
-% Last Update: "2021-08-03 13:44:05 ban"
+% Last Update: "2022-08-04 14:47:21 ban"
 
 % initialize
 winPtr=[];
@@ -224,7 +231,17 @@ try
   elseif flipping==4
     PsychImaging('AddTask','LeftView','FlipHorizontal');
   elseif flipping==5
+    PsychImaging('AddTask','LeftView','FlipVertical');
+  elseif flipping==6
+    PsychImaging('AddTask','LeftView','FlipHorizontal');
+    PsychImaging('AddTask','LeftView','FlipVertical');
+  elseif flipping==7
     PsychImaging('AddTask','RightView','FlipHorizontal');
+  elseif flipping==8
+    PsychImaging('AddTask','RightView','FlipVertical');
+  elseif flipping==9
+    PsychImaging('AddTask','RightView','FlipHorizontal');
+    PsychImaging('AddTask','RightView','FlipVertical');
   end
 
   % triggers line interleaved display:
