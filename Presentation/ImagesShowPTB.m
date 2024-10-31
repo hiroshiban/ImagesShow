@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2021-12-01 07:09:20 ban"
+% Last Update: "2024-10-31 14:10:10 ban"
 %
 %
 % [input]
@@ -649,6 +649,7 @@ if dparam.cmask{1}
   if isMATLABToolBoxAvailable('Image Processing Toolbox',1)
     fine_coefficient=4; % process a larger mask image to avoid a jaggy edge problem
     % dissociate inner/outer region of the oval
+    aperture_size=1.2.*dparam.cmask{2}; % have to think a better way to avoid edge clipping issue
     step=1/fine_coefficient;
     [x,y]=meshgrid(-aperture_size(2)/2:step:aperture_size(2)/2,-aperture_size(1)/2:step:aperture_size(1)/2);
     if mod(size(x,1),2), x=x(1:end-1,:); y=y(1:end-1,:); end
@@ -941,7 +942,7 @@ if ~exist('task','var'), task=[]; end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if dparam.onset_punch(1)
-  psize=dparam.onset_punch(2); offset=bgSize./2;
+  psize=dparam.onset_punch(2); offset=[winRect(3)-winRect(1),winRect(4)-winRect(2)]./2; %offset=bgSize./2;
   if dparam.onset_punch(1)==1 % upper-left
     punchoffset=[psize/2,psize/2,psize/2,psize/2]-[offset,offset];
   elseif dparam.onset_punch(1)==2 % upper-right
@@ -1053,7 +1054,7 @@ for nn=1:1:nScr
   if dparam.onset_punch(1), Screen('FillRect',winPtr,[0,0,0],CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset); end
 end
 Screen('DrawingFinished',winPtr); % Mark end of all graphics operation (until flip). This allows GPU to optimize its operations.
-Screen('Flip',winPtr,[],[],[],1);
+Screen('Flip',winPtr);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1094,10 +1095,13 @@ Screen('DrawingFinished',winPtr);
 taskcounter=1;
 
 % add time stamp (this also works to load add_event method in memory in advance of the actual displays)
+fprintf('\nWaiting for the start...\n');
 event=event.add_event('Experiment Start',strcat([datestr(now,'yymmdd'),' ',datestr(now,'HH:mm:ss')]),NaN,dparam.event_display_mode);
 
 % waiting for stimulus presentation
 resps.wait_stimulus_presentation(dparam.start_method,dparam.custom_trigger);
+%PlaySound(1);
+fprintf('\nExperiment running...\n');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1123,9 +1127,9 @@ for ii=1:1:length(prt) % blocks
 
         % present the current displays
         if strcmpi(prt{ii}.mode,'frame')
-          if ii==1 && jj==1 && mm==1, Screen('Flip',winPtr,[],[],[],1); end % flip here is required only for the first time for "frame" mode.
+          if ii==1 && jj==1 && mm==1, Screen('Flip',winPtr); end % flip here is required only for the first time for "frame" mode.
         else
-          Screen('Flip',winPtr,[],[],[],1);
+          Screen('Flip',winPtr);
         end
 
         % record the stimulus onset and send the stimulus trigger
@@ -1275,7 +1279,7 @@ for ii=1:1:length(prt) % blocks
 
         if strcmpi(prt{ii}.mode,'frame')
           % wait for the current sub-duration and then flip to the next screen
-          Screen('Flip',winPtr,the_experiment_start+(prt{ii}.subcumduration{jj}(mm)-0.5)*dparam.ifi,[],[],1);
+          Screen('Flip',winPtr,the_experiment_start+(prt{ii}.subcumduration{jj}(mm)-0.5)*dparam.ifi);
         else
           % wait for the current sub-duration
           while (GetSecs()-the_experiment_start < prt{ii}.subcumduration{jj}(mm)/1000)
