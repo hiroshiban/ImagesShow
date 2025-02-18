@@ -2,7 +2,7 @@
 
 <div align="right">
 Created    : "2003-12-24 10:25:05 ban"<br>
-Last Update: "2021-12-13 07:29:29 ban"
+Last Update: "2025-02-18 10:21:41 ban"
 </div>
 
 <br>
@@ -598,8 +598,8 @@ The options structure should have 22 members (you don't need to set all the opti
       the trigger-ON image specified by imgdb.img{n}{3} parameter in imgdbfile is presented. this mode
       is useful for recording stimulus onsets accurately with using a photo-diode sensor in EEG/MEG
       experiments. The option is also useful for synchronizing some external devices with the stimulus
-      onset. options.onset_punch is a [mode, pixel size of punch stimulus] matrix.
-      options.onset_punch=[0,50]; by default.
+      onset. options.onset_punch is a {mode, pixel size of punch stimulus, trigger_ON_RGB, trigger_OFF_RGB] cell matrix.
+      options.onset_punch={0,50,[255,255,255],[0,0,0]}; by default.
       here, "mode" is one of
         0 = no punch stimulus
         1 = upper-left corner of the screen

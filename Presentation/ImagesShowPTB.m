@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2024-10-31 14:10:10 ban"
+% Last Update: "2025-02-18 10:37:02 ban"
 %
 %
 % [input]
@@ -410,7 +410,9 @@ fprintf('Screen Width           : %d\n',dparam.window_size(2));
 fprintf('Window Center [row,col]: [%d,%d]\n',dparam.center(1),dparam.center(2));
 fprintf('Image Loading Mode     : %d\n',dparam.img_loading_mode);
 fprintf('Image Flipping         : %d\n',dparam.img_flip);
-fprintf('Onset Punch [type,size]: [%d,%d]\n',dparam.onset_punch(1),dparam.onset_punch(2));
+fprintf('Onset Punch [type,size]: [%d,%d]\n',dparam.onset_punch{1},dparam.onset_punch{2});
+fprintf('            [ON RGB]   : [%d,%d,%d]\n',dparam.onset_punch{3}(1),dparam.onset_punch{3}(2),dparam.onset_punch{3}(3));
+fprintf('            [OFF RGB]  : [%d,%d,%d]\n',dparam.onset_punch{4}(1),dparam.onset_punch{4}(2),dparam.onset_punch{4}(3));
 fprintf('Fixation Type          : %d\n',dparam.fixation{1});
 fprintf('Background Type        : %d\n',dparam.background{1});
 fprintf('Background Color       : [%d,%d,%d]\n',dparam.background{2}(1),dparam.background{2}(2),dparam.background{2}(3));
@@ -941,15 +943,15 @@ if ~exist('task','var'), task=[]; end
 %%%% Prepare a rectangle for onset punch stimulus
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if dparam.onset_punch(1)
-  psize=dparam.onset_punch(2); offset=[winRect(3)-winRect(1),winRect(4)-winRect(2)]./2; %offset=bgSize./2;
-  if dparam.onset_punch(1)==1 % upper-left
+if dparam.onset_punch{1}
+  psize=dparam.onset_punch{2}; offset=[winRect(3)-winRect(1),winRect(4)-winRect(2)]./2; %offset=bgSize./2;
+  if dparam.onset_punch{1}==1 % upper-left
     punchoffset=[psize/2,psize/2,psize/2,psize/2]-[offset,offset];
-  elseif dparam.onset_punch(1)==2 % upper-right
+  elseif dparam.onset_punch{1}==2 % upper-right
     punchoffset=[-psize/2,psize/2,-psize/2,psize/2]+[offset(1),-offset(2),offset(1),-offset(2)];
-  elseif dparam.onset_punch(1)==3 %lower-left
+  elseif dparam.onset_punch{1}==3 %lower-left
     punchoffset=[psize/2,-psize/2,psize/2,-psize/2]+[-offset(1),offset(2),-offset(1),offset(2)];
-  elseif dparam.onset_punch(1)==4 % lower-right
+  elseif dparam.onset_punch{1}==4 % lower-right
     punchoffset=-[psize/2,psize/2,psize/2,psize/2]+[offset,offset];
   end
   clear offset;
@@ -1051,7 +1053,7 @@ for nn=1:1:nScr
   Screen('SelectStereoDrawBuffer',winPtr,nn-1);
   Screen('DrawTexture',winPtr,background(nn),[],CenterRect(bgRect,winRect)+centeroffset);
   if dparam.fixation{1}, Screen('DrawTexture',winPtr,wait_fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
-  if dparam.onset_punch(1), Screen('FillRect',winPtr,[0,0,0],CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset); end
+  if dparam.onset_punch{1}, Screen('FillRect',winPtr,dparam.onset_punch{4},CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset); end
 end
 Screen('DrawingFinished',winPtr); % Mark end of all graphics operation (until flip). This allows GPU to optimize its operations.
 Screen('Flip',winPtr);
@@ -1079,8 +1081,8 @@ for nn=1:1:nScr
   if dparam.cmask{1}, Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset); end
 
   if dparam.fixation{1}, Screen('DrawTexture',winPtr,fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
-  if dparam.onset_punch(1) % draw a punch rectangle for photo-trigger etc.
-    if cseq(nn)~=0 && imgs.trigger{cseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
+  if dparam.onset_punch{1} % draw a punch rectangle for photo-trigger etc.
+    if cseq(nn)~=0 && imgs.trigger{cseq(nn)}~=0, trigcolor=dparam.onset_punch{3}; else trigcolor=dparam.onset_punch{4}; end
     Screen('FillRect',winPtr,trigcolor,CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset);
   end
 end
@@ -1248,8 +1250,8 @@ for ii=1:1:length(prt) % blocks
             end
 
             % onset marker
-            if dparam.onset_punch(1) % draw a punch rectangle for photo-trigger etc.
-              if nseq(nn)~=0 && imgs.trigger{nseq(nn)}~=0, trigcolor=[255,0,0]; else trigcolor=[0,0,0]; end
+            if dparam.onset_punch{1} % draw a punch rectangle for photo-trigger etc.
+              if nseq(nn)~=0 && imgs.trigger{nseq(nn)}~=0, trigcolor=dparam.onset_punch{3}; else trigcolor=dparam.onset_punch{4}; end
               Screen('FillRect',winPtr,trigcolor,CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset);
             end
 

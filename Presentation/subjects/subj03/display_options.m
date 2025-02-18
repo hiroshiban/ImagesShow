@@ -109,10 +109,12 @@ options.block_rand=0;
 
 % whether displaying stimulus onset marker for images with trigger=ON. (you can set in your image database file).
 % the marker can be used to get a photodiode trigger etc.
-% [type,onset_marker_size]
+% {type,onset_marker_size,trigger_ON_RGB,trigger_OFF_RGB}
 % type, 0: none, 1: upper-left, 2: upper-right, 3: lower-left, 4: lower-right
 % onset_marker_size : pixels of the marker
-options.onset_punch=[2,50];
+% trigger_ON_RGB : color of the trigger marker when it is ON, [R,G,B]. [255,255,255] by default.
+% trigger_off_RGB: color of the trigger marker when it is OFF, [R,G,B]. [0,0,0] by default.
+options.onset_punch={2,50,[255,255,255],[0,0,0]};
 
 % how to display the progress of image presentations on the MATLAB terminal window.
 % 0: displaying block and image sequences only

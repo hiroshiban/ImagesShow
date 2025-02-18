@@ -7,7 +7,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2021-12-01 07:03:40 ban"
+% Last Update: "2025-02-18 10:26:04 ban"
 %
 %
 % [input]
@@ -111,10 +111,12 @@ function options=readDisplayOptions(optionfile)
 %
 %              % whether displaying stimulus onset marker for images with trigger=ON. (you can set in your image database file).
 %              % the marker can be used to get a photodiode trigger etc.
-%              % [type,onset_marker_size]
+%              % {type,onset_marker_size,trigger_ON_RGB,trigger_OFF_RGB}
 %              % type, 0: none, 1: upper-left, 2: upper-right, 3: lower-left, 4: lower-right
 %              % onset_marker_size : pixels of the marker
-%              options.onset_punch=[0,50];
+%              % trigger_ON_RGB : color of the trigger marker when it is ON, [R,G,B]. [255,255,255] by default.
+%              % trigger_OFF_RGB: color of the trigger marker when it is OFF, [R,G,B]. [0,0,0] by default.
+%              options.onset_punch={0,50,[255,255,255],[0,0,0]};
 %
 %              % how to display the progress of image presentations on the MATLAB terminal window.
 %              % 0: displaying block and image sequences only
@@ -142,7 +144,7 @@ function options=readDisplayOptions(optionfile)
 %              .img_flip (0)
 %              .task ([0,1,250])
 %              .block_rand (0)
-%              .onset_punch ([0,50])
+%              .onset_punch ({0,50,[255,255,255],[0,0,0]})
 %              .event_display_mode (0)
 
 %clear global; clear mex;
@@ -187,7 +189,7 @@ options=ValidateStructureFields(options,... % validate fields and set the defaul
   'img_flip',0,...
   'task',[0,1,250],...
   'block_rand',0,...
-  'onset_punch',[0,50],...
+  'onset_punch',{0,50,[255,255,255],[0,0,0]},...
   'event_display_mode',0);
 
 % detect missing parameter values and put them by default ones
@@ -205,6 +207,8 @@ if length(options.cmask)==2, options.cmask{3}=[20,20]; end
 if numel(options.center)==1, options.center=[options.center,options.center]; end
 if numel(options.task)==1, options.task(2)=3; end
 if numel(options.task)==2, options.task(3)=250; end
-if numel(options.onset_punch)==1, options.onset_punch(2)=50; end
+if length(options.onset_punch)==1, options.onset_punch{2}=50; end
+if length(options.onset_punch)==2, options.onset_punch{3}=[255,255,255]; end
+if length(options.onset_punch)==3, options.onset_punch{4}=[0,0,0]; end
 
 return
