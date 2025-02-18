@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2025-02-18 10:37:02 ban"
+% Last Update: "2025-02-18 11:48:37 ban"
 %
 %
 % [input]
@@ -651,7 +651,7 @@ if dparam.cmask{1}
   if isMATLABToolBoxAvailable('Image Processing Toolbox',1)
     fine_coefficient=4; % process a larger mask image to avoid a jaggy edge problem
     % dissociate inner/outer region of the oval
-    aperture_size=1.2.*dparam.cmask{2}; % have to think a better way to avoid edge clipping issue
+    aperture_size=1.1.*max(max(imgSize,1)); % have to think a better way to avoid edge clipping issue
     step=1/fine_coefficient;
     [x,y]=meshgrid(-aperture_size(2)/2:step:aperture_size(2)/2,-aperture_size(1)/2:step:aperture_size(1)/2);
     if mod(size(x,1),2), x=x(1:end-1,:); y=y(1:end-1,:); end
