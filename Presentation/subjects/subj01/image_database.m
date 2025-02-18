@@ -7,7 +7,7 @@ imgdb.directory=fullfile(fileparts(mfilename('fullpath')),'..','..','..','images
 imgdb.presentation_size=[320,320]; % this is not the actual image size, all the images will be adjusted based on this value.
 imgdb.num=321; % the total number of images
 
-imgdb.img{1}={'background.jpg','Background',0}; % {'file_name','comment','trigger(off=0, on=1, or on=string)'}
+imgdb.img{1}={'background.jpg','Background',0}; % {'file_name','comment','trigger(a scalar, 0(off),1(on),2,3..., a vector [1,2,3](on), or 'string')}
 
 imgdb.img{2}={'/Building/Buildings_0001.jpg','Buildings',0};
 imgdb.img{3}={'/Building/Buildings_0002.jpg','Buildings',0};

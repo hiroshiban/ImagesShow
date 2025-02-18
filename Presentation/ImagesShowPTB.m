@@ -19,7 +19,7 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %
 %
 % Created    : "2013-11-08 16:43:35 ban"
-% Last Update: "2025-02-18 11:48:37 ban"
+% Last Update: "2025-02-18 21:02:29 ban"
 %
 %
 % [input]
@@ -175,6 +175,10 @@ function ImagesShowPTB(subj_,acq_,session_,protocolfile,imgdbfile,viewfile,optio
 %                                            June 03 2021 H.Ban
 % Compatible with some half-mirror stereo displays such as 3D PluraView
 %                                            Aug  03 2021 H.Ban
+% Add some more parameters to configure a onset marker colors
+%                                            Feb  18 2025 H.Ban
+% Updated the subroutine to put circular apertures on the images.
+%                                            Feb  18 2025 H.Ban
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -410,7 +414,7 @@ fprintf('Screen Width           : %d\n',dparam.window_size(2));
 fprintf('Window Center [row,col]: [%d,%d]\n',dparam.center(1),dparam.center(2));
 fprintf('Image Loading Mode     : %d\n',dparam.img_loading_mode);
 fprintf('Image Flipping         : %d\n',dparam.img_flip);
-fprintf('Onset Punch [type,size]: [%d,%d]\n',dparam.onset_punch{1},dparam.onset_punch{2});
+fprintf('Onset Punch [pos,size] : [%d,%d]\n',dparam.onset_punch{1},dparam.onset_punch{2});
 fprintf('            [ON RGB]   : [%d,%d,%d]\n',dparam.onset_punch{3}(1),dparam.onset_punch{3}(2),dparam.onset_punch{3}(3));
 fprintf('            [OFF RGB]  : [%d,%d,%d]\n',dparam.onset_punch{4}(1),dparam.onset_punch{4}(2),dparam.onset_punch{4}(3));
 fprintf('Fixation Type          : %d\n',dparam.fixation{1});
@@ -943,19 +947,45 @@ if ~exist('task','var'), task=[]; end
 %%%% Prepare a rectangle for onset punch stimulus
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% about the onset marker positions
+% 0: none, 1: upper-left, 2: upper-right, 3: lower-left, 4: lower-right
+% 5: middle-left, 6: middle-right, 7: upper-middle, 8: lower-middle
+% 9: whole-left, 10: whole-right, 11: whole-top, 12: whole-bottom, and
+% 13: binary settings (special option, multiple triggers specified in the image_database file)
+
 if dparam.onset_punch{1}
+  % calculate onset marker positions (for the position details, see the comments above)
   psize=dparam.onset_punch{2}; offset=[winRect(3)-winRect(1),winRect(4)-winRect(2)]./2; %offset=bgSize./2;
-  if dparam.onset_punch{1}==1 % upper-left
-    punchoffset=[psize/2,psize/2,psize/2,psize/2]-[offset,offset];
-  elseif dparam.onset_punch{1}==2 % upper-right
-    punchoffset=[-psize/2,psize/2,-psize/2,psize/2]+[offset(1),-offset(2),offset(1),-offset(2)];
-  elseif dparam.onset_punch{1}==3 %lower-left
-    punchoffset=[psize/2,-psize/2,psize/2,-psize/2]+[-offset(1),offset(2),-offset(1),offset(2)];
-  elseif dparam.onset_punch{1}==4 % lower-right
-    punchoffset=-[psize/2,psize/2,psize/2,psize/2]+[offset,offset];
-  end
+  punchoffset{1}=[psize/2,psize/2,psize/2,psize/2]-[offset,offset];
+  punchoffset{2}=[-psize/2,psize/2,-psize/2,psize/2]+[offset(1),-offset(2),offset(1),-offset(2)];
+  punchoffset{3}=[psize/2,-psize/2,psize/2,-psize/2]+[-offset(1),offset(2),-offset(1),offset(2)];
+  punchoffset{4}=-[psize/2,psize/2,psize/2,psize/2]+[offset,offset];
+  punchoffset{5}=[psize/2,0,psize/2,0]-[offset(1),0,offset(1),0];
+  punchoffset{6}=[-psize/2,0,-psize/2,0]+[offset(1),0,offset(1),0];
+  punchoffset{7}=[0,psize/2,0,psize/2]+[0,-offset(2),0,-offset(2)];
+  punchoffset{8}=[0,-psize/2,0,-psize/2]+[0,offset(2),0,offset(2)];;
+  punchoffset{9}=[psize/2,psize/2,psize/2,psize/2]-[offset,offset]+[0,0,0,2*offset(2)-psize/2];
+  punchoffset{10}=[-psize/2,psize/2,-psize/2,psize/2]+[offset(1),-offset(2),offset(1),-offset(2)]+[0,0,0,2*offset(2)-psize/2];
+  punchoffset{11}=[psize/2,psize/2,psize/2,psize/2]-[offset,offset]+[0,0,2*offset(1)-psize/2,0];
+  punchoffset{12}=[psize/2,-psize/2,psize/2,-psize/2]+[-offset(1),offset(2),-offset(1),offset(2)]+[0,0,2*offset(1)-psize/2,0];
   clear offset;
-end
+
+  % set triggers to be used (from the iamge_database file)
+  trig_use_flg=zeros(1,length(punchoffset)); % length(punchoffset) is now 12 = positions of the triggers
+  if dparam.onset_punch{1}==length(punchoffset)+1
+    tmp_trig=[];
+    for pp=1:1:length(imgs.trigger)
+      if isstr(imgs.trigger{ii}), error('imagedatabase.trigger should be set as a vector if the multiple trigger mode is ON (dparam.onset_punch{1}==13)'); end
+      tmp_trig=[tmp_trig,imgs.trigger{pp}]; %#ok
+    end % for pp=1:1:length(imgs.trigger)
+    tmp_trig=unique(tmp_trig);
+    tmp_trig(tmp_trig==0)=[]; % removing zero
+    trig_use_flg(tmp_trig)=1;
+    clear tmp_trig;
+  else % if dparam.onset_punch{1}==length(punchoffset)+1
+    trig_use_flg(dparam.onset_punch{1})=1;
+  end % if dparam.onset_punch{1}==length(punchoffset)+1
+end % if dparam.onset_punch{1}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1053,7 +1083,13 @@ for nn=1:1:nScr
   Screen('SelectStereoDrawBuffer',winPtr,nn-1);
   Screen('DrawTexture',winPtr,background(nn),[],CenterRect(bgRect,winRect)+centeroffset);
   if dparam.fixation{1}, Screen('DrawTexture',winPtr,wait_fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
-  if dparam.onset_punch{1}, Screen('FillRect',winPtr,dparam.onset_punch{4},CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset); end
+  if dparam.onset_punch{1}
+    for pp=1:1:length(punchoffset)
+      if trig_use_flg(pp)
+        Screen('FillRect',winPtr,dparam.onset_punch{4},CenterRect([0,0,psize,psize],winRect)+punchoffset{pp}+centeroffset);
+      end
+    end
+  end
 end
 Screen('DrawingFinished',winPtr); % Mark end of all graphics operation (until flip). This allows GPU to optimize its operations.
 Screen('Flip',winPtr);
@@ -1080,10 +1116,22 @@ for nn=1:1:nScr
   end
   if dparam.cmask{1}, Screen('DrawTexture',winPtr,circularmask(nn),[],CenterRect(maskRect,winRect)+centeroffset); end
 
-  if dparam.fixation{1}, Screen('DrawTexture',winPtr,fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset); end
-  if dparam.onset_punch{1} % draw a punch rectangle for photo-trigger etc.
-    if cseq(nn)~=0 && imgs.trigger{cseq(nn)}~=0, trigcolor=dparam.onset_punch{3}; else trigcolor=dparam.onset_punch{4}; end
-    Screen('FillRect',winPtr,trigcolor,CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset);
+  % fixation
+  if dparam.fixation{1}
+    Screen('DrawTexture',winPtr,fcross(nn),[],CenterRect(fixRect,winRect)+centeroffset);
+  end
+
+  % onset marker
+  if cseq(nn)~=0 && dparam.onset_punch{1}
+    for pp=1:1:length(punchoffset)
+      if trig_use_flg(pp)
+        if ~isempty(find(imgs.trigger{cseq(nn)}==pp,1))
+          Screen('FillRect',winPtr,dparam.onset_punch{3},CenterRect([0,0,psize,psize],winRect)+punchoffset{pp}+centeroffset);
+        else % if ~isempty(find(imgs.trigger{cseq(nn)}==pp,1))
+          Screen('FillRect',winPtr,dparam.onset_punch{4},CenterRect([0,0,psize,psize],winRect)+punchoffset{pp}+centeroffset);
+        end
+      end
+    end
   end
 end
 Screen('DrawingFinished',winPtr);
@@ -1138,12 +1186,12 @@ for ii=1:1:length(prt) % blocks
         if mm==1
           if cseq(1)~=cseq(2)
             event=event.add_event('Stim on',sprintf('%d/%d',cseq(1),cseq(2)),[],dparam.event_display_mode);
-            if cseq(1)~=0 && imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger L',imgs.trigger{cseq(1)},[],dparam.event_display_mode); end
-            if cseq(2)~=0 && imgs.trigger{cseq(2)}~=0, event=event.add_event('Stim Trigger R',imgs.trigger{cseq(2)},[],dparam.event_display_mode); end
+            if cseq(1)~=0 && ~isempty(find(imgs.trigger{cseq(1)}>0)), event=event.add_event('Stim Trigger L',imgs.trigger{cseq(1)},[],dparam.event_display_mode); end
+            if cseq(2)~=0 && ~isempty(find(imgs.trigger{cseq(2)}>0)), event=event.add_event('Stim Trigger R',imgs.trigger{cseq(2)},[],dparam.event_display_mode); end
             if ~dparam.event_display_mode, fprintf('%03d/%03d ',cseq(1),cseq(2)); end
           else
             event=event.add_event('Stim on',sprintf('%d',cseq(1)),[],dparam.event_display_mode);
-            if cseq(1)~=0 && imgs.trigger{cseq(1)}~=0, event=event.add_event('Stim Trigger',imgs.trigger{cseq(1)},[],dparam.event_display_mode); end
+            if cseq(1)~=0 && ~isempty(find(imgs.trigger{cseq(1)}>0)), event=event.add_event('Stim Trigger',imgs.trigger{cseq(1)},[],dparam.event_display_mode); end
             if ~dparam.event_display_mode, fprintf('%03d ',cseq(1)); end
           end
           if jj==size(prt{ii}.sequence,2)
@@ -1250,9 +1298,16 @@ for ii=1:1:length(prt) % blocks
             end
 
             % onset marker
-            if dparam.onset_punch{1} % draw a punch rectangle for photo-trigger etc.
-              if nseq(nn)~=0 && imgs.trigger{nseq(nn)}~=0, trigcolor=dparam.onset_punch{3}; else trigcolor=dparam.onset_punch{4}; end
-              Screen('FillRect',winPtr,trigcolor,CenterRect([0,0,psize,psize],winRect)+punchoffset+centeroffset);
+            if nseq(nn)~=0 && dparam.onset_punch{1} % draw a punch rectangle for photo-trigger etc.
+              for pp=1:1:length(punchoffset)
+                if trig_use_flg(pp)
+                  if ~isempty(find(imgs.trigger{nseq(nn)}==pp,1))
+                    Screen('FillRect',winPtr,dparam.onset_punch{3},CenterRect([0,0,psize,psize],winRect)+punchoffset{pp}+centeroffset);
+                  else % if ~isempty(find(imgs.trigger{nseq(nn)}==pp,1))
+                    Screen('FillRect',winPtr,dparam.onset_punch{4},CenterRect([0,0,psize,psize],winRect)+punchoffset{pp}+centeroffset);
+                  end
+                end
+              end
             end
 
             % task

@@ -2,7 +2,7 @@
 
 <div align="right">
 Created    : "2003-12-24 10:25:05 ban"<br>
-Last Update: "2025-02-18 10:21:41 ban"
+Last Update: "2025-02-18 22:04:00 ban"
 </div>
 
 <br>
@@ -583,6 +583,7 @@ The options structure should have 22 members (you don't need to set all the opti
       be divided by 100 ms. In that case, the task duration will be rounded to 200 ms. Please be
       careful. The default value is options.task=[0,1,250];
 
+
 20. options.block_rand           : whether randomizing the block order described in protocolfile.
       0 = OFF (no randomization, blocks will be presented as they are set)
       1 = randomizing the blocks over the whole sequence.
@@ -594,18 +595,41 @@ The options structure should have 22 members (you don't need to set all the opti
       here, if multiple numbers are set as a matrix (e.g. [2,4,6,8]), only the blocks
       corresponding to these specific numbers are randomized. 0 by default.
 
-21. options.onset_punch  : this option presents a punch stimulus at the edge of the screen when 
+21. options.onset_punch  : this option presents a punch stimulus at the edge of the screen when
       the trigger-ON image specified by imgdb.img{n}{3} parameter in imgdbfile is presented. this mode
       is useful for recording stimulus onsets accurately with using a photo-diode sensor in EEG/MEG
       experiments. The option is also useful for synchronizing some external devices with the stimulus
-      onset. options.onset_punch is a {mode, pixel size of punch stimulus, trigger_ON_RGB, trigger_OFF_RGB] cell matrix.
+      onset. options.onset_punch is a {position, pixel size of punch stimulus, trigger_ON_RGB, trigger_OFF_RGB] cell matrix.
       options.onset_punch={0,50,[255,255,255],[0,0,0]}; by default.
-      here, "mode" is one of
-        0 = no punch stimulus
-        1 = upper-left corner of the screen
-        2 = upper-right corner
-        3 = lower-left corner
-        4 = lower-right corner
+      here, "position" is one of
+         0 = no punch stimulus
+         1 = upper-left corner of the screen
+         2 = upper-right corner
+         3 = lower-left corner
+         4 = lower-right corner
+         5 = middle-left
+         6 = middle-right
+         7 = upper-middle
+         8 = lower-middle
+         9 = whole-left
+        10 = whole-right
+        11 = whole-top
+        12 = whole bottom
+        13 =binary settings (special option, multiple triggers specified in the image_database file)
+
+      [Important Note on Stimulus Onset Trigger]
+      By properly setting the 'position' (here, in this option file) and related parameters (in the image_database file),
+      ImagesShow offers two different ways to record stimulus/condition types and presentation protocols.
+      First, if you set 'position' to one of 1-12, while the stimulus onset marker (punch stimulus) is only presented
+      at a fixed location, you can record stimulus types in an eventlogger object (or 'event' in the *.mat result file)
+      by assigning different numbers to different images as imgdb.img{1}{3}=1, imgdb.img{2}{3}=2, imgdb.img{3}{3}3,...etc.
+      Second, if you set 'position' to 13, you can use multiple onset markers, which can record the stimulus type using
+      binary encodings. For instance, if you set 'position' to 13 and set imgdb.img{1}{3}=[1], imgdb.img{2}{3}=[1,2], and
+      imgdb.img{3}{3}=[2,3], then an onset marker will be presented on top-left for the image 1, two markers on top-left
+      and top-right for the image 2, and two markers on top-right and bottom-left for the image 3. Then, when you record
+      the photo-trigger responses on an EEG/MEG system, etc, you can judge which stimuli are presented in which order by
+      checking the recorded binary codes, e.g. '11000000'. For such multiple recordings, the combinations of numbers 1-8
+      are recommended, since the bar-type triggers (position 9-12) are not suitable for binary coding.
 
 22. options.event_display_mode : this option determines what information will be displayed on the
       MATLAB console window during stimulus presentation.
@@ -830,6 +854,10 @@ Updated so that ImagesShowPTB can work with VPIXX PROPixx Projector
                                            June 03 2021 H.Ban
 Add an option to select display ID         June 03 2021 H.Ban
 Add a new type of fixation point           Dec  01 2021 H.Ban
+Add some more parameters to configure a onset marker colors
+                                           Feb  18 2025 H.Ban
+Updated the subroutine to put circular apertures on the images.
+                                           Feb  18 2025 H.Ban
 </pre>
 
 [back to the menu](#Menu)

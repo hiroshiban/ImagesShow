@@ -7,7 +7,7 @@ imgdb.directory=fullfile(fileparts(mfilename('fullpath')),'..','..','..','images
 imgdb.presentation_size=[760,760];
 imgdb.num=20;
 
-imgdb.img{1} ={'checkerboard_01_01.png','checkerboard_01_01',1};
+imgdb.img{1} ={'checkerboard_01_01.png','checkerboard_01_01',1}; % {'file_name','comment','trigger(a scalar, 0(off),1(on),2,3..., a vector [1,2,3](on), or 'string')}
 imgdb.img{2} ={'checkerboard_01_02.png','checkerboard_01_02',1};
 imgdb.img{3} ={'checkerboard_02_01.png','checkerboard_02_01',1};
 imgdb.img{4} ={'checkerboard_02_02.png','checkerboard_02_02',1};
