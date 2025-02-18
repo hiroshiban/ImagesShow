@@ -7,7 +7,7 @@ function options=readDisplayOptions(optionfile)
 % and set ImagesShow display options.
 %
 % Created    : "2013-11-08 15:36:14 ban"
-% Last Update: "2025-02-18 22:05:23 ban"
+% Last Update: "2025-02-18 22:20:44 ban"
 %
 %
 % [input]
@@ -120,19 +120,24 @@ function options=readDisplayOptions(optionfile)
 %              % trigger_ON_RGB : color of the trigger marker when it is ON, [R,G,B]. [255,255,255] by default.
 %              % trigger_off_RGB: color of the trigger marker when it is OFF, [R,G,B]. [0,0,0] by default.
 %              %
-%              % [Important Note on Stimulus Onset Trigger]
-%              % By properly setting the 'position' (here, in this option file) and related parameters (in the image_database file),
-%              % ImagesShow offers two different ways to record stimulus/condition types and presentation protocols.
-%              % First, if you set 'position' to one of 1-12, while the stimulus onset marker (punch stimulus) is only presented
-%              % at a fixed location, you can record stimulus types in an eventlogger object (or 'event' in the *.mat result file)
-%              % by assigning different numbers to different images as imgdb.img{1}{3}=1, imgdb.img{2}{3}=2, imgdb.img{3}{3}3,...etc.
-%              % Second, if you set 'position' to 13, you can use multiple onset markers, which can record the stimulus type using
-%              % binary encodings. For instance, if you set 'position' to 13 and set imgdb.img{1}{3}=[1], imgdb.img{2}{3}=[1,2], and
-%              % imgdb.img{3}{3}=[2,3], then an onset marker will be presented on top-left for the image 1, two markers on top-left
-%              % and top-right for the image 2, and two markers on top-right and bottom-left for the image 3. Then, when you record
-%              % the photo-trigger responses on an EEG/MEG system, etc, you can judge which stimuli are presented in which order by
-%              % checking the recorded binary codes, e.g. '11000000'. For such multiple recordings, the combinations of numbers 1-8
-%              % are recommended, since the bar-type triggers (position 9-12) are not suitable for binary coding.
+%
+%              [Important Note on Stimulus Onset Trigger]
+%              By properly setting the 'position' (here, in this option file) and related parameters (in the
+%              image_database file), ImagesShow offers two different ways to record stimulus/condition types and
+%              presentation protocols.
+%              First, if you set 'position' to one of 1-12, while the stimulus onset marker (punch stimulus) is
+%              only presented at a fixed location, you can record stimulus types in an eventlogger object
+%              (or 'event' in the *.mat result file) by assigning different numbers to different images as
+%              imgdb.img{1}{3}=1, imgdb.img{2}{3}=2, imgdb.img{3}{3}3,...etc.
+%              Second, if you set 'position' to 13, you can use multiple onset markers, which can record the
+%              stimulus type using binary encodings. For instance, if you set 'position' to 13 and set
+%              imgdb.img{1}{3}=[1], imgdb.img{2}{3}=[1,2], and imgdb.img{3}{3}=[2,3], then an onset marker will
+%              be presented on top-left for the image 1, two markers on top-left and top-right for the image 2,
+%              and two markers on top-right and bottom-left for the image 3. Then, when you record the photo-trigger
+%              responses on an EEG/MEG system, etc, you can judge which stimuli are presented in which order by
+%              checking the recorded binary codes, e.g. '11000000'. For such multiple recordings, the combinations
+%              of numbers 1-8 are recommended, since the bar-type triggers (position 9-12) are not suitable for
+%              binary coding.
 %              options.onset_punch={0,50,[255,255,255],[0,0,0]};
 %
 %              % how to display the progress of image presentations on the MATLAB terminal window.
