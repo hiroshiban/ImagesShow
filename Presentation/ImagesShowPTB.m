@@ -478,7 +478,7 @@ if ~user_answer, close all; return; end
 if ~initDisplay_OK, error('Display initialization error. Please check your exp_run parameter.'); end
 HideCursor();
 
-if ~dparam.force_frame_rate
+if dparam.force_frame_rate
   dparam.fps=dparam.force_frame_rate;
   dparam.ifi=1/dparam.fps;
 end
@@ -1090,6 +1090,12 @@ for nn=1:1:nScr
       end
     end
   end
+
+  % blue line for stereo sync
+  if strcmpi(dparam.exp_mode,'propixxstereo')
+    Screen('FillRect',winPtr,[0,0,255],blueRectOn(nn,:));
+    Screen('FillRect',winPtr,[0,0,0],blueRectOff(nn,:));
+  end
 end
 Screen('DrawingFinished',winPtr); % Mark end of all graphics operation (until flip). This allows GPU to optimize its operations.
 Screen('Flip',winPtr);
@@ -1132,6 +1138,12 @@ for nn=1:1:nScr
         end
       end
     end
+  end
+
+  % blue line for stereo sync
+  if strcmpi(dparam.exp_mode,'propixxstereo')
+    Screen('FillRect',winPtr,[0,0,255],blueRectOn(nn,:));
+    Screen('FillRect',winPtr,[0,0,0],blueRectOff(nn,:));
   end
 end
 Screen('DrawingFinished',winPtr);
